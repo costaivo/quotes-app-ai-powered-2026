@@ -15,7 +15,18 @@ var corsOptions = {
 }
 app.use(cors())
 
-mongoose.connect('mongodb://root:rootpassword@localhost:27017/?authSource=admin',
+// mongoose.connect('mongodb://root:rootpassword@localhost:27017/?authSource=admin',
+//     {
+//         useNewUrlParser: true,
+//         useCreateIndex: true,
+//         useUnifiedTopology: true,
+//         useFindAndModify: false
+//     })
+//     .then(() => console.log('*********  Connected to MongoDb **********'))
+//     .catch(error => console.log('--------- Could not connect to MongoDb -------', error));
+
+
+mongoose.connect('mongodb+srv://rmscollege25:<db_password>@cluster0.heuzp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -37,6 +48,6 @@ app.use('/', (_, res) => {
 });
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 9090;
 
 app.listen(port, () => console.log(`Application started at Port ==> ${port}`));
