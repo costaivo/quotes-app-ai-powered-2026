@@ -25,6 +25,19 @@ export default function QuotePage() {
     return (
         <div className="container mt-4">
             <h1>All Quotes</h1>
+
+            <form className="row m-3">
+        <div className="input-group">
+          <span className="input-group-text" id="basic-addon1">
+            Search by Author
+          </span>
+          <input type="text" className="form-control" placeholder="Author Name" />
+          <button type="submit" className="btn btn-primary">
+            Search
+          </button>
+        </div>
+      </form>
+      
             {quotes.map((quote, index) => (
                 <div className="card mt-3" key={index}>
                     <div className="card-body">
