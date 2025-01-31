@@ -38,8 +38,8 @@ export default function QuotePage() {
         </div>
       </form>
       
-            {quotes.map((quote, index) => (
-                <div className="card mt-3" key={index}>
+            {quotes.map((quote) => (
+                <div className="card mt-3">
                     <div className="card-body">
                         <blockquote className="blockquote mb-0">
                             <p>{quote.text}</p>
