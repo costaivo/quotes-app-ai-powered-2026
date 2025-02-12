@@ -13,7 +13,7 @@ export default function HomePage() {
         <h1>Quotes App</h1>
         <p><strong>Explore inspiring quotes from famous authors</strong></p>
         <hr></hr>
-        <p> <h3 className="text-primary"> Quote of the Day </h3></p>
+        <h2 className="text-primary"> Quote of the Day </h2>
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">{quoteOfDay.quote}</h5>
