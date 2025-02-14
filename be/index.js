@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 var morgan = require('morgan')
@@ -5,6 +6,8 @@ const quote = require('./routes/quotes');
 const author = require('./routes/author');
 var cors = require('cors')
 const app = express();
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./swagger');
 
 
 app.use(morgan('dev'))
@@ -26,7 +29,7 @@ app.use(cors())
 //     .catch(error => console.log('--------- Could not connect to MongoDb -------', error));
 
 
-mongoose.connect('mongodb+srv://rmscollege25:<db_password>@cluster0.heuzp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+mongoose.connect(process.env.MONGODB_URI,
     {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -39,6 +42,9 @@ mongoose.connect('mongodb+srv://rmscollege25:<db_password>@cluster0.heuzp.mongod
 app.use(express.json());
 
 const deployedDate = '2021-Jun-05'
+
+// Add before other routes
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 /* Set Routes */
 app.use('/quote', quote);
