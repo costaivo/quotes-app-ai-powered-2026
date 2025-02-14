@@ -16,9 +16,24 @@ const getAuthors = async (req, res) => {
 }
 const getQuotes = async (req, res) => {
     try {
-        const quotes = await Quote.find({});
+        const { author, quote: quoteText, tags } = req.query;
 
-        res.status(200).send(quotes)
+        // If any search parameters are present, perform search
+        if (author || quoteText || tags) {
+            let quotes;
+            if (author) {
+                quotes = await searchByAuthor(author);
+            } else if (quoteText) {
+                quotes = await searchByQuote(quoteText);
+            } else if (tags) {
+                quotes = await searchByTags(tags);
+            }
+            return res.status(200).send(quotes);
+        }
+
+        // If no search parameters, return all quotes
+        const quotes = await Quote.find({});
+        res.status(200).send(quotes);
     } catch (error) {
         res.status(400).send({
             error: error.message
@@ -43,36 +58,6 @@ async function searchByTags(tags) {
     const regex = new RegExp(tags, 'i') // i for case insensitive
     const quotes = await Quote.find({ tags: { $regex: regex } });
     return quotes
-}
-const searchQuotes = async (req, res) => {
-    try {
-        console.log('search params author :: ' + req.query.author);
-        console.log('search params quote ::' + req.query.quote);
-        const author = req.query.author;
-        const quoteText = req.query.quote;
-        const tags = req.query.tags;
-
-
-        if (author) {
-            console.log('searching byAuthor')
-            const quotes = await searchByAuthor(author)
-            res.status(200).send(quotes);
-        }
-        if (quoteText) {
-            const quotes = await searchByQuote(quoteText)
-            res.status(200).send(quotes);
-        }
-        if (tags) {
-            const quotes = await searchByTags(tags)
-            res.status(200).send(quotes);
-        }
-
-
-    } catch (error) {
-        res.status(400).send({
-            error: error.message
-        });
-    }
 }
 
 const getQuote = async (req, res) => {
@@ -261,7 +246,6 @@ module.exports = {
     getAuthors,
     getQuote,
     getQuotes,
-    searchQuotes,
     addQuote,
     editQuote,
     deleteQuote,

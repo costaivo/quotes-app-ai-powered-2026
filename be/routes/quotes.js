@@ -4,19 +4,18 @@ const router = express.Router();
 const quotesController = require('../controllers/quotes.controller')
 
 
-router.get('/search', quotesController.searchQuotes);
-router.get('/:id', quotesController.getQuote);
-router.delete('/:id', quotesController.deleteQuote);
-router.patch('/:id', quotesController.editQuote);
 router.get('/', quotesController.getQuotes);
 router.post('/', quotesController.addQuote);
+router.get('/:id', quotesController.getQuote);
+router.patch('/:id', quotesController.editQuote);
+router.delete('/:id', quotesController.deleteQuote);
 
 
 
-router.post('/:id/likes/up', quotesController.updateLikesUp);
-router.post('/:id/likes/down', quotesController.updateLikesDown);
-router.post('/:id/dislike/up', quotesController.updateDislikesUp);
-router.post('/:id/dislike/down', quotesController.updateDislikesDown);
+router.post('/:id/likes', quotesController.updateLikesUp);
+router.delete('/:id/likes', quotesController.updateLikesDown);
+router.post('/:id/dislikes', quotesController.updateDislikesUp);
+router.delete('/:id/dislikes', quotesController.updateDislikesDown);
 
 
 
