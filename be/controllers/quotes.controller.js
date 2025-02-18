@@ -6,8 +6,27 @@ const mongoose = require('mongoose')
 
 const getAuthors = async (req, res) => {
     try {
+        // Get unique authors first
         const authors = await Quote.find({}).distinct('author');
-        res.status(200).send(authors)
+        
+        // Get detailed stats for each author
+        const authorStats = await Promise.all(authors.map(async (author) => {
+            const authorQuotes = await Quote.find({ author });
+            
+            // Calculate totals
+            const totalQuotes = authorQuotes.length;
+            const likedCount = authorQuotes.reduce((sum, quote) => sum + quote.likes, 0);
+            const dislikedCount = authorQuotes.reduce((sum, quote) => sum + quote.dislikes, 0);
+            
+            return {
+                author_name: author,
+                total_quotes: totalQuotes,
+                liked_count: likedCount,
+                disliked_count: dislikedCount
+            };
+        }));
+
+        res.status(200).send(authorStats);
     } catch (error) {
         res.status(400).send({
             error: error.message

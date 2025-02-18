@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 var morgan = require('morgan')
@@ -8,7 +7,10 @@ var cors = require('cors')
 const app = express();
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./swagger');
+const swaggerFile = require('./swagger-output.json');
 
+// Add this at the very top of the file, before other requires
+require('dotenv').config();
 
 app.use(morgan('dev'))
 
@@ -28,7 +30,7 @@ app.use(cors())
 //     .then(() => console.log('*********  Connected to MongoDb **********'))
 //     .catch(error => console.log('--------- Could not connect to MongoDb -------', error));
 
-
+console.log(process.env.MONGODB_URI)
 mongoose.connect(process.env.MONGODB_URI,
     {
         useNewUrlParser: true,
@@ -44,7 +46,7 @@ app.use(express.json());
 const deployedDate = '2021-Jun-05'
 
 // Add before other routes
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 /* Set Routes */
 app.use('/quote', quote);
