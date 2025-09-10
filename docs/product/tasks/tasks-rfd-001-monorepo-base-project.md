@@ -30,7 +30,7 @@ date: 2025-09-10
 
 ## Tasks
 
-- [ ] 1.0 Create monorepo directories and placeholders
+- [x] 1.0 Create monorepo directories and placeholders
   - [x] 1.1 Create `app/be/` and `app/fe/` directories at repo root
   - [x] 1.2 Add `app/be/README.md` with:
     - [x] short overview of stack (e.g., NestJS, Node v20.9.0)
@@ -41,7 +41,7 @@ date: 2025-09-10
     - [x] quick start: install, run dev, build commands
     - [x] link to `app/fe/fe-rules.mdc`
   - [x] 1.4 Add or update top-level `README.md` with links to `app/be` and `app/fe` and the RFD reference
-  - [ ] 1.5 Commit the new directories and README placeholders with a conventional-commit message
+  - [x] 1.5 Commit the new directories and README placeholders with a conventional-commit message
 
 - [ ] 2.0 Initialize shared developer configs
   - [ ] 2.1 Add `.editorconfig` at repo root with basic indentation and charset rules
@@ -97,3 +97,5 @@ date: 2025-09-10
 
 
 
+Approval:
+- **Next Sub-task**: Awaiting approval
