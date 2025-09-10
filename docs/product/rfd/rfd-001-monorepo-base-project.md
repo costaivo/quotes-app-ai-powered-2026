@@ -50,6 +50,7 @@ Approve creating the monorepo base project with the structure and initial files 
 - Cons: Slight initial overhead for repo changes.
 
 - Monorepo structure:
+```bash
 quotes-app/
 ├── apps/
 │ ├── be/
@@ -63,7 +64,7 @@ quotes-app/
 ├── docker-compose.yml
 ├── .env.example
 └── docs/
-
+```
 - Docker-Compose services:
   - `be` → NestJS backend
   - `fe` → React frontend
