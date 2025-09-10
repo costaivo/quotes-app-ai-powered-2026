@@ -22,12 +22,12 @@ Relevant Files:
 - `fe/src/components/LoginForm.js`: New login form. (new)
 
 Approval:
-- **Next Sub-task**: yes
+- **Next Sub-task**: Awaiting approval
 ```
 
 ## Task Implementation Workflow
 
-- **One sub-task at a time**: The AI must **NOT** proceed to the next sub-task until explicit, machine-readable approval is granted. Approval is given by changing `Awaiting approval` to `yes` in the task file.
+- **One sub-task at a time**: The AI must **NOT** proceed to the *next* sub-task until explicit, machine-readable approval is granted. Approval is given by changing `Awaiting approval` to `yes` in the task file. This approval gate applies only to moving from one sub-task to the subsequent sub-task; it does **not** prevent starting the first sub-task when work on a parent task begins.
 - **Blocked State**: If a task cannot be completed due to external dependencies, it should be marked as blocked. Example: `- [ ] Deploy to staging — blocked: waiting for API key`. The AI must notify the user and stop work on that parent task.
 
 ## Completion and Commit Protocol
