@@ -1,0 +1,114 @@
+---
+description: Backend development rules and guidelines for the 'be' folder - includes NestJS, TypeORM, PostgreSQL best practices and coding standards
+globs:
+  - "be/**"
+alwaysApply: false
+---
+description: Backend development rules and guidelines for the 'be' folder - includes NestJS, TypeORM, PostgreSQL best practices and coding standards
+globs:
+  - "be/**"
+alwaysApply: false
+---
+
+# Tech Stack Rules — REST API (NestJS + TypeORM + PostgreSQL)
+
+## General Principles
+- Use **NestJS** modular architecture:
+  - Controllers handle request/response
+  - Services contain business logic
+  - Repositories manage database access
+- Follow **SOLID principles** and **dependency injection**
+- Keep code **type-safe** with TypeScript
+- Each module should be **self-contained** and testable
+
+## Database & ORM (TypeORM + PostgreSQL)
+- Primary keys: **UUID** (`@PrimaryGeneratedColumn('uuid')`)
+- Use TypeORM **entities** to model tables
+- Define relationships using:
+  - `@OneToMany`
+  - `@ManyToOne`
+  - `@ManyToMany`
+  - `@JoinTable` / `@JoinColumn` where appropriate
+- Always create **migrations** for schema changes
+- Add **indexes** for frequently queried fields
+- Use **JSONB** for flexible fields if needed
+- Enforce constraints: `NOT NULL`, `UNIQUE`, `FOREIGN KEY`
+
+## API Design (REST)
+- Follow REST conventions:
+  - `GET /resource` → list all
+  - `GET /resource/:id` → get single
+  - `POST /resource` → create
+  - `PUT /resource/:id` → full update
+  - `PATCH /resource/:id` → partial update
+  - `DELETE /resource/:id` → delete
+- Standard response structure:
+
+```
+{
+  "success": true,
+  "data": {},
+  "error": null
+}
+```
+
+- Use **consistent naming** for routes, DTOs, services, and modules
+
+## Validation
+- Use **DTOs** with `class-validator` for all input
+- Validate incoming requests for type, format, and required fields
+- Apply **transformers** (`class-transformer`) if needed
+
+## Error Handling
+- Use NestJS `HttpException` for all errors
+- Map to correct HTTP status codes:
+  - 200 OK / 201 Created
+  - 400 Bad Request
+  - 401 Unauthorized
+  - 403 Forbidden
+  - 404 Not Found
+  - 500 Internal Server Error
+- Provide meaningful error messages in JSON
+
+## Security
+- **JWT** authentication for protected routes
+- Passwords hashed with **bcrypt + salt**
+- **Role-based access control** (RBAC)
+- Prevent **SQL injection**
+- Sanitize input to prevent XSS attacks
+
+## Testing
+- Use **Jest** for unit & integration tests
+- Mock external services/dependencies
+- Minimum **90% test coverage** on core modules
+- Include tests for edge cases and error scenarios
+- CI pipeline must run tests before merge
+
+## Documentation
+- Auto-generate **Swagger docs** (`@nestjs/swagger`) at `/api/docs`
+- Annotate DTOs with `@ApiProperty`
+- Keep API documentation updated with code changes
+
+## DevOps / Environment
+- **Docker** for containerization
+- **docker-compose** for local development (NestJS + PostgreSQL)
+- `.env` files for configuration
+- Use environment variables for DB credentials, JWT secret, etc.
+- Consider adding **Redis caching** in future iterations
+- Logging structured (JSON) for easier observability
+
+## Code Style / Conventions
+- Use **Prettier** for formatting
+- Use **ESLint** with NestJS recommended rules
+- Use **PascalCase** for classes, **camelCase** for variables/functions
+- Keep module files **organized by feature**
+- Avoid circular dependencies
+
+## Notes
+- This file acts as **the source of truth** for all development standards
+- All PRDs/features should reference this file using:
+
+```
+rules-file: ../tech-rules.mdc
+apply-rules: true
+```
