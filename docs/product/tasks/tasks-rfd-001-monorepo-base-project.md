@@ -39,7 +39,7 @@ Approval:
   - [x] 1.3 Add `app/fe/README.md` with sections: Purpose, Tech choices (Vite + TypeScript), Node version reference, How to scaffold, Next steps
   - [x] 1.4 Add brief example commands in each README to scaffold a starter app (e.g., `npx @nestjs/cli new` and `npm create vite@latest --template react-ts` or pointers to run generators)
   - [x] 1.5 Link both READMEs back to `docs/product/rfd/rfd-001-monorepo-base-project.md` and this tasks file
-  - [ ] 1.6 Add basic backend scaffold: create the initial NestJS application structure and files following `app/be/.cursor/rules/be-rules.mdc` (include `package.json` scripts, `.nvmrc`, initial `src/` layout, and a Dockerfile placeholder)
+  - [x] 1.6 Add basic backend scaffold: create the initial NestJS application structure and files following `app/be/.cursor/rules/be-rules.mdc` (include `package.json` scripts, `.nvmrc`, initial `src/` layout, and a Dockerfile placeholder)
   - [ ] 1.7 Add basic frontend scaffold: create the initial Vite + React TypeScript application structure and files following `app/fe/.cursor/rules/fe-rules.mdc` (include `package.json` scripts, `.nvmrc`, initial `src/` layout, and a Dockerfile placeholder)
 
  - [x] 2.0 Add shared developer configs and CI placeholders
