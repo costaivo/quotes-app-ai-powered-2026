@@ -20,11 +20,13 @@ The PRD for the Quotes Application (Part 1) describes the need for a backend RES
 In-scope:
 - Create `app/be/` and `app/fe/` directories in the repository root.
 - Add minimal scaffold files and README placeholders to each folder to document initial tech stack and next steps.
-- Initialize shared developer configs (editor config, linting, basic CI workflow placeholders) where appropriate.
+- Initialize shared developer configs (editor config, linting) where appropriate.
+- husky for commitlint messages to follow conventional commits messaging
+- use nodejs LTS v20.9.0
 
 Out-of-scope:
 - Full implementation of backend or frontend features.
-- Detailed CI pipelines or production deployment configurations beyond placeholders.
+- CI pipelines or production deployment configurations beyond placeholders.
 
 # Decision Being Requested
 
@@ -47,6 +49,28 @@ Approve creating the monorepo base project with the structure and initial files 
 - Pros: Clear separation, fast to set up, aligns with rules.
 - Cons: Slight initial overhead for repo changes.
 
+- Monorepo structure:
+quotes-app/
+├── apps/
+│ ├── be/
+│ │ ├── src/
+│ │ ├── package.json
+│ │ └── Dockerfile
+│ └── fe/
+│ ├── src/
+│ ├── package.json
+│ └── Dockerfile
+├── docker-compose.yml
+├── .env.example
+└── docs/
+
+- Docker-Compose services:
+  - `be` → NestJS backend
+  - `fe` → React frontend
+  - `db` → PostgreSQL
+  - `adminer` → Adminer for DB inspection
+- Environment variables in `.env` file
+
 ## Option B — Separate repositories for backend and frontend
 - Description: Keep backend and frontend in separate repositories.
 - Pros: Clear separation of concerns and CI per repo.
@@ -60,7 +84,7 @@ Recommend Option A: create a monorepo with `app/be` and `app/fe`. This enables s
 
 - Phase 1 — Create directories and placeholder files (owner: Ivo Costa, duration: 1 day)
   - Create `app/be/README.md` and `app/fe/README.md` describing tech stacks and next steps.
-  - Add `.editorconfig`, `/.github/workflows/ci.yml` placeholder, and top-level `README.md` updates linking to new folders.
+  - Add `.editorconfig` and top-level `README.md` updates linking to new folders.
   - Add a top-level `docker-compose.yml` that can bring up `app/be`, `app/fe`, PostgreSQL, and an Adminer HTML client for local development.
 
 - Phase 2 — Add starter configs (owner: Ivo Costa, duration: 1-2 days)
@@ -69,6 +93,17 @@ Recommend Option A: create a monorepo with `app/be` and `app/fe`. This enables s
   - Add .npmrc file and set saving of packages versions as exact. Apply any default setting which you feel are required
   - Add .nvmrc and mention the version of the nodeJS used
   - Add Dockerfiles for backend (`app/be/Dockerfile`) and frontend (`app/fe/Dockerfile`) as lightweight starters to support local development, CI builds, and containerized deployments; include explicit Node/OS versions and multi-stage build where appropriate. (owner: Ivo Costa)
+
+- Phase 3 — Minimal runtime endpoints and frontend stub (owner: Ivo Costa, duration: 1 day)
+  - Backend:
+    - Add a lightweight controller that exposes a GET `/version` endpoint returning the application's version.
+    - The controller must read the `version` value from `package.json` at runtime (do not hardcode the value).
+    - Ensure `app/be/` implementation adheres to the rules in `app/be/be-rules.mdc` (coding standards, dependency injection, configuration, logging, and testing guidance).
+    - Add a minimal `package.json` in `app/be/` with a `version` field so the endpoint can be validated.
+  - Frontend:
+    - Create a minimal runnable frontend in `app/fe/` that displays a heading "Quotes Application" and the description " Comming soon.....".
+    - Ensure `app/fe/` follows the rules in `app/fe/fe-rules.mdc` (tooling, linting, TypeScript/Vite defaults and accessibility basics).
+    - Provide instructions in `app/fe/README.md` to start the dev server and verify the stub page.
 
 # Dependencies
 
@@ -88,7 +123,7 @@ Recommend Option A: create a monorepo with `app/be` and `app/fe`. This enables s
 - Confirm whether CI placeholders should include actual pipeline steps or remain as TODOs.
 Decision: No piplelines required for current phase
 - Confirm desired Node / TypeScript versions for the frontend and backend starters.  
-Decision: use the latest lts version and update in the .nvmrc file of each project. 
+Decision: use nodejs LTS v20.9.0 and update in the .nvmrc file of each project. 
 
 # Approvals
 
