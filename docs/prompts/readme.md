@@ -52,6 +52,10 @@ A compact, visual representation of the end-to-end flow implemented by these pro
     |              v
     |        [generate-rfd.md] -> writes `docs/product/rfd/rfd-XXX-*.md`
     |              |
+    |        (major technical decisions?)
+    |              v
+    |        [generate-ard.md] -> writes `docs/product/decisions/adr-XXX-*.md` (optional)
+    |              |
     \______________/
            |
            v
@@ -71,7 +75,11 @@ flowchart TD
   F -->|Yes| G["generate-rfd.md<br/>write docs/product/rfd/rfd-XXX-*.md"]
   F -->|No| H[No RFD required]
   E --> G
-  G --> I["generate-tasks.md<br/>reads RFD and writes docs/product/tasks/tasks-*.md"]
+  G --> K{Major technical decisions?}
+  K -->|Yes| L["generate-ard.md<br/>write docs/product/decisions/adr-XXX-*.md"]
+  K -->|No| I
+  L --> I 
+  G --> I["Generate tasks using generate-tasks.md"] 
   I --> J["process-task-list.md<br/>execute sub-tasks, tests, commit"]
 ```
 
