@@ -43,7 +43,7 @@ date: 2025-09-10
   - [x] 1.4 Add or update top-level `README.md` with links to `app/be` and `app/fe` and the RFD reference
   - [x] 1.5 Commit the new directories and README placeholders with a conventional-commit message
 
-- [ ] 2.0 Initialize shared developer configs
+- [x] 2.0 Initialize shared developer configs
   - [x] 2.1 Add `.editorconfig` at repo root with basic indentation and charset rules
   - [x] 2.2 Add top-level lint/format placeholders (e.g., `.eslintrc.json` and `prettier.config.js`) that reference project rules
   - [x] 2.3 Add `.npmrc` at repo root with `save-exact=true` and any recommended defaults
@@ -51,7 +51,7 @@ date: 2025-09-10
   - [x] 2.5 Add husky and commitlint configuration:
     - [x] install husky and commitlint as dev dependencies in the top-level or workspace
     - [x] add commit message lint hook enforcing conventional commits
-  - [ ] 2.6 Commit config files with a conventional-commit message
+  - [x] 2.6 Commit config files with a conventional-commit message
 
 - [ ] 3.0 Add starter package manifests and Dockerfiles
   - [ ] 3.1 Create `app/be/package.json` with fields:
