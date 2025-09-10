@@ -83,6 +83,11 @@ Suggested questions:
 Each feature added to this PRD should include the following sections so a junior developer can implement it without deep architecture decisions.
 
 1. **Title** — Short descriptive name of the feature.
+1. **Metadata** 
+**Version**: 1.1  
+**Date**: 2025-09-03  
+**Author**: [Your Name]  
+
 2. **Introduction / Overview** — Brief description of the feature and the problem it solves.
 3. **Goals** — Specific, measurable objectives.
 4. **User Stories** — Example format:
