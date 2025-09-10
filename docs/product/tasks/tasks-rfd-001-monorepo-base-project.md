@@ -21,6 +21,10 @@ created: 2025-09-10
 - `docs/product/prd.md` - Product requirements (update to reference the created RFD and tasks file).
 - `docs/product/rfd/rfd-001-monorepo-base-project.md` - Source RFD (already present).
 
+Approval:
+
+- **Next Sub-task**: Awaiting approval
+
 ### Notes
 
 - This tasks document follows the RFD; initial work is intentionally minimal and focuses on scaffolding and documentation.
@@ -29,21 +33,21 @@ created: 2025-09-10
 
 ## Tasks
 
-- [ ] 1.0 Create `app/be` and `app/fe` directories with placeholder READMEs
-  - [ ] 1.1 Create directories: `app/be/` and `app/fe/` in the repo root
-  - [ ] 1.2 Add `app/be/README.md` with sections: Purpose, Tech choices (NestJS), Node version reference, How to scaffold, Next steps
-  - [ ] 1.3 Add `app/fe/README.md` with sections: Purpose, Tech choices (Vite + TypeScript), Node version reference, How to scaffold, Next steps
-  - [ ] 1.4 Add brief example commands in each README to scaffold a starter app (e.g., `npx @nestjs/cli new` and `npm create vite@latest --template react-ts` or pointers to run generators)
-  - [ ] 1.5 Link both READMEs back to `docs/product/rfd/rfd-001-monorepo-base-project.md` and this tasks file
+- [x] 1.0 Create `app/be` and `app/fe` directories with placeholder READMEs
+  - [x] 1.1 Create directories: `app/be/` and `app/fe/` in the repo root
+  - [x] 1.2 Add `app/be/README.md` with sections: Purpose, Tech choices (NestJS), Node version reference, How to scaffold, Next steps
+  - [x] 1.3 Add `app/fe/README.md` with sections: Purpose, Tech choices (Vite + TypeScript), Node version reference, How to scaffold, Next steps
+  - [x] 1.4 Add brief example commands in each README to scaffold a starter app (e.g., `npx @nestjs/cli new` and `npm create vite@latest --template react-ts` or pointers to run generators)
+  - [x] 1.5 Link both READMEs back to `docs/product/rfd/rfd-001-monorepo-base-project.md` and this tasks file
 
-- [ ] 2.0 Add shared developer configs and CI placeholders
-  - [ ] 2.1 Add top-level `.editorconfig` with basic settings (UTF-8, 2-space or project default; reference rules files)
-  - [ ] 2.2 Add top-level `.npmrc` with `save-exact=true` and any recommended registry settings
-  - [ ] 2.3 Add `/.github/workflows/ci.yml` placeholder containing:
-    - [ ] job to build `app/be` image (placeholder steps)
-    - [ ] job to build `app/fe` image (placeholder steps)
-    - [ ] TODO comments and links to the RFD for team owners to fill in
-  - [ ] 2.4 Add a `CONTRIBUTING.md` or extend top-level `README.md` with development bootstrapping notes and where to find `app/be` and `app/fe` rules
+ - [x] 2.0 Add shared developer configs and CI placeholders
+  - [x] 2.1 Add top-level `.editorconfig` with basic settings (UTF-8, 2-space or project default; reference rules files)
+  - [x] 2.2 Add top-level `.npmrc` with `save-exact=true` and any recommended registry settings
+  - [x] 2.3 Add `/.github/workflows/ci.yml` placeholder containing:
+    - [x] job to build `app/be` image (placeholder steps)
+    - [x] job to build `app/fe` image (placeholder steps)
+    - [x] TODO comments and links to the RFD for team owners to fill in
+  - [x] 2.4 Add a `CONTRIBUTING.md` or extend top-level `README.md` with development bootstrapping notes and where to find `app/be` and `app/fe` rules
 
 - [ ] 3.0 Add top-level `docker-compose.yml` to bring up services for local development
   - [ ] 3.1 Ensure `docker-compose.yml` defines services: `app_be`, `app_fe`, `postgres`, `adminer` with sensible defaults and volumes for DB persistence

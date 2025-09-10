@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Build backend image (placeholder)
+        run: |
+          echo "TODO: build app/be image and run tests"
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Build frontend (placeholder)
+        run: |
+          echo "TODO: build app/fe and run lint/tests"
+
+  # NOTE: Team owners should expand these jobs to run actual build/test steps and adapt Node versions.
+
+
