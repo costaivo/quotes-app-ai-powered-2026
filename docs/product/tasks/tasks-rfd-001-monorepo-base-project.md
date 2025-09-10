@@ -31,16 +31,16 @@ date: 2025-09-10
 ## Tasks
 
 - [ ] 1.0 Create monorepo directories and placeholders
-  - [ ] 1.1 Create `app/be/` and `app/fe/` directories at repo root
-  - [ ] 1.2 Add `app/be/README.md` with:
-    - [ ] short overview of stack (e.g., NestJS, Node v20.9.0)
-    - [ ] quick start: install, run, test commands
-    - [ ] link to `app/be/be-rules.mdc`
-  - [ ] 1.3 Add `app/fe/README.md` with:
-    - [ ] short overview of stack (e.g., Vite + React + TypeScript)
-    - [ ] quick start: install, run dev, build commands
-    - [ ] link to `app/fe/fe-rules.mdc`
-  - [ ] 1.4 Add or update top-level `README.md` with links to `app/be` and `app/fe` and the RFD reference
+  - [x] 1.1 Create `app/be/` and `app/fe/` directories at repo root
+  - [x] 1.2 Add `app/be/README.md` with:
+    - [x] short overview of stack (e.g., NestJS, Node v20.9.0)
+    - [x] quick start: install, run, test commands
+    - [x] link to `app/be/be-rules.mdc`
+  - [x] 1.3 Add `app/fe/README.md` with:
+    - [x] short overview of stack (e.g., Vite + React + TypeScript)
+    - [x] quick start: install, run dev, build commands
+    - [x] link to `app/fe/fe-rules.mdc`
+  - [x] 1.4 Add or update top-level `README.md` with links to `app/be` and `app/fe` and the RFD reference
   - [ ] 1.5 Commit the new directories and README placeholders with a conventional-commit message
 
 - [ ] 2.0 Initialize shared developer configs
