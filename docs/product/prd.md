@@ -87,3 +87,9 @@ This PRD describes the Quotes Application (Part 1) focused on Quotes Management.
 ## Related RFDs
 
 - (Add RFD links here when design-level decisions are required, e.g., `rfd/rfd-database-schema.md`)
+
+## RFD Register
+
+| RFD # | Title | Filename | Status | Date | Short summary |
+|---:|---|---|---|---|---|
+| 001 | Monorepo base project | rfd-001-monorepo-base-project.md | approved | 2025-09-10 | Create monorepo root with `app/be` and `app/fe`, add minimal scaffolding and a top-level `docker-compose.yml` including PostgreSQL and Adminer. |

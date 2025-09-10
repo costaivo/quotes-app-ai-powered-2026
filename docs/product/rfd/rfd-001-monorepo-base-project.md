@@ -3,7 +3,7 @@ title: "Monorepo base project"
 filename: "rfd-001-monorepo-base-project.md"
 date: 2025-09-10
 author: Ivo Costa
-status: draft
+status: approved
 rfd_number: 001
 ---
 
@@ -92,11 +92,12 @@ Decision: use the latest lts version and update in the .nvmrc file of each proje
 
 # Approvals
 
-- Ivo Costa — owner — approved (pending)
+- Ivo Costa — owner — approved 2025-09-10
 
 # Change Log
 
 - rfd-001 created 2025-09-10 by Ivo Costa
+- rfd-001 approved 2025-09-10 by Ivo Costa
 
 
 
