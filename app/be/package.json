@@ -1,0 +1,16 @@
+{
+  "name": "quotes-app-be",
+  "version": "0.1.0",
+  "description": "Backend for quotes-app",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "echo 'start:dev not yet implemented'",
+    "test": "echo 'test not yet implemented'"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

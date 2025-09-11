@@ -53,16 +53,16 @@ date: 2025-09-10
     - [x] add commit message lint hook enforcing conventional commits
   - [x] 2.6 Commit config files with a conventional-commit message
 
-- [ ] 3.0 Add starter package manifests and Dockerfiles
-  - [ ] 3.1 Create `app/be/package.json` with fields:
-    - [ ] `name`, `version` (e.g., `0.1.0`), `scripts` (`start:dev`, `start`, `test`)
-    - [ ] minimal dependencies placeholder (or a note to run scaffolding)
-  - [ ] 3.2 Create `app/fe/package.json` with fields:
-    - [ ] `name`, `version`, `scripts` (`dev`, `build`, `preview`)
-    - [ ] minimal devDependencies placeholders for Vite + React + TypeScript
-  - [ ] 3.3 Add `app/be/Dockerfile` (lightweight multi-stage starter) including explicit node base image and build steps
-  - [ ] 3.4 Add `app/fe/Dockerfile` (lightweight multi-stage starter) including explicit node base image and build steps
-  - [ ] 3.5 Commit package manifests and Dockerfiles with a conventional-commit message
+- [x] 3.0 Add starter package manifests and Dockerfiles
+  - [x] 3.1 Create `app/be/package.json` with fields:
+    - [x] `name`, `version` (e.g., `0.1.0`), `scripts` (`start:dev`, `start`, `test`)
+    - [x] minimal dependencies placeholder (or a note to run scaffolding)
+  - [x] 3.2 Create `app/fe/package.json` with fields:
+    - [x] `name`, `version`, `scripts` (`dev`, `build`, `preview`)
+    - [x] minimal devDependencies placeholders for Vite + React + TypeScript
+  - [x] 3.3 Add `app/be/Dockerfile` (lightweight multi-stage starter) including explicit node base image and build steps
+  - [x] 3.4 Add `app/fe/Dockerfile` (lightweight multi-stage starter) including explicit node base image and build steps
+  - [x] 3.5 Commit package manifests and Dockerfiles with a conventional-commit message
 
 - [ ] 4.0 Add top-level `docker-compose.yml` for local development
   - [ ] 4.1 Create `docker-compose.yml` with services: `be`, `fe`, `db` (Postgres), `adminer`

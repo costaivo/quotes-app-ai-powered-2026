@@ -24,6 +24,7 @@ Single-source documentation conventions, generation commands, and contributor gu
 <summary>Click to expand folder tree</summary>
 
     /docs
+      ├─ tech-stack.md                 # High-level tech stack summary
       ├─ /product
       │    ├─ prd.md                     # Single living Product Requirements Document
       │    ├─ /rfd                       # Request for Discussion files
