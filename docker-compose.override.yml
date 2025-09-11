@@ -1,0 +1,15 @@
+version: '3.8'
+
+# This file is for local development overrides.
+# For example, you can use it to mount local volumes for development.
+
+services:
+  be:
+    # Example of overriding the command for debugging
+    # command: npm run start:debug
+    ports:
+      - "9229:9229" # Node.js inspect port
+
+  fe:
+    # No overrides needed for now
+    pass

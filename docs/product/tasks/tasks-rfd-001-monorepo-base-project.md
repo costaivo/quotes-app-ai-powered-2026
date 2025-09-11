@@ -11,6 +11,7 @@ date: 2025-09-10
 - `app/be/package.json` - Minimal package.json (contains `version` field required by `/version` endpoint).
 - `app/fe/package.json` - Minimal package.json to bootstrap the Vite+TypeScript app.
 - `docker-compose.yml` - Top-level development compose file to bring up `be`, `fe`, `db`, and `adminer`.
+- `.env.example` - Example environment variables for docker-compose.
 - `.editorconfig` - Shared editor configuration for the repository.
 - `.nvmrc` - Node.js LTS version file (v20.9.0) for each project.
 - `.npmrc` - npm config to pin exact package versions.
@@ -65,9 +66,9 @@ date: 2025-09-10
   - [x] 3.5 Commit package manifests and Dockerfiles with a conventional-commit message
 
 - [ ] 4.0 Add top-level `docker-compose.yml` for local development
-  - [ ] 4.1 Create `docker-compose.yml` with services: `be`, `fe`, `db` (Postgres), `adminer`
-  - [ ] 4.2 Use environment variables from `.env.example` and document required values in the README
-  - [ ] 4.3 Add `docker-compose.override.yml` example for developer convenience (optional)
+  - [x] 4.1 Create `docker-compose.yml` with services: `be`, `fe`, `db` (Postgres), `adminer`
+  - [x] 4.2 Use environment variables from `.env.example` and document required values in the README
+  - [x] 4.3 Add `docker-compose.override.yml` example for developer convenience (optional)
   - [ ] 4.4 Commit compose files and `.env.example`
 
 - [ ] 5.0 Implement minimal backend endpoint
