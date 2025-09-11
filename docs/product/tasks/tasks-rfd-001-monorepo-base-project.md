@@ -81,43 +81,17 @@ date: 2025-09-10
   - [x] 5.5 Ensure code follows rules in `app/be/be-rules.mdc` (DI, config, logging) - add TODOs or linters enforcing selected rules
   - [x] 5.6 Commit backend changes with a conventional-commit message and include test run in CI placeholder if present
 
-- [ ] 6.0 Implement minimal frontend stub
-  - [ ] 6.1 Scaffold minimal Vite+React+TS project under `app/fe/src/` or add a minimal index.html + `src/App.tsx`
-  - [ ] 6.2 Implement `app/fe/src/App.tsx` to render:
-    - [ ] a heading: "Quotes Application"
-    - [ ] a paragraph: " Comming soon....."
-  - [ ] 6.3 Add `app/fe/README.md` instructions to run `npm install` and `npm run dev` and verify the page
-  - [ ] 6.4 Add basic accessibility and TypeScript settings per `app/fe/fe-rules.mdc`
-  - [ ] 6.5 Commit frontend stub with a conventional-commit message
+- [x] 6.0 Implement minimal frontend stub
+  - [x] 6.1 Scaffold minimal Vite+React+TS project under `app/fe/src/` or add a minimal index.html + `src/App.tsx`
+  - [x] 6.2 Implement `app/fe/src/App.tsx` to render:
+    - [x] a heading: "Quotes Application"
+    - [x] a paragraph: " Comming soon....."
+  - [x] 6.3 Add `app/fe/README.md` instructions to run `npm install` and `npm run dev` and verify the page
+  - [x] 6.4 Add basic accessibility and TypeScript settings per `app/fe/fe-rules.mdc`
+  - [x] 6.5 Commit frontend stub with a conventional-commit message
 
 - [ ] 7.0 Documentation, PRs and approvals
   - [ ] 7.1 Update `docs/product/prd.md` to include an RFD register entry referencing `rfd-001-monorepo-base-project.md`
   - [ ] 7.2 Add RFD approvals and changelog entries if not already present
   - [ ] 7.3 Open PRs for the implemented changes, include a checklist referencing these tasks, and request review from the owner
   - [ ] 7.4 After PR merge, verify that `app/be/` and `app/fe/` scaffold can be bootstrapped locally and document any deviations
-
-
-
-Approval:
-- **Next Sub-task**: Awaiting approval5.5 Ensure code follows rules in `app/be/be-rules.mdc` (DI, config, logging) - add TODOs or linters enforcing selected rules
-  - [ ] 5.6 Commit backend changes with a conventional-commit message and include test run in CI placeholder if present
-
-- [ ] 6.0 Implement minimal frontend stub
-  - [ ] 6.1 Scaffold minimal Vite+React+TS project under `app/fe/src/` or add a minimal index.html + `src/App.tsx`
-  - [ ] 6.2 Implement `app/fe/src/App.tsx` to render:
-    - [ ] a heading: "Quotes Application"
-    - [ ] a paragraph: " Comming soon....."
-  - [ ] 6.3 Add `app/fe/README.md` instructions to run `npm install` and `npm run dev` and verify the page
-  - [ ] 6.4 Add basic accessibility and TypeScript settings per `app/fe/fe-rules.mdc`
-  - [ ] 6.5 Commit frontend stub with a conventional-commit message
-
-- [ ] 7.0 Documentation, PRs and approvals
-  - [ ] 7.1 Update `docs/product/prd.md` to include an RFD register entry referencing `rfd-001-monorepo-base-project.md`
-  - [ ] 7.2 Add RFD approvals and changelog entries if not already present
-  - [ ] 7.3 Open PRs for the implemented changes, include a checklist referencing these tasks, and request review from the owner
-  - [ ] 7.4 After PR merge, verify that `app/be/` and `app/fe/` scaffold can be bootstrapped locally and document any deviations
-
-
-
-Approval:
-- **Next Sub-task**: Awaiting approval
