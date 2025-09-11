@@ -93,3 +93,8 @@ This PRD describes the Quotes Application (Part 1) focused on Quotes Management.
 | RFD # | Title | Filename | Status | Date | Short summary |
 |---:|---|---|---|---|---|
 | 001 | Monorepo base project | rfd-001-monorepo-base-project.md | approved | 2025-09-10 | Create monorepo root with `app/be` and `app/fe`, add minimal scaffolding and a top-level `docker-compose.yml` including PostgreSQL and Adminer. |
+| 002 | Database schema and persistence | rfd-002-database-schema.md | draft | 2025-09-11 | Decide Postgres schema (quotes table) and tags storage strategy; choose ORM/migration tooling. |
+| 003 | REST API endpoints and validation | rfd-003-api-validation.md | draft | 2025-09-11 | Define DTO/validation strategy, response envelope, and pagination defaults. |
+| 004 | Tags and authors normalization | rfd-004-tags-authors.md | draft | 2025-09-11 | Decide tag/author normalization rules and compute-on-read vs normalized store. |
+| 005 | Like system and concurrency handling | rfd-005-like-system.md | draft | 2025-09-11 | Choose like endpoint design and concurrency model to ensure atomic increments and non-negative counts. |
+| 006 | Integration tests and CI pipeline | rfd-006-tests-ci.md | draft | 2025-09-11 | Define CI workflow and integration test strategy using Dockerized Postgres in CI. |
