@@ -65,20 +65,41 @@ date: 2025-09-10
   - [x] 3.4 Add `app/fe/Dockerfile` (lightweight multi-stage starter) including explicit node base image and build steps
   - [x] 3.5 Commit package manifests and Dockerfiles with a conventional-commit message
 
-- [ ] 4.0 Add top-level `docker-compose.yml` for local development
+- [x] 4.0 Add top-level `docker-compose.yml` for local development
   - [x] 4.1 Create `docker-compose.yml` with services: `be`, `fe`, `db` (Postgres), `adminer`
   - [x] 4.2 Use environment variables from `.env.example` and document required values in the README
   - [x] 4.3 Add `docker-compose.override.yml` example for developer convenience (optional)
-  - [ ] 4.4 Commit compose files and `.env.example`
+  - [x] 4.4 Commit compose files and `.env.example`
 
-- [ ] 5.0 Implement minimal backend endpoint
-  - [ ] 5.1 Add backend bootstrap (`app/be/src/main.ts`) wiring up chosen framework (NestJS or minimal Express) with an application port env var
-  - [ ] 5.2 Implement `app/be/src/controllers/version.controller.ts` exposing GET `/version`:
-    - [ ] read `version` from `app/be/package.json` at runtime (use fs.readFile or require depending on runtime)
-    - [ ] respond with `{ version: "x.y.z" }` and HTTP 200
-  - [ ] 5.3 Add a unit test `app/be/src/__tests__/version.controller.spec.ts` verifying the endpoint returns the package version
-  - [ ] 5.4 Add an integration smoke test that runs the server and requests `/version` (optional but recommended)
-  - [ ] 5.5 Ensure code follows rules in `app/be/be-rules.mdc` (DI, config, logging) - add TODOs or linters enforcing selected rules
+- [x] 5.0 Implement minimal backend endpoint
+  - [x] 5.1 Add backend bootstrap (`app/be/src/main.ts`) wiring up chosen framework (NestJS or minimal Express) with an application port env var
+  - [x] 5.2 Implement `app/be/src/controllers/version.controller.ts` exposing GET `/version`:
+    - [x] read `version` from `app/be/package.json` at runtime (use fs.readFile or require depending on runtime)
+    - [x] respond with `{ version: "x.y.z" }` and HTTP 200
+  - [x] 5.3 Add a unit test `app/be/src/__tests__/version.controller.spec.ts` verifying the endpoint returns the package version
+  - [x] 5.4 Add an integration smoke test that runs the server and requests `/version` (optional but recommended)
+  - [x] 5.5 Ensure code follows rules in `app/be/be-rules.mdc` (DI, config, logging) - add TODOs or linters enforcing selected rules
+  - [x] 5.6 Commit backend changes with a conventional-commit message and include test run in CI placeholder if present
+
+- [ ] 6.0 Implement minimal frontend stub
+  - [ ] 6.1 Scaffold minimal Vite+React+TS project under `app/fe/src/` or add a minimal index.html + `src/App.tsx`
+  - [ ] 6.2 Implement `app/fe/src/App.tsx` to render:
+    - [ ] a heading: "Quotes Application"
+    - [ ] a paragraph: " Comming soon....."
+  - [ ] 6.3 Add `app/fe/README.md` instructions to run `npm install` and `npm run dev` and verify the page
+  - [ ] 6.4 Add basic accessibility and TypeScript settings per `app/fe/fe-rules.mdc`
+  - [ ] 6.5 Commit frontend stub with a conventional-commit message
+
+- [ ] 7.0 Documentation, PRs and approvals
+  - [ ] 7.1 Update `docs/product/prd.md` to include an RFD register entry referencing `rfd-001-monorepo-base-project.md`
+  - [ ] 7.2 Add RFD approvals and changelog entries if not already present
+  - [ ] 7.3 Open PRs for the implemented changes, include a checklist referencing these tasks, and request review from the owner
+  - [ ] 7.4 After PR merge, verify that `app/be/` and `app/fe/` scaffold can be bootstrapped locally and document any deviations
+
+
+
+Approval:
+- **Next Sub-task**: Awaiting approval5.5 Ensure code follows rules in `app/be/be-rules.mdc` (DI, config, logging) - add TODOs or linters enforcing selected rules
   - [ ] 5.6 Commit backend changes with a conventional-commit message and include test run in CI placeholder if present
 
 - [ ] 6.0 Implement minimal frontend stub
