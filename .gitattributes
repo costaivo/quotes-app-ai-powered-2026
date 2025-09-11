@@ -1,0 +1,23 @@
+# Normalize line endings and common text files across OSes
+* text=auto
+
+# Force LF for shell scripts and markdown
+*.sh text eol=lf
+*.bash text eol=lf
+*.md text eol=lf
+
+# Use CRLF on Windows script files
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Common text formats
+*.json text
+*.yml text
+*.yaml text
+*.xml text
+*.txt text
+
+# Preserve executable bit where appropriate (Git will track this)
+run-compose.sh eol=lf
+
+
