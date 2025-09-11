@@ -90,8 +90,8 @@ date: 2025-09-10
   - [x] 6.4 Add basic accessibility and TypeScript settings per `app/fe/fe-rules.mdc`
   - [x] 6.5 Commit frontend stub with a conventional-commit message
 
-- [ ] 7.0 Documentation, PRs and approvals
-  - [ ] 7.1 Update `docs/product/prd.md` to include an RFD register entry referencing `rfd-001-monorepo-base-project.md`
-  - [ ] 7.2 Add RFD approvals and changelog entries if not already present
-  - [ ] 7.3 Open PRs for the implemented changes, include a checklist referencing these tasks, and request review from the owner
-  - [ ] 7.4 After PR merge, verify that `app/be/` and `app/fe/` scaffold can be bootstrapped locally and document any deviations
+- [x] 7.0 Documentation, PRs and approvals
+  - [x] 7.1 Update `docs/product/prd.md` to include an RFD register entry referencing `rfd-001-monorepo-base-project.md`
+  - [x] 7.2 Add RFD approvals and changelog entries if not already present
+  - [x] 7.3 Open PRs for the implemented changes, include a checklist referencing these tasks, and request review from the owner
+  - [x] 7.4 After PR merge, verify that `app/be/` and `app/fe/` scaffold can be bootstrapped locally and document any deviations
