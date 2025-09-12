@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   be:
     build:
@@ -23,7 +21,12 @@ services:
   fe:
     build:
       context: ./app/fe
-    command: npm run dev -- --host
+    command:
+      - "npm"
+      - "run"
+      - "dev"
+      - "--"
+      - "--host"
     ports:
       - "5173:5173"
     volumes:
