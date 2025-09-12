@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.4
 # Stage 1: Build the React application
 FROM node:20.9.0-alpine AS builder
 
@@ -7,8 +8,12 @@ WORKDIR /app
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
-# Enable pnpm and install dependencies
-RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
+# Install and enable corepack, then activate pnpm
+RUN npm install -g corepack && corepack enable && corepack prepare pnpm@latest --activate
+
+# Use BuildKit cache for pnpm store to speed up repeated builds
+RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
+    pnpm install --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . .

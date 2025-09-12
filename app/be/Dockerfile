@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.4
 # Stage 1: Build the application
 FROM node:20.9.0-alpine AS builder
 
@@ -7,8 +8,12 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
-# Enable pnpm via corepack and install dependencies
-RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
+# Install and enable corepack, then activate pnpm and install dependencies
+RUN npm install -g corepack && corepack enable && corepack prepare pnpm@latest --activate
+
+# Use BuildKit cache for pnpm store to speed up repeated builds
+RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
+    pnpm install --frozen-lockfile
 
 # Copy the rest of the application source code
 COPY . .
@@ -34,5 +39,5 @@ RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install -
 # Expose the application port
 EXPOSE 3000
 
-# Start the application (placeholder, as the entry point does not exist yet)
-# CMD [ "node", "dist/main.js" ]
+# Start the application using pnpm (runs the "start" script)
+CMD [ "pnpm", "start" ]
