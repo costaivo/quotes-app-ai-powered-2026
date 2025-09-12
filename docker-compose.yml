@@ -21,14 +21,9 @@ services:
   fe:
     build:
       context: ./app/fe
-    command:
-      - "npm"
-      - "run"
-      - "dev"
-      - "--"
-      - "--host"
+    # Use the Dockerfile's nginx stage to serve the built site
     ports:
-      - "5173:5173"
+      - "5173:80" # map host 5173 -> container 80 (nginx)
     volumes:
       - ./app/fe:/app
       - /app/node_modules

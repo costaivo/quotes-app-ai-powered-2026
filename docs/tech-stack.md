@@ -17,7 +17,7 @@ This document summarizes the detected and recommended technology stack for the Q
 
 ## Global / repo-level
 
-- Package manager: **npm** (`package.json` files in `app/fe` and `app/be`).
+- Package manager: **pnpm** (`package.json` files in `app/fe` and `app/be` include a `packageManager` field and the repository expects `pnpm` to be used).
 - Node version: **20.9.0** (see `app/be/.nvmrc`, `app/fe/.nvmrc`, and Dockerfiles).
 
 ## Backend (app/be)
@@ -27,14 +27,14 @@ This document summarizes the detected and recommended technology stack for the Q
 - Entry point: `dist/main.js` (artifact of TypeScript compilation).
 - Scripts: `start` -> `node dist/main.js` (other scripts are placeholders).
 - Container: `app/be/Dockerfile` (multi-stage build; base image `node:20.9.0-alpine`; exposes port `3000`).
-- Dependency management: `npm install` during build; Dockerfile uses `npm install --only=production` in the final stage.
+- Dependency management: `pnpm install` during build; Dockerfile should use `pnpm install --prod` or `pnpm install --only=production` in the final stage.
 
 ## Frontend (app/fe)
 
 - Framework: **React 18** (dependencies `react`, `react-dom`).
 - Build tool: **Vite** (`vite` in `devDependencies` and used in `scripts`).
 - Language: **TypeScript** (`typescript` in `devDependencies` and `build` runs `tsc && vite build`).
-- Dev server: `npm run dev` → `vite`.
+- Dev server: `pnpm run dev` → `vite`.
 - Production container: `app/fe/Dockerfile` builds in Node and serves static assets with `nginx:stable-alpine` (built assets copied from `/app/dist` to nginx html dir). Exposes port `80`.
 
 ## Tooling & dev dependencies
@@ -47,7 +47,7 @@ This document summarizes the detected and recommended technology stack for the Q
 ## Containers & CI/CD considerations
 
 - Backend and frontend both provide Dockerfiles; backend uses multi-stage Node build, frontend builds with Vite then serves via nginx.
-- Ensure CI builds run `npm ci` or `npm install` and `npm run build` for frontend and any build step for backend.
+- Ensure CI builds run `pnpm install --frozen-lockfile` (or `pnpm install`) and `pnpm run build` for frontend and any build step for backend.
 - Publish images to registry and include environment-specific configuration (env vars, secrets) via your chosen CD pipeline.
 
 ## Observability & infra (placeholders)

@@ -1,9 +1,11 @@
 {
   "name": "quotes-app-be",
   "version": "0.1.0",
+  "packageManager": "pnpm@8.7.0",
   "description": "Backend for quotes-app",
   "main": "dist/main.js",
   "scripts": {
+    "preinstall": "node -e \"const ua=process.env.npm_config_user_agent||''; if(!ua.includes('pnpm')){console.error('This repo requires pnpm. Install with: corepack enable && corepack prepare pnpm@latest --activate'); process.exit(1)}\"",
     "build": "nest build",
     "start": "node dist/main",
     "start:dev": "nest start --watch",

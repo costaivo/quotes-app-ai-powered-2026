@@ -2,6 +2,16 @@
 
 This is a monorepo for the quotes application.
 
+Important: This repository requires `pnpm` as the package manager. Please install and use `pnpm` for all dependency and script commands. Example setup using Corepack:
+
+```sh
+corepack enable
+corepack prepare pnpm@latest --activate
+pnpm -v
+```
+
+Use `pnpm install` to install dependencies and `pnpm run <script>` to run scripts.
+
 ## Packages
 
 -   [app/be](./app/be): Backend application
@@ -29,6 +39,13 @@ docker compose up -d
 docker compose up -d be    # start only backend
 docker compose up -d fe    # start only frontend
 ```
+
+- Start only the database and Adminer (useful for DB-only tasks):
+
+```sh
+docker compose up -d db adminer
+```
+
 
 - Stop / tear down:
 
