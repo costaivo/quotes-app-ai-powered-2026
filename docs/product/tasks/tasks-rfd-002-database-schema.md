@@ -27,10 +27,10 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
   - [x] 1.1 Install TypeORM, PostgreSQL driver, and NestJS TypeORM integration packages
   - [x] 1.2 Add TypeORM migration scripts to package.json (generate, run, revert)
   - [x] 1.3 Install additional dev dependencies (ts-node for migration CLI)
-- [ ] 2.0 Create Quote Entity and Database Schema
-  - [ ] 2.1 Create Quote entity with UUID primary key, quote (text), author (varchar 200), like_count (integer default 0), tags (varchar 500)
-  - [ ] 2.2 Add database constraints (like_count >= 0) and timestamps (created_at, updated_at)
-  - [ ] 2.3 Create unit tests for Quote entity validation and constraints
+- [x] 2.0 Create Quote Entity and Database Schema
+  - [x] 2.1 Create Quote entity with UUID primary key, quote (text), author (varchar 200), like_count (integer default 0), tags (varchar 500)
+  - [x] 2.2 Add database constraints (like_count >= 0) and timestamps (created_at, updated_at)
+  - [x] 2.3 Create unit tests for Quote entity validation and constraints
 - [ ] 3.0 Set Up TypeORM Configuration and Data Source
   - [ ] 3.1 Create data-source.ts for TypeORM CLI migrations with environment variable configuration
   - [ ] 3.2 Configure TypeORM module in app.module.ts with forRoot() using environment variables
@@ -53,4 +53,4 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
 
 ## Approval
 
-- **Next Sub-task**: Awaiting approval
+- **Next Sub-task**: yes
