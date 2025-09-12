@@ -3,28 +3,30 @@ FROM node:20.9.0-alpine AS builder
 
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package.json and pnpm lockfile
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
-# Install dependencies
-RUN npm install
+# Enable pnpm via corepack and install dependencies
+RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
 # Copy the rest of the application source code
 COPY . .
 
-# Build the application (a placeholder, as no build script is defined yet)
-# RUN npm run build
+# Build the application (placeholder - uncomment if build script exists)
+# RUN pnpm run build
 
 # Stage 2: Production environment
 FROM node:20.9.0-alpine
 
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package.json and pnpm lockfile
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
-# Install only production dependencies
-RUN npm install --only=production
+# Enable pnpm and install only production dependencies
+RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --prod --frozen-lockfile
 
 # Copy the built application from the builder stage
 # COPY --from=builder /usr/src/app/dist ./dist

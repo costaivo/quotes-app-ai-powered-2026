@@ -3,17 +3,18 @@ FROM node:20.9.0-alpine AS builder
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and pnpm lockfile
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
-# Install dependencies
-RUN npm install
+# Enable pnpm and install dependencies
+RUN corepack enable && corepack prepare pnpm@latest --activate && pnpm install --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN pnpm run build
 
 # Stage 2: Serve the application using a web server
 FROM nginx:stable-alpine

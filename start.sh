@@ -17,6 +17,8 @@ if docker compose up -d --build; then
   echo "Backend running at http://localhost:${BE_PORT}"
   # Frontend URL: Vite default port 5173 (mapped in docker-compose.yml)
   echo "Frontend running at http://localhost:5173"
+  # Adminer (Database UI)
+  echo "Adminer (DB UI) running at http://localhost:8080"
   exit 0
 else
   echo "Docker compose failed." >&2
