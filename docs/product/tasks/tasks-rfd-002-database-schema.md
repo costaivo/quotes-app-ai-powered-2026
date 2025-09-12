@@ -31,10 +31,10 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
   - [x] 2.1 Create Quote entity with UUID primary key, quote (text), author (varchar 200), like_count (integer default 0), tags (varchar 500)
   - [x] 2.2 Add database constraints (like_count >= 0) and timestamps (created_at, updated_at)
   - [x] 2.3 Create unit tests for Quote entity validation and constraints
-- [ ] 3.0 Set Up TypeORM Configuration and Data Source
-  - [ ] 3.1 Create data-source.ts for TypeORM CLI migrations with environment variable configuration
-  - [ ] 3.2 Configure TypeORM module in app.module.ts with forRoot() using environment variables
-  - [ ] 3.3 Set up proper TypeORM configuration for both development and production environments
+- [x] 3.0 Set Up TypeORM Configuration and Data Source
+  - [x] 3.1 Create data-source.ts for TypeORM CLI migrations with environment variable configuration
+  - [x] 3.2 Configure TypeORM module in app.module.ts with forRoot() using environment variables
+  - [x] 3.3 Set up proper TypeORM configuration for both development and production environments
 - [ ] 4.0 Implement Database Migrations
   - [ ] 4.1 Create initial migration file CreateQuotesTable1680000000000.ts with quotes table schema
   - [ ] 4.2 Add CHECK constraint for like_count non-negative values
