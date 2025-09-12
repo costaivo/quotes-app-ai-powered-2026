@@ -40,11 +40,11 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
   - [x] 4.2 Add CHECK constraint for like_count non-negative values
   - [x] 4.3 Test migration up and down operations
   - [x] 4.4 Create unit tests for migration functionality
-- [ ] 5.0 Create Repository and Service Layer
-  - [ ] 5.1 Create QuoteRepository service extending TypeORM Repository<Quote>
-  - [ ] 5.2 Create QuoteService with basic CRUD operations using the repository
-  - [ ] 5.3 Add proper error handling and validation in service layer
-  - [ ] 5.4 Create unit tests for repository and service layers
+- [x] 5.0 Create Repository and Service Layer
+  - [x] 5.1 Create QuoteRepository service extending TypeORM Repository<Quote>
+  - [x] 5.2 Create QuoteService with basic CRUD operations using the repository
+  - [x] 5.3 Add proper error handling and validation in service layer
+  - [x] 5.4 Create unit tests for repository and service layers
 - [ ] 6.0 Configure Environment Variables and Docker Integration
   - [ ] 6.1 Create .env file with database connection variables (DATABASE_URL, POSTGRES_*)
   - [ ] 6.2 Update docker-compose.yml to ensure proper database connection for backend service
