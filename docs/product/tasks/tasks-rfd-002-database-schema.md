@@ -53,4 +53,4 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
 
 ## Approval
 
-- **Next Sub-task**: yes
+- **Next Sub-task**: Awaiting approval
