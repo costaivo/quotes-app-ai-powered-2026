@@ -13,26 +13,26 @@ This is the backend of the quotes application.
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Running the app
 
 ```bash
 # development
-npm run start:dev
+pnpm run start:dev
 
 # watch mode
-npm run start:watch
+pnpm run start:watch
 
 # production mode
-npm run start:prod
+pnpm run start:prod
 ```
 
 ### Test
 
 ```bash
-npm run test
+pnpm run test
 ```
 
 ## Rules

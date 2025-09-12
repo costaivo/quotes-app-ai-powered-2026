@@ -13,20 +13,20 @@ This is the frontend of the quotes application.
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Running the app
 
 ```bash
 # development
-npm run dev
+pnpm run dev
 
 # build for production
-npm run build
+pnpm run build
 
 # preview production build
-npm run preview
+pnpm run preview
 ```
 
 ## Rules
