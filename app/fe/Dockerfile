@@ -4,12 +4,12 @@ FROM node:20.9.0-alpine AS builder
 
 WORKDIR /app
 
-# Copy package.json and pnpm lockfile
+# Copy package.json and pnpm lockfile first for better caching
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
-# Install and enable corepack, then activate pnpm
-RUN npm install -g corepack && corepack enable && corepack prepare pnpm@latest --activate
+# Install and enable corepack, then activate pnpm with specific version
+RUN corepack enable && corepack prepare pnpm@8.7.0 --activate
 
 # Use BuildKit cache for pnpm store to speed up repeated builds
 RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
@@ -26,6 +26,9 @@ FROM nginx:stable-alpine
 
 # Copy the built assets from the builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration for SPA routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80

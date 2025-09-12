@@ -2,7 +2,7 @@ services:
   be:
     build:
       context: ./app/be
-    command: npm run start:dev
+      target: development
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
     volumes:

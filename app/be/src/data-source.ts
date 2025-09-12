@@ -12,7 +12,8 @@ export const AppDataSource = new DataSource({
   password: process.env.POSTGRES_PASSWORD || 'password',
   database: process.env.POSTGRES_DB || 'quotes_app',
   entities: [Quote],
-  migrations: isProduction ? ['dist/migrations/*.js'] : ['src/migrations/*.ts'],
+  migrations: isProduction ? ['dist/migrations/*.js'] : ['src/migrations/CreateQuotesTable1680000000000.ts'],
+  migrationsTableName: 'migrations',
   synchronize: false, // Always use migrations
   logging: isDevelopment,
   ssl: isProduction ? { rejectUnauthorized: false } : false,

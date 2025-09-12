@@ -1,4 +1,4 @@
-import { CreateQuotesTable1680000000000 } from './CreateQuotesTable1680000000000';
+import { CreateQuotesTable1680000000000 } from '../../migrations/CreateQuotesTable1680000000000';
 import { QueryRunner, Table } from 'typeorm';
 
 describe('CreateQuotesTable1680000000000', () => {

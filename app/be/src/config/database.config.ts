@@ -15,7 +15,7 @@ export const getDatabaseConfig = (): TypeOrmModuleOptions => {
     entities: [Quote],
     synchronize: !isProduction, // Never synchronize in production
     logging: isDevelopment, // Only log in development
-    migrations: ['dist/migrations/*.js'], // Production migrations path
+    migrations: ['dist/migrations/CreateQuotesTable1680000000000.js'], // Production migrations path
     migrationsRun: isProduction, // Auto-run migrations in production
     ssl: isProduction ? { rejectUnauthorized: false } : false, // SSL for production
     extra: {

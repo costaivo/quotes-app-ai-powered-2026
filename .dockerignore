@@ -5,4 +5,5 @@ dist
 *.log
 app/be/node_modules
 app/fe/node_modules
-
+app/be/dist
+app/fe/dist

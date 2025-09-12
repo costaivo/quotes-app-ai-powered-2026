@@ -2,7 +2,9 @@
 node_modules/
 **/node_modules/
 app/be/node_modules/
+app/be/dist/
 app/fe/node_modules/
+app/fe/dist/
 
 # Environment files
 .env
