@@ -35,11 +35,11 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
   - [x] 3.1 Create data-source.ts for TypeORM CLI migrations with environment variable configuration
   - [x] 3.2 Configure TypeORM module in app.module.ts with forRoot() using environment variables
   - [x] 3.3 Set up proper TypeORM configuration for both development and production environments
-- [ ] 4.0 Implement Database Migrations
-  - [ ] 4.1 Create initial migration file CreateQuotesTable1680000000000.ts with quotes table schema
-  - [ ] 4.2 Add CHECK constraint for like_count non-negative values
-  - [ ] 4.3 Test migration up and down operations
-  - [ ] 4.4 Create unit tests for migration functionality
+- [x] 4.0 Implement Database Migrations
+  - [x] 4.1 Create initial migration file CreateQuotesTable1680000000000.ts with quotes table schema
+  - [x] 4.2 Add CHECK constraint for like_count non-negative values
+  - [x] 4.3 Test migration up and down operations
+  - [x] 4.4 Create unit tests for migration functionality
 - [ ] 5.0 Create Repository and Service Layer
   - [ ] 5.1 Create QuoteRepository service extending TypeORM Repository<Quote>
   - [ ] 5.2 Create QuoteService with basic CRUD operations using the repository
@@ -53,4 +53,4 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
 
 ## Approval
 
-- **Next Sub-task**: yes
+- **Next Sub-task**: Awaiting approval
