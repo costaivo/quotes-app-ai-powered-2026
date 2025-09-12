@@ -1,9 +1,20 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Quote } from '../entities/quote.entity';
 
-export const getDatabaseConfig = (): TypeOrmModuleOptions => {
+export const getDatabaseConfig = (): any => {
   const isProduction = process.env.NODE_ENV === 'production';
   const isDevelopment = process.env.NODE_ENV === 'development';
+  const isTest = process.env.NODE_ENV === 'test';
+
+  if (isTest) {
+    return {
+      type: 'sqlite',
+      database: ':memory:',
+      entities: [Quote],
+      synchronize: true,
+      dropSchema: true,
+      logging: false,
+    };
+  }
 
   return {
     type: 'postgres',

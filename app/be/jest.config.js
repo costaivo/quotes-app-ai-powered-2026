@@ -5,13 +5,13 @@ module.exports = {
     "ts"
   ],
   "rootDir": "src",
-  "testRegex": ".*\.spec\.ts$",
+  "testRegex": ".*\\.spec\\.ts$",
   "transform": {
-    "^.+\.ts$": "ts-jest"
+    "^.+\\.(t|j)s$": "@swc/jest"
   },
-  "collectCoverageFrom": [
-    "**/*.(t|j)s"
-  ],
+  // "collectCoverageFrom": [
+  //   "**/*.(t|j)s"
+  // ],
   "coverageDirectory": "../coverage",
   "testEnvironment": "node"
 };
