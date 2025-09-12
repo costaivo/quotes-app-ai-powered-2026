@@ -10,6 +10,7 @@
     "start": "node dist/main",
     "start:dev": "nest start --watch",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "typeorm:migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/data-source.ts",
     "typeorm:migration:run": "typeorm-ts-node-commonjs migration:run -d src/data-source.ts",
     "typeorm:migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/data-source.ts"
