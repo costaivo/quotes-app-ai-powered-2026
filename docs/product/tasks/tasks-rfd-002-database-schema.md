@@ -50,7 +50,3 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
   - [x] 6.2 Update docker-compose.yml to ensure proper database connection for backend service
   - [x] 6.3 Test database connection and migration execution in Docker environment
   - [x] 6.4 Verify Adminer can connect to database and view quotes table
-
-## Approval
-
-- **Next Sub-task**: Awaiting approval
