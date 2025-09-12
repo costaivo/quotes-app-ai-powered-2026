@@ -45,11 +45,11 @@ Based on RFD-002-database-schema.md, this task list implements TypeORM setup, Qu
   - [x] 5.2 Create QuoteService with basic CRUD operations using the repository
   - [x] 5.3 Add proper error handling and validation in service layer
   - [x] 5.4 Create unit tests for repository and service layers
-- [ ] 6.0 Configure Environment Variables and Docker Integration
-  - [ ] 6.1 Create .env file with database connection variables (DATABASE_URL, POSTGRES_*)
-  - [ ] 6.2 Update docker-compose.yml to ensure proper database connection for backend service
-  - [ ] 6.3 Test database connection and migration execution in Docker environment
-  - [ ] 6.4 Verify Adminer can connect to database and view quotes table
+- [x] 6.0 Configure Environment Variables and Docker Integration
+  - [x] 6.1 Create .env file with database connection variables (DATABASE_URL, POSTGRES_*)
+  - [x] 6.2 Update docker-compose.yml to ensure proper database connection for backend service
+  - [x] 6.3 Test database connection and migration execution in Docker environment
+  - [x] 6.4 Verify Adminer can connect to database and view quotes table
 
 ## Approval
 
