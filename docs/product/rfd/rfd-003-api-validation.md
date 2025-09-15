@@ -9,7 +9,7 @@ rfd_number: 003
 
 # Summary
 
-Define the canonical API contracts, validation strategy, and consistent response/error envelope for the Quotes Application. This RFD requests decisions on validation libraries, DTO patterns, pagination, and the response envelope described in the PRD.
+Define the canonical API contracts, validation strategy, and consistent response/error envelope for the Quotes Application. This RFD requests decisions on validation libraries, DTO patterns, and the response envelope described in the PRD.
 
 # Background & Context
 
@@ -20,16 +20,16 @@ The PRD specifies endpoints (GET/POST/PATCH/DELETE `/quotes`, plus `/quotes/tags
 In-scope:
 - DTO/validation approach for NestJS backend
 - Global response envelope and error format
-- Pagination defaults for `GET /quotes`
+- Postman collection to test the completed API endpoints using faker data
 
 Out-of-scope:
 - Frontend consumption patterns beyond basic contract examples
+
 
 # Decision Being Requested
 
 - Choose validation library and DTO pattern (Nest `class-validator` vs Zod vs Joi).
 - Confirm global response envelope: `{ data, success, message }` and error format.
-- Decide pagination defaults (page size, page param names) for `GET /quotes`.
 
 # Goals & Success Metrics
 
@@ -65,8 +65,39 @@ Recommend Option A: use NestJS DTOs with `class-validator` for initial implement
 # Implementation Plan
 
 - Phase 1 (owner: Backend): Implement DTOs for `CreateQuoteDto`, `UpdateQuoteDto` with `class-validator` constraints matching PRD (lengths, required fields). Add a global response interceptor and exception filter for consistent envelope.
-- Phase 2 (owner: Backend): Implement pagination support with query params `page` (default 1) and `pageSize` (default 20, max 100). Document contract in API README.
-- Phase 3 (owner: Backend): Add end-to-end tests verifying validation and response envelope.
+- Phase 2 (owner: Backend): Add end-to-end tests verifying validation and response envelope.
+
+Artifacts:
+
+- **Postman collection**: A Postman collection will be provided at `docs/postman/quotes.postman_collection.json`. It includes example requests for `GET /quotes`, `POST /quotes`, `PATCH /quotes/:id`, `DELETE /quotes/:id`, and list endpoints for `/quotes/tags` and `/quotes/authors`.
+
+- **Generating sample create payloads (faker-js)**: For `POST /quotes` the collection uses realistic example bodies created with `@faker-js/faker`. A small Node script is included (or can be run locally) to generate example JSON payloads which you can paste into Postman when running the `Create Quote` request.
+
+Example Node script to generate a `POST /quotes` body with `@faker-js/faker`:
+
+```javascript
+// scripts/generate-sample-quote.js
+import { faker } from '@faker-js/faker';
+
+function generateQuote() {
+  return {
+    text: faker.lorem.sentences(2),
+    author: `${faker.person.firstName()} ${faker.person.lastName()}`,
+    tags: faker.helpers.arrayElements(['inspiration', 'life', 'love', 'wisdom', 'humor', 'philosophy'], faker.number.int({ min: 1, max: 3 })),
+    source: faker.internet.url(),
+  };
+}
+
+console.log(JSON.stringify(generateQuote(), null, 2));
+```
+
+Run the script with:
+
+```bash
+node --experimental-specifier-resolution=node --enable-source-maps scripts/generate-sample-quote.js | pbcopy
+```
+
+and paste the resulting JSON into the `Body` of the `Create Quote` request in Postman. Alternatively, the repository will include pre-generated example bodies under `docs/postman/examples/` that the collection references.
 
 # Dependencies
 
@@ -83,14 +114,15 @@ Recommend Option A: use NestJS DTOs with `class-validator` for initial implement
 
 # Open Questions
 
-- Confirm pagination parameter names and default page size.
+-- None remaining specific to pagination (pagination is out-of-scope for this RFD).
 
 # Approvals
 
 - Backend lead — owner — pending
 
+
 # Change Log
 
 - rfd-003 created 2025-09-11 by generated-by-ai
-
+- updated 2025-09-15 by ivo: removed pagination references; added Postman collection (`docs/postman/quotes.postman_collection.json`) and example `@faker-js/faker` script (`scripts/generate-sample-quote.js`) for generating `POST /quotes` payloads.
 

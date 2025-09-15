@@ -66,6 +66,8 @@ Recommend Option A for MVP: compute tags on read, implement robust parsing and n
 
 - DB access to read `quotes.tags` and integration tests.
 
+- Postman collection: refer to `docs/postman/quotes.postman_collection.json` (see RFD-003) for example requests covering `/quotes/tags` and `/quotes/authors` endpoints.
+
 # Risks & Mitigations
 
 - Risk: Unexpected semicolons in tag values. Mitigation: Disallow semicolons in tag values for MVP and document the rule.
@@ -78,13 +80,16 @@ Recommend Option A for MVP: compute tags on read, implement robust parsing and n
 # Open Questions
 
 - Should we disallow semicolons in tag values permanently, or support an escape syntax?
+Decision: Disallow semicolons in tag values permanently
 
 # Approvals
 
 - Backend lead — owner — pending
 
-# Change Log
+ # Change Log
 
 - rfd-004 created 2025-09-11 by generated-by-ai
+
+- updated 2025-09-15 by ivo: added Postman collection reference (`docs/postman/quotes.postman_collection.json`) and clarified decision to disallow semicolons in tag values for MVP.
 
 
