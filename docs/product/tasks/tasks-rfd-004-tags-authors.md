@@ -33,11 +33,11 @@ Based on RFD-004-tags-authors.md, this task list implements the normalization an
   - [x] 1.4 Update TypeORM query to use proper null filtering instead of `$ne` operator
   - [x] 1.5 Implement robust tag splitting that handles multiple consecutive semicolons
   - [x] 1.6 Add input sanitization to prevent malformed tag strings
-- [ ] 2.0 Update Authors Normalization Logic
-  - [ ] 2.1 Implement proper author normalization in QuoteRepository.findAllAuthors() method (trim, dedupe, sort alphabetically)
-  - [ ] 2.2 Handle edge cases: empty authors, duplicate authors, whitespace-only authors
-  - [ ] 2.3 Add case-insensitive author deduplication to handle "John Doe" vs "john doe"
-  - [ ] 2.4 Implement proper author trimming and whitespace handling
+- [x] 2.0 Update Authors Normalization Logic
+  - [x] 2.1 Implement proper author normalization in QuoteRepository.findAllAuthors() method (trim, dedupe, sort alphabetically)
+  - [x] 2.2 Handle edge cases: empty authors, duplicate authors, whitespace-only authors
+  - [x] 2.3 Add case-insensitive author deduplication to handle "John Doe" vs "john doe"
+  - [x] 2.4 Implement proper author trimming and whitespace handling
 - [ ] 3.0 Add Semicolon Validation to DTOs
   - [ ] 3.1 Create custom validation decorator to check for semicolons in tag values
   - [ ] 3.2 Update CreateQuoteDto to include semicolon validation for tags field

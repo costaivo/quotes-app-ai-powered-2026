@@ -90,6 +90,16 @@ export class QuoteRepository {
       .map(quote => quote.author.trim())
       .filter(author => author !== '');
 
-    return [...new Set(allAuthors)].sort();
+    // Case-insensitive deduplication while preserving original case
+    const uniqueAuthors = new Map<string, string>();
+    allAuthors.forEach(author => {
+      const lowerKey = author.toLowerCase();
+      if (!uniqueAuthors.has(lowerKey)) {
+        uniqueAuthors.set(lowerKey, author);
+      }
+    });
+
+    // Return sorted array of unique authors (preserving original case)
+    return Array.from(uniqueAuthors.values()).sort();
   }
 }

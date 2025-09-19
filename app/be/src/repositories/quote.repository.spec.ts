@@ -406,8 +406,8 @@ describe('QuoteRepository', () => {
 
       const result = await repository.findAllAuthors();
 
-      // Note: Current implementation is case-sensitive, so this test documents current behavior
-      expect(result).toEqual(['JOHN DOE', 'Jane Smith', 'John Doe', 'john doe']);
+      // Case-insensitive deduplication preserves the first occurrence's case
+      expect(result).toEqual(['Jane Smith', 'John Doe']);
     });
 
     it('should handle empty author names', async () => {
@@ -466,8 +466,8 @@ describe('QuoteRepository', () => {
 
       const result = await repository.findAllAuthors();
 
-      // Current implementation preserves case and sorts alphabetically
-      expect(result).toEqual(['ALBERT EINSTEIN', 'Albert Einstein', 'Marie Curie', 'albert einstein']);
+      // Case-insensitive deduplication preserves first occurrence's case
+      expect(result).toEqual(['Marie Curie', 'albert einstein']);
     });
   });
 });
