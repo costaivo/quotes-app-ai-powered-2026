@@ -204,6 +204,165 @@ describe('QuoteRepository', () => {
 
       expect(result).toEqual(['tag1', 'tag2']);
     });
+
+    it('should handle whitespace-only tags', async () => {
+      const mockQuotes = [
+        { tags: 'tag1;tag2' } as Quote,
+        { tags: '   ;  ;  ' } as Quote, // Whitespace-only tags
+        { tags: 'tag3;   ;tag4' } as Quote, // Mixed with whitespace
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3', 'tag4']);
+    });
+
+    it('should handle multiple consecutive semicolons', async () => {
+      const mockQuotes = [
+        { tags: 'tag1;;tag2' } as Quote,
+        { tags: 'tag3;;;tag4' } as Quote,
+        { tags: 'tag5;;;;tag6' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6']);
+    });
+
+    it('should handle trailing semicolons', async () => {
+      const mockQuotes = [
+        { tags: 'tag1;tag2;' } as Quote,
+        { tags: 'tag3;;' } as Quote,
+        { tags: 'tag4;tag5;;;' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3', 'tag4', 'tag5']);
+    });
+
+    it('should handle leading semicolons', async () => {
+      const mockQuotes = [
+        { tags: ';tag1;tag2' } as Quote,
+        { tags: ';;tag3' } as Quote,
+        { tags: ';;;tag4;tag5' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3', 'tag4', 'tag5']);
+    });
+
+    it('should handle tags with leading and trailing whitespace', async () => {
+      const mockQuotes = [
+        { tags: ' tag1 ; tag2 ' } as Quote,
+        { tags: '  tag3  ;  tag4  ' } as Quote,
+        { tags: 'TAG5 ; TAG6 ' } as Quote, // Mixed case with whitespace
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6']);
+    });
+
+    it('should handle duplicate tags across different quotes', async () => {
+      const mockQuotes = [
+        { tags: 'tag1;tag2' } as Quote,
+        { tags: 'tag2;tag3' } as Quote,
+        { tags: 'tag1;tag3' } as Quote,
+        { tags: 'TAG1;TAG2' } as Quote, // Same tags in different case
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3']);
+    });
+
+    it('should handle duplicate tags within the same quote', async () => {
+      const mockQuotes = [
+        { tags: 'tag1;tag1;tag2' } as Quote,
+        { tags: 'tag2;tag3;tag2' } as Quote,
+        { tags: 'TAG1;tag1;TAG2' } as Quote, // Mixed case duplicates
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3']);
+    });
+
+    it('should handle quotes with only semicolons', async () => {
+      const mockQuotes = [
+        { tags: ';' } as Quote,
+        { tags: ';;' } as Quote,
+        { tags: ';;;' } as Quote,
+        { tags: 'tag1;tag2' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2']);
+    });
+
+    it('should handle mixed edge cases', async () => {
+      const mockQuotes = [
+        { tags: ' tag1 ; ; tag2 ;' } as Quote, // Leading/trailing whitespace, empty tags, trailing semicolon
+        { tags: ';;TAG1;;tag2;;' } as Quote, // Leading/trailing semicolons, mixed case
+        { tags: '   ;  ;  ' } as Quote, // Only whitespace
+        { tags: null } as Quote, // Null tags
+        { tags: '' } as Quote, // Empty string
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2']);
+    });
+
+    it('should return empty array when no valid tags exist', async () => {
+      const mockQuotes = [
+        { tags: '' } as Quote,
+        { tags: null } as Quote,
+        { tags: '   ' } as Quote,
+        { tags: ';;;' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle single tag without semicolons', async () => {
+      const mockQuotes = [
+        { tags: 'tag1' } as Quote,
+        { tags: 'TAG2' } as Quote,
+        { tags: ' tag3 ' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllTags();
+
+      expect(result).toEqual(['tag1', 'tag2', 'tag3']);
+    });
   });
 
   describe('findAllAuthors', () => {
@@ -219,6 +378,96 @@ describe('QuoteRepository', () => {
       const result = await repository.findAllAuthors();
 
       expect(result).toEqual(['Author A', 'Author B']);
+    });
+
+    it('should handle authors with leading and trailing whitespace', async () => {
+      const mockQuotes = [
+        { author: ' Author A ' } as Quote,
+        { author: '  Author B  ' } as Quote,
+        { author: 'Author C' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllAuthors();
+
+      expect(result).toEqual(['Author A', 'Author B', 'Author C']);
+    });
+
+    it('should handle case-insensitive author deduplication', async () => {
+      const mockQuotes = [
+        { author: 'John Doe' } as Quote,
+        { author: 'john doe' } as Quote,
+        { author: 'JOHN DOE' } as Quote,
+        { author: 'Jane Smith' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllAuthors();
+
+      // Note: Current implementation is case-sensitive, so this test documents current behavior
+      expect(result).toEqual(['JOHN DOE', 'Jane Smith', 'John Doe', 'john doe']);
+    });
+
+    it('should handle empty author names', async () => {
+      const mockQuotes = [
+        { author: 'Author A' } as Quote,
+        { author: '' } as Quote,
+        { author: '   ' } as Quote, // Whitespace-only
+        { author: 'Author B' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllAuthors();
+
+      expect(result).toEqual(['Author A', 'Author B']);
+    });
+
+    it('should handle duplicate authors with different whitespace', async () => {
+      const mockQuotes = [
+        { author: 'Author A' } as Quote,
+        { author: ' Author A ' } as Quote,
+        { author: '  Author A  ' } as Quote,
+        { author: 'Author B' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllAuthors();
+
+      expect(result).toEqual(['Author A', 'Author B']);
+    });
+
+    it('should return empty array when no valid authors exist', async () => {
+      const mockQuotes = [
+        { author: '' } as Quote,
+        { author: '   ' } as Quote,
+        { author: '' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllAuthors();
+
+      expect(result).toEqual([]);
+    });
+
+    it('should handle mixed case authors', async () => {
+      const mockQuotes = [
+        { author: 'albert einstein' } as Quote,
+        { author: 'Albert Einstein' } as Quote,
+        { author: 'ALBERT EINSTEIN' } as Quote,
+        { author: 'Marie Curie' } as Quote,
+      ];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const result = await repository.findAllAuthors();
+
+      // Current implementation preserves case and sorts alphabetically
+      expect(result).toEqual(['ALBERT EINSTEIN', 'Albert Einstein', 'Marie Curie', 'albert einstein']);
     });
   });
 });

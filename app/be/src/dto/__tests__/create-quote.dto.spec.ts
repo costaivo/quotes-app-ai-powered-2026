@@ -170,7 +170,7 @@ describe('CreateQuoteDto', () => {
     it('should pass validation with valid tags', async () => {
       dto.quote = 'This is a valid quote.';
       dto.author = 'Test Author';
-      dto.tags = 'tag1;tag2;tag3';
+      dto.tags = 'tag1 tag2 tag3';
 
       const errors = await validate(dto);
       const tagsErrors = errors.filter(error => error.property === 'tags');
@@ -246,13 +246,179 @@ describe('CreateQuoteDto', () => {
       expect(tagsErrors[0].constraints?.maxLength).toBeDefined();
       expect(tagsErrors[0].constraints?.maxLength).toContain('500');
     });
+
+    it('should fail validation when tags contain semicolons', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1;tag2;tag3';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.noSemicolon).toBeDefined();
+      expect(tagsErrors[0].constraints?.noSemicolon).toContain('semicolons');
+    });
+
+    it('should fail validation when tags contain single semicolon', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'inspiration;motivation';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.noSemicolon).toBeDefined();
+    });
+
+    it('should fail validation when tags start with semicolon', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = ';inspiration';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.noSemicolon).toBeDefined();
+    });
+
+    it('should fail validation when tags end with semicolon', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'inspiration;';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.noSemicolon).toBeDefined();
+    });
+
+    it('should pass validation when tags contain other special characters but no semicolons', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'inspiration, motivation, success!';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(0);
+    });
+
+    it('should fail validation when tags contain control characters', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1\x00tag2'; // NULL character
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should fail validation when tags contain excessive spaces', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1   tag2'; // 3+ consecutive spaces
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should fail validation when tags contain angle brackets', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1<tag2>tag3';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should fail validation when tags contain curly braces', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1{tag2}tag3';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should fail validation when tags contain square brackets', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1[tag2]tag3';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should fail validation when tags contain backslashes', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1\\tag2';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should fail validation when tags contain pipes', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'tag1|tag2';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(1);
+      expect(tagsErrors[0].constraints?.tagSanitization).toBeDefined();
+    });
+
+    it('should pass validation with valid tag characters', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'inspiration motivation success 2024';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(0);
+    });
+
+    it('should pass validation with accented characters', async () => {
+      dto.quote = 'This is a valid quote.';
+      dto.author = 'Test Author';
+      dto.tags = 'café naïve résumé';
+
+      const errors = await validate(dto);
+      const tagsErrors = errors.filter(error => error.property === 'tags');
+      
+      expect(tagsErrors).toHaveLength(0);
+    });
   });
 
   describe('complete DTO validation', () => {
     it('should pass validation with all valid fields', async () => {
       dto.quote = 'This is a valid quote.';
       dto.author = 'Test Author';
-      dto.tags = 'tag1;tag2;tag3';
+      dto.tags = 'tag1 tag2 tag3';
 
       const errors = await validate(dto);
       

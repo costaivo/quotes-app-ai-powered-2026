@@ -2,8 +2,8 @@
 title: "Tags and authors normalization"
 filename: "rfd-004-tags-authors.md"
 date: 2025-09-11
-author: generated-by-ai
-status: draft
+author: Ivo Costa
+status: Approved
 rfd_number: 004
 ---
 

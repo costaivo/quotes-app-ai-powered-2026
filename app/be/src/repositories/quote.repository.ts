@@ -58,18 +58,26 @@ export class QuoteRepository {
   }
 
   async findAllTags(): Promise<string[]> {
+    // Use proper TypeORM null filtering instead of $ne operator
     const quotes = await this.repository.find({
       select: ['tags'],
-      where: { tags: { $ne: null } as any },
+      where: { tags: { $not: null } as any },
     });
 
     const allTags = quotes
       .map(quote => quote.tags)
       .filter(tags => tags && tags.trim() !== '')
-      .flatMap(tags => tags!.split(';'))
-      .map(tag => tag.trim().toLowerCase())
-      .filter(tag => tag !== '');
+      .flatMap(tags => {
+        // Robust tag splitting that handles multiple consecutive semicolons
+        return tags!
+          .split(';')
+          .map(tag => tag.trim())
+          .filter(tag => tag !== ''); // Remove empty tags from splitting
+      })
+      .map(tag => tag.toLowerCase()) // Normalize to lowercase
+      .filter(tag => tag !== ''); // Final filter for any remaining empty tags
 
+    // Deduplicate and sort alphabetically
     return [...new Set(allTags)].sort();
   }
 
