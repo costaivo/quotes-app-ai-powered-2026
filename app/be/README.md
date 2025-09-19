@@ -10,6 +10,33 @@ This is the backend of the quotes application.
 
 ## Quick Start
 
+### Database Setup (for Development)
+
+This application uses a PostgreSQL database. Before running the application in development, make sure you have PostgreSQL installed and running.
+
+1.  **Create the database:**
+    Connect to PostgreSQL and run the following command to create the database:
+    ```sql
+    CREATE DATABASE quotes_app;
+    ```
+
+2.  **Environment Variables (Optional):**
+    The application connects to the database using the following default credentials:
+    -   Host: `localhost`
+    -   Port: `5432`
+    -   Username: `postgres`
+    -   Password: `postgres`
+    -   Database: `quotes_app`
+
+    If your local PostgreSQL setup uses different credentials, you can set environment variables in your shell to override the defaults. For example:
+    ```sh
+    export POSTGRES_HOST=localhost
+    export POSTGRES_PORT=5432
+    export POSTGRES_USER=myuser
+    export POSTGRES_PASSWORD=mypassword
+    export POSTGRES_DB=quotes_app
+    ```
+
 ### Installation
 
 ```bash
