@@ -29,51 +29,51 @@ const quoteTemplates = [
   "Life has got all those twists and turns. You've got to hold on tight and off you go."
 ];
 
-// Predefined author names for realistic results
+// Predefined author names for realistic results (mixed case to demonstrate normalization)
 const authorNames = [
   "Steve Jobs",
-  "Eleanor Roosevelt",
-  "Winston Churchill",
+  "eleanor roosevelt",
+  "WINSTON CHURCHILL",
   "Maya Angelou",
-  "Albert Einstein",
+  "albert einstein",
   "Nelson Mandela",
-  "Oprah Winfrey",
+  "OPRAH WINFREY",
   "Martin Luther King Jr.",
-  "Mother Teresa",
-  "Mahatma Gandhi",
+  "mother teresa",
+  "MAHATMA GANDHI",
   "Helen Keller",
-  "Walt Disney",
-  "Thomas Edison",
+  "walt disney",
+  "THOMAS EDISON",
   "Henry Ford",
-  "Benjamin Franklin",
+  "benjamin franklin",
   "Mark Twain",
-  "Oscar Wilde",
+  "OSCAR WILDE",
   "Ralph Waldo Emerson",
-  "Henry David Thoreau",
-  "Dale Carnegie"
+  "henry david thoreau",
+  "DALE CARNEGIE"
 ];
 
-// Predefined tag categories
+// Predefined tag categories (mixed case to demonstrate normalization)
 const tagCategories = [
   "inspiration",
-  "motivation", 
-  "success",
+  "MOTIVATION", 
+  "Success",
   "life",
-  "wisdom",
+  "WISDOM",
   "dreams",
-  "courage",
+  "COURAGE",
   "perseverance",
-  "leadership",
+  "Leadership",
   "innovation",
-  "creativity",
+  "CREATIVITY",
   "philosophy",
-  "love",
+  "Love",
   "happiness",
-  "growth",
+  "GROWTH",
   "change",
-  "time",
+  "Time",
   "work",
-  "passion",
+  "PASSION",
   "purpose"
 ];
 
@@ -98,10 +98,12 @@ function generateQuote() {
   // Select a random author
   const author = faker.helpers.arrayElement(authorNames);
 
-  // Generate tags (1-3 tags, semicolon-separated, max 500 characters total)
+  // Generate tags (1-3 tags, space-separated, max 500 characters total)
+  // Note: Semicolons are not allowed in tag values due to validation rules
+  // Tags will be normalized to lowercase, deduplicated, and sorted by the API
   const tagCount = faker.number.int({ min: 1, max: 3 });
   const selectedTags = faker.helpers.arrayElements(tagCategories, tagCount);
-  let tags = selectedTags.join(';');
+  let tags = selectedTags.join(' ');
   
   // Ensure tags don't exceed 500 characters
   if (tags.length > 500) {
@@ -161,7 +163,12 @@ Examples:
 The generated quotes will respect the DTO validation constraints:
 - quote: max 1000 characters, required
 - author: max 200 characters, required  
-- tags: max 500 characters, optional, semicolon-separated
+- tags: max 500 characters, optional, space-separated (semicolons not allowed)
+
+Tag and Author Normalization:
+- Tags are normalized to lowercase, deduplicated, and sorted alphabetically
+- Authors are case-insensitive deduplicated and sorted alphabetically
+- Semicolons in tags will cause validation errors
 `);
   process.exit(0);
 }

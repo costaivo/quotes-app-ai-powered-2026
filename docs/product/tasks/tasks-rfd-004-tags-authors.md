@@ -38,25 +38,21 @@ Based on RFD-004-tags-authors.md, this task list implements the normalization an
   - [x] 2.2 Handle edge cases: empty authors, duplicate authors, whitespace-only authors
   - [x] 2.3 Add case-insensitive author deduplication to handle "John Doe" vs "john doe"
   - [x] 2.4 Implement proper author trimming and whitespace handling
-- [ ] 3.0 Add Semicolon Validation to DTOs
-  - [ ] 3.1 Create custom validation decorator to check for semicolons in tag values
-  - [ ] 3.2 Update CreateQuoteDto to include semicolon validation for tags field
-  - [ ] 3.3 Update UpdateQuoteDto to include semicolon validation for tags field
-  - [ ] 3.4 Add appropriate error messages for semicolon validation failures
-- [ ] 4.0 Add Comprehensive Test Coverage
-  - [ ] 4.1 Add unit tests for tag normalization edge cases (empty, duplicates, semicolons, whitespace)
-  - [ ] 4.2 Add unit tests for author normalization edge cases (empty, duplicates, whitespace)
-  - [ ] 4.3 Add unit tests for semicolon validation in DTOs
-  - [ ] 4.4 Add E2E tests to verify normalized responses from API endpoints
-  - [ ] 4.5 Add integration tests for repository methods with various data scenarios
-  - [ ] 4.6 Add performance tests to ensure normalization doesn't impact response times
-- [ ] 5.0 Update Documentation and Examples
-  - [ ] 5.1 Update Postman collection with examples showing normalized tag/author responses
-  - [ ] 5.2 Add sample data generation that respects semicolon restrictions
-  - [ ] 5.3 Document the normalization rules and semicolon policy in code comments
-  - [ ] 5.4 Add API documentation comments explaining the normalization behavior
-  - [ ] 5.5 Update README with examples of normalized tag/author responses
-
-## Approval
-
-- **Next Sub-task**: yes
+- [x] 3.0 Add Semicolon Validation to DTOs
+  - [x] 3.1 Create custom validation decorator to check for semicolons in tag values
+  - [x] 3.2 Update CreateQuoteDto to include semicolon validation for tags field
+  - [x] 3.3 Update UpdateQuoteDto to include semicolon validation for tags field
+  - [x] 3.4 Add appropriate error messages for semicolon validation failures
+- [x] 4.0 Add Comprehensive Test Coverage
+  - [x] 4.1 Add unit tests for tag normalization edge cases (empty, duplicates, semicolons, whitespace)
+  - [x] 4.2 Add unit tests for author normalization edge cases (empty, duplicates, whitespace)
+  - [x] 4.3 Add unit tests for semicolon validation in DTOs
+  - [x] 4.4 Add E2E tests to verify normalized responses from API endpoints
+  - [x] 4.5 Add integration tests for repository methods with various data scenarios
+  - [x] 4.6 Add performance tests to ensure normalization doesn't impact response times
+- [x] 5.0 Update Documentation and Examples
+  - [x] 5.1 Update Postman collection with examples showing normalized tag/author responses
+  - [x] 5.2 Add sample data generation that respects semicolon restrictions
+  - [x] 5.3 Document the normalization rules and semicolon policy in code comments
+  - [x] 5.4 Add API documentation comments explaining the normalization behavior
+  - [x] 5.5 Update README with examples of normalized tag/author responses

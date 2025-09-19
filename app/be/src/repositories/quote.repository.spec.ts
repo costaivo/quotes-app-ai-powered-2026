@@ -363,6 +363,27 @@ describe('QuoteRepository', () => {
 
       expect(result).toEqual(['tag1', 'tag2', 'tag3']);
     });
+
+    it('should perform tag normalization efficiently with large datasets', async () => {
+      // Create a large dataset to test performance
+      const mockQuotes = Array.from({ length: 1000 }, (_, i) => ({
+        tags: `tag${i % 50};tag${(i + 1) % 50};tag${(i + 2) % 50}`, // 50 unique tags
+      })) as Quote[];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const startTime = Date.now();
+      const result = await repository.findAllTags();
+      const endTime = Date.now();
+
+      // Should complete within reasonable time (less than 100ms for 1000 records)
+      expect(endTime - startTime).toBeLessThan(100);
+      
+      // Should return normalized, deduplicated results
+      expect(result).toHaveLength(50); // 50 unique tags
+      expect(result).toEqual(expect.arrayContaining(['tag0', 'tag49']));
+      expect(result).toEqual(expect.arrayContaining(['tag0', 'tag1', 'tag2']));
+    });
   });
 
   describe('findAllAuthors', () => {
@@ -468,6 +489,27 @@ describe('QuoteRepository', () => {
 
       // Case-insensitive deduplication preserves first occurrence's case
       expect(result).toEqual(['Marie Curie', 'albert einstein']);
+    });
+
+    it('should perform normalization efficiently with large datasets', async () => {
+      // Create a large dataset to test performance
+      const mockQuotes = Array.from({ length: 1000 }, (_, i) => ({
+        author: `Author ${i % 100}`, // 100 unique authors
+        tags: `tag${i % 50} tag${(i + 1) % 50}`, // 50 unique tags
+      })) as Quote[];
+
+      mockRepository.find.mockResolvedValue(mockQuotes);
+
+      const startTime = Date.now();
+      const result = await repository.findAllAuthors();
+      const endTime = Date.now();
+
+      // Should complete within reasonable time (less than 100ms for 1000 records)
+      expect(endTime - startTime).toBeLessThan(100);
+      
+      // Should return deduplicated results
+      expect(result).toHaveLength(100); // 100 unique authors
+      expect(result).toEqual(expect.arrayContaining(['Author 0', 'Author 99']));
     });
   });
 });

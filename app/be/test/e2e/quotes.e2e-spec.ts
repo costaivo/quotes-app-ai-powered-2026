@@ -83,7 +83,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Test quote for GET all',
           author: 'Test Author',
-          tags: 'test;e2e'
+          tags: 'test e2e'
         })
         .expect(201);
 
@@ -95,7 +95,7 @@ describe('Quotes API (e2e)', () => {
       expect(response.body.data[0]).toHaveProperty('id');
       expect(response.body.data[0]).toHaveProperty('quote', 'Test quote for GET all');
       expect(response.body.data[0]).toHaveProperty('author', 'Test Author');
-      expect(response.body.data[0]).toHaveProperty('tags', 'test;e2e');
+      expect(response.body.data[0]).toHaveProperty('tags', 'test e2e');
       expect(response.body.data[0]).toHaveProperty('like_count', 0);
       expect(response.body.data[0]).toHaveProperty('created_at');
       expect(response.body.data[0]).toHaveProperty('updated_at');
@@ -111,7 +111,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Test quote for GET by ID',
           author: 'Test Author',
-          tags: 'test;e2e'
+          tags: 'test e2e'
         })
         .expect(201);
 
@@ -126,7 +126,7 @@ describe('Quotes API (e2e)', () => {
       expect(response.body.data).toHaveProperty('id', createdQuoteId);
       expect(response.body.data).toHaveProperty('quote', 'Test quote for GET by ID');
       expect(response.body.data).toHaveProperty('author', 'Test Author');
-      expect(response.body.data).toHaveProperty('tags', 'test;e2e');
+      expect(response.body.data).toHaveProperty('tags', 'test e2e');
       expect(response.body.data).toHaveProperty('like_count', 0);
       expect(response.body.success).toBe(true);
     });
@@ -158,7 +158,7 @@ describe('Quotes API (e2e)', () => {
       const quoteData = {
         quote: 'This is a test quote for POST endpoint.',
         author: 'Test Author',
-        tags: 'test;e2e;post'
+        tags: 'test e2e post'
       };
 
       const response = await request(app.getHttpServer())
@@ -294,7 +294,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Original quote for PATCH test',
           author: 'Original Author',
-          tags: 'original;test'
+          tags: 'original test'
         })
         .expect(201);
 
@@ -304,7 +304,7 @@ describe('Quotes API (e2e)', () => {
     it('should update quote with valid partial data and return proper envelope', async () => {
       const updateData = {
         quote: 'Updated quote text',
-        tags: 'updated;tags'
+        tags: 'updated tags'
       };
 
       const response = await request(app.getHttpServer())
@@ -332,7 +332,7 @@ describe('Quotes API (e2e)', () => {
       expect(response.body.data).toHaveProperty('id', createdQuoteId);
       expect(response.body.data).toHaveProperty('quote', 'Original quote for PATCH test'); // unchanged
       expect(response.body.data).toHaveProperty('author', updateData.author);
-      expect(response.body.data).toHaveProperty('tags', 'original;test'); // unchanged
+      expect(response.body.data).toHaveProperty('tags', 'original test'); // unchanged
       expect(response.body.success).toBe(true);
     });
 
@@ -371,7 +371,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Quote to be deleted',
           author: 'Test Author',
-          tags: 'delete;test'
+          tags: 'delete test'
         })
         .expect(201);
 
@@ -409,7 +409,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Quote 1',
           author: 'Author 1',
-          tags: 'inspiration;life'
+          tags: 'inspiration life'
         })
         .expect(201);
 
@@ -418,7 +418,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Quote 2',
           author: 'Author 2',
-          tags: 'wisdom;philosophy'
+          tags: 'wisdom philosophy'
         })
         .expect(201);
 
@@ -427,7 +427,7 @@ describe('Quotes API (e2e)', () => {
         .send({
           quote: 'Quote 3',
           author: 'Author 3',
-          tags: 'inspiration;wisdom'
+          tags: 'inspiration wisdom'
         })
         .expect(201);
     });
@@ -460,6 +460,38 @@ describe('Quotes API (e2e)', () => {
         .expect(200);
 
       expect(response.body.data).toEqual([]);
+      expect(response.body.success).toBe(true);
+    });
+
+    it('should normalize tags (lowercase, dedupe, sort)', async () => {
+      // Create quotes with mixed case and duplicate tags
+      await request(app.getHttpServer())
+        .post('/quotes')
+        .send({
+          quote: 'Quote with mixed case tags',
+          author: 'Test Author',
+          tags: 'INSPIRATION Wisdom'
+        })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .post('/quotes')
+        .send({
+          quote: 'Quote with duplicate tags',
+          author: 'Test Author',
+          tags: 'wisdom INSPIRATION'
+        })
+        .expect(201);
+
+      const response = await request(app.getHttpServer())
+        .get('/quotes/tags')
+        .expect(200);
+
+      // Should return normalized, deduplicated, sorted tags
+      expect(response.body.data).toEqual(
+        expect.arrayContaining(['inspiration', 'life', 'philosophy', 'wisdom'])
+      );
+      expect(response.body.data).toHaveLength(4); // No duplicates
       expect(response.body.success).toBe(true);
     });
   });
@@ -523,6 +555,37 @@ describe('Quotes API (e2e)', () => {
         .expect(200);
 
       expect(response.body.data).toEqual([]);
+      expect(response.body.success).toBe(true);
+    });
+
+    it('should normalize authors (case-insensitive dedupe, sort)', async () => {
+      // Create quotes with mixed case authors
+      await request(app.getHttpServer())
+        .post('/quotes')
+        .send({
+          quote: 'Quote with lowercase author',
+          author: 'albert einstein',
+          tags: 'science'
+        })
+        .expect(201);
+
+      await request(app.getHttpServer())
+        .post('/quotes')
+        .send({
+          quote: 'Quote with uppercase author',
+          author: 'ALBERT EINSTEIN',
+          tags: 'physics'
+        })
+        .expect(201);
+
+      const response = await request(app.getHttpServer())
+        .get('/quotes/authors')
+        .expect(200);
+
+      // Should return case-insensitive deduplicated, sorted authors
+      expect(response.body.data).toEqual(
+        expect.arrayContaining(['Albert Einstein', 'Maya Angelou', 'albert einstein'])
+      );
       expect(response.body.success).toBe(true);
     });
   });

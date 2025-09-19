@@ -6,6 +6,16 @@ import {
   ValidationArguments,
 } from 'class-validator';
 
+/**
+ * Custom validation constraint that prevents semicolons in tag values.
+ * 
+ * This validator enforces the semicolon policy for tags:
+ * - Semicolons are not allowed in tag values to prevent confusion with tag separation
+ * - Users should use separate tags instead of semicolon-separated values
+ * - This helps maintain consistency with the tag normalization system
+ * 
+ * The validation allows null, undefined, and empty string values (handled by other validators).
+ */
 @ValidatorConstraint({ async: false, name: 'noSemicolon' })
 export class NoSemicolonConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {

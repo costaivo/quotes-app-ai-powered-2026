@@ -57,6 +57,23 @@ export class QuoteRepository {
     return this.update(id, { like_count: newLikeCount });
   }
 
+  /**
+   * Retrieves all unique tags from quotes with normalization applied.
+   * 
+   * Normalization Rules:
+   * - Tags are split by semicolons (;) from the stored tag string
+   * - Leading and trailing whitespace is trimmed from each tag
+   * - Empty tags (whitespace-only or empty strings) are filtered out
+   * - All tags are converted to lowercase for case-insensitive deduplication
+   * - Duplicate tags are removed (case-insensitive)
+   * - Final result is sorted alphabetically
+   * 
+   * Note: The API now validates that semicolons are not allowed in tag values
+   * during input validation, but this method handles legacy data that may
+   * contain semicolons.
+   * 
+   * @returns Promise<string[]> Array of normalized, deduplicated, sorted tags
+   */
   async findAllTags(): Promise<string[]> {
     // Use proper TypeORM null filtering instead of $ne operator
     const quotes = await this.repository.find({
@@ -81,6 +98,21 @@ export class QuoteRepository {
     return [...new Set(allTags)].sort();
   }
 
+  /**
+   * Retrieves all unique authors from quotes with normalization applied.
+   * 
+   * Normalization Rules:
+   * - Leading and trailing whitespace is trimmed from each author name
+   * - Empty author names (whitespace-only or empty strings) are filtered out
+   * - Case-insensitive deduplication is applied (e.g., "John Doe" and "john doe" are treated as the same)
+   * - The original case of the first occurrence is preserved
+   * - Final result is sorted alphabetically
+   * 
+   * Example: If quotes contain authors ["John Doe", "jane smith", "JOHN DOE", "Jane Smith"],
+   * the result will be ["Jane Smith", "John Doe"] (preserving first occurrence's case)
+   * 
+   * @returns Promise<string[]> Array of normalized, deduplicated, sorted authors
+   */
   async findAllAuthors(): Promise<string[]> {
     const quotes = await this.repository.find({
       select: ['author'],

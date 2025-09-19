@@ -48,8 +48,9 @@ Approval:
 
 When processing a task file, the AI must strictly adhere to the following rules:
 
-1.  **Check for Approval**: Before starting any work, check the `Approval` section in the task file. Do not proceed if it is not set to `yes`.
-2.  **Update Task Status**: Mark sub-tasks `[x]` immediately upon completion.
-3.  **Follow Completion Protocol**: Execute the testing and commit sequence exactly as described.
-4.  **Maintain File List**: Keep the "Relevant Files" section accurate and up-to-date, noting whether files are `new` or `modified`.
-5.  **Pause for Approval**: After completing a sub-task and updating the task file, reset the `Approval` status to `Awaiting approval` and pause all work until it is set back to `yes`.
+1.  **Create Feature Branch**: Before starting on the first task (1.0), create a new git feature branch whose name matches the RFD you are working on. Ask for the RFD file name if not specified.
+2.  **Check for Approval**: Before starting any work, check the `Approval` section in the task file. Do not proceed if it is not set to `yes`.
+3.  **Update Task Status**: Mark sub-tasks `[x]` immediately upon completion.
+4.  **Follow Completion Protocol**: Execute the testing and commit sequence exactly as described.
+5.  **Maintain File List**: Keep the "Relevant Files" section accurate and up-to-date, noting whether files are `new` or `modified`.
+6.  **Pause for Approval**: After completing a sub-task and updating the task file, reset the `Approval` status to `Awaiting approval` and pause all work until it is set back to `yes`.

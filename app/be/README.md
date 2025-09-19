@@ -35,6 +35,91 @@ pnpm run start:prod
 pnpm run test
 ```
 
+## API Documentation
+
+### Tags and Authors Normalization
+
+The API provides normalized responses for tags and authors to ensure consistency and prevent duplicates.
+
+#### Tag Normalization
+
+Tags are normalized when retrieved via the `/quotes/tags` endpoint:
+
+- **Case normalization**: All tags are converted to lowercase
+- **Deduplication**: Duplicate tags are removed (case-insensitive)
+- **Sorting**: Tags are sorted alphabetically
+- **Whitespace handling**: Leading and trailing whitespace is trimmed
+- **Empty tag filtering**: Empty or whitespace-only tags are removed
+
+**Example:**
+```json
+// Input quotes with tags:
+// Quote 1: "INSPIRATION;Work;life"
+// Quote 2: "work;WISDOM;inspiration"
+
+// GET /quotes/tags response:
+{
+  "data": ["inspiration", "life", "wisdom", "work"],
+  "success": true,
+  "message": "Operation completed successfully"
+}
+```
+
+#### Author Normalization
+
+Authors are normalized when retrieved via the `/quotes/authors` endpoint:
+
+- **Case-insensitive deduplication**: Authors with different casing are treated as the same person
+- **Original case preservation**: The first occurrence's case is preserved
+- **Sorting**: Authors are sorted alphabetically
+- **Whitespace handling**: Leading and trailing whitespace is trimmed
+- **Empty name filtering**: Empty or whitespace-only names are removed
+
+**Example:**
+```json
+// Input quotes with authors:
+// Quote 1: "Albert Einstein"
+// Quote 2: "albert einstein"
+// Quote 3: "ALBERT EINSTEIN"
+
+// GET /quotes/authors response:
+{
+  "data": ["Albert Einstein"],
+  "success": true,
+  "message": "Operation completed successfully"
+}
+```
+
+### Tag Validation Rules
+
+When creating or updating quotes, tags must follow these validation rules:
+
+- **No semicolons**: Semicolons (;) are not allowed in tag values
+- **Space separation**: Use spaces to separate multiple tags
+- **Character limits**: Maximum 500 characters total for all tags
+- **Input sanitization**: Control characters and excessive whitespace are automatically cleaned
+
+**Valid tag examples:**
+```json
+{
+  "tags": "inspiration work passion"  // ✅ Valid
+}
+```
+
+**Invalid tag examples:**
+```json
+{
+  "tags": "inspiration;work;passion"  // ❌ Semicolons not allowed
+}
+```
+
+### API Endpoints
+
+- `GET /quotes/tags` - Get all unique tags (normalized)
+- `GET /quotes/authors` - Get all unique authors (normalized)
+- `POST /quotes` - Create a new quote (with validation)
+- `PATCH /quotes/:id` - Update an existing quote (with validation)
+
 ## Rules
 
 Please refer to the [backend rules](../../.cursor/be/be-rules.mdc) for coding standards and guidelines.
