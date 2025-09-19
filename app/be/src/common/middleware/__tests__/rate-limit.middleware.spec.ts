@@ -12,7 +12,7 @@ describe('RateLimitMiddleware', () => {
   beforeEach(() => {
     mockRequest = {
       ip: '192.168.1.1',
-      connection: { remoteAddress: '192.168.1.1' },
+      connection: { remoteAddress: '192.168.1.1' } as any,
     };
     mockResponse = {
       set: jest.fn(),
@@ -137,7 +137,7 @@ describe('RateLimitMiddleware', () => {
 
     it('should fallback to connection.remoteAddress when ip is not available', () => {
       const request = {
-        connection: { remoteAddress: '192.168.1.100' },
+        connection: { remoteAddress: '192.168.1.100' } as any,
       } as Request;
 
       middleware.use(request, mockResponse as Response, mockNext);
