@@ -1,6 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QuoteRepository } from '../repositories/quote.repository';
 import { Quote } from '../entities/quote.entity';
+import { CreateQuoteDto } from '../dto/create-quote.dto';
+import { UpdateQuoteDto } from '../dto/update-quote.dto';
 
 @Injectable()
 export class QuoteService {
@@ -18,68 +20,29 @@ export class QuoteService {
     return quote;
   }
 
-  async createQuote(quoteData: {
-    quote: string;
-    author: string;
-    tags?: string;
-  }): Promise<Quote> {
-    // Validate required fields
-    if (!quoteData.quote || !quoteData.author) {
-      throw new BadRequestException('Quote and author are required');
-    }
-
-    // Validate field lengths
-    if (quoteData.quote.length > 1000) {
-      throw new BadRequestException('Quote must be 1000 characters or less');
-    }
-
-    if (quoteData.author.length > 200) {
-      throw new BadRequestException('Author must be 200 characters or less');
-    }
-
-    if (quoteData.tags && quoteData.tags.length > 500) {
-      throw new BadRequestException('Tags must be 500 characters or less');
-    }
-
+  async createQuote(createQuoteDto: CreateQuoteDto): Promise<Quote> {
     return this.quoteRepository.create({
-      quote: quoteData.quote.trim(),
-      author: quoteData.author.trim(),
-      tags: quoteData.tags?.trim() || null,
+      quote: createQuoteDto.quote.trim(),
+      author: createQuoteDto.author.trim(),
+      tags: createQuoteDto.tags?.trim() || null,
       like_count: 0,
     });
   }
 
-  async updateQuote(id: string, updateData: {
-    quote?: string;
-    author?: string;
-    tags?: string;
-  }): Promise<Quote> {
+  async updateQuote(id: string, updateQuoteDto: UpdateQuoteDto): Promise<Quote> {
     // Check if quote exists
     await this.getQuoteById(id);
 
-    // Validate field lengths if provided
-    if (updateData.quote && updateData.quote.length > 1000) {
-      throw new BadRequestException('Quote must be 1000 characters or less');
-    }
-
-    if (updateData.author && updateData.author.length > 200) {
-      throw new BadRequestException('Author must be 200 characters or less');
-    }
-
-    if (updateData.tags && updateData.tags.length > 500) {
-      throw new BadRequestException('Tags must be 500 characters or less');
-    }
-
     // Prepare update data with trimmed values
     const trimmedUpdateData: Partial<Quote> = {};
-    if (updateData.quote !== undefined) {
-      trimmedUpdateData.quote = updateData.quote.trim();
+    if (updateQuoteDto.quote !== undefined) {
+      trimmedUpdateData.quote = updateQuoteDto.quote.trim();
     }
-    if (updateData.author !== undefined) {
-      trimmedUpdateData.author = updateData.author.trim();
+    if (updateQuoteDto.author !== undefined) {
+      trimmedUpdateData.author = updateQuoteDto.author.trim();
     }
-    if (updateData.tags !== undefined) {
-      trimmedUpdateData.tags = updateData.tags.trim() || null;
+    if (updateQuoteDto.tags !== undefined) {
+      trimmedUpdateData.tags = updateQuoteDto.tags.trim() || null;
     }
 
     const updatedQuote = await this.quoteRepository.update(id, trimmedUpdateData);

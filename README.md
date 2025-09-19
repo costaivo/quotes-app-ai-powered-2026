@@ -24,15 +24,29 @@ Use `pnpm install` to install dependencies and `pnpm run <script>` to run script
 
 ## Running with Docker Compose
 
-This repository provides Docker Compose configuration for local development. Use the helper scripts or docker compose directly.
+This repository provides Docker Compose configuration for local development. Use the helper scripts or `docker compose` directly.
 
-- Start (rebuilds images, detached):
+- **Start (rebuilds images, detached)** — recommended for first run or after Dockerfile/dependency changes:
 
 ```sh
-./start.sh    # runs: docker compose up -d --build and prints BE/FE URLs
+./start.sh    # runs: docker compose up -d --build and prints BE/FE/Adminer URLs
 ```
 
-- Start without rebuilding (fast dev start):
+- **Make the helper script executable** (only required once):
+
+```sh
+chmod +x ./start.sh
+```
+
+- **Run without making executable** (alternatively):
+
+```sh
+sh ./start.sh
+# or
+bash ./start.sh
+```
+
+- **Start without rebuilding (fast dev start)**:
 
 ```sh
 docker compose up -d
@@ -40,21 +54,20 @@ docker compose up -d be    # start only backend
 docker compose up -d fe    # start only frontend
 ```
 
-- Start only the database and Adminer (useful for DB-only tasks):
+- **Start only the database and Adminer** (useful for DB-only tasks):
 
 ```sh
 docker compose up -d db adminer
 ```
 
-
-- Stop / tear down:
+- **Stop / tear down**:
 
 ```sh
 docker compose stop        # stops containers (preserves them)
 docker compose down        # stops and removes containers, network
 ```
 
-- Rebuild a single service and bring it up:
+- **Rebuild a single service and bring it up**:
 
 ```sh
 docker compose build be
@@ -63,7 +76,7 @@ docker compose up -d be
 docker compose up -d --no-deps --build be
 ```
 
-- View logs:
+- **View logs**:
 
 ```sh
 docker compose logs -f be

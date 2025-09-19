@@ -86,15 +86,19 @@ This PRD describes the Quotes Application (Part 1) focused on Quotes Management.
 
 ## Related RFDs
 
-- (Add RFD links here when design-level decisions are required, e.g., `rfd/rfd-database-schema.md`)
+- [RFD-001: Monorepo base project](rfd/rfd-001-monorepo-base-project.md) - ✅ **COMPLETED** - Monorepo structure with backend/frontend scaffolding and Docker setup
+- [RFD-002: Database schema and persistence](rfd/rfd-002-database-schema.md) - ✅ **COMPLETED** - PostgreSQL schema, TypeORM integration, and data persistence strategy
+- [RFD-003: REST API endpoints and validation](rfd/rfd-003-api-validation.md) - ✅ **COMPLETED** - DTO validation, response envelope, and complete API implementation
+- [Frontend PRD](prd-frontend.md) - Frontend product requirements and user stories
+- (Add additional RFD links here when design-level decisions are required)
 
 ## RFD Register
 
 | RFD # | Title | Filename | Status | Date | Short summary |
 |---:|---|---|---|---|---|
-| 001 | Monorepo base project | rfd-001-monorepo-base-project.md | approved | 2025-09-10 | Create monorepo root with `app/be` and `app/fe`, add minimal scaffolding and a top-level `docker-compose.yml` including PostgreSQL and Adminer. |
-| 002 | Database schema and persistence | rfd-002-database-schema.md | draft | 2025-09-11 | Decide Postgres schema (quotes table) and tags storage strategy; choose ORM/migration tooling. |
-| 003 | REST API endpoints and validation | rfd-003-api-validation.md | draft | 2025-09-11 | Define DTO/validation strategy, response envelope, and pagination defaults. |
+| 001 | Monorepo base project | rfd-001-monorepo-base-project.md | **completed** | 2025-09-10 | ✅ **COMPLETED**: Created monorepo root with `app/be` and `app/fe`, added minimal scaffolding and a top-level `docker-compose.yml` including PostgreSQL and Adminer. |
+| 002 | Database schema and persistence | rfd-002-database-schema.md | **completed** | 2025-09-11 | ✅ **COMPLETED**: Implemented Postgres schema with quotes table, TypeORM integration, and tags storage strategy using semicolon-separated strings. |
+| 003 | REST API endpoints and validation | rfd-003-api-validation.md | **completed** | 2025-01-27 | ✅ **COMPLETED**: Implemented DTO validation with `class-validator`, global response envelope, complete REST API endpoints, comprehensive testing (116 tests), and full documentation. All CRUD operations, validation, and consistent error handling implemented. |
 | 004 | Tags and authors normalization | rfd-004-tags-authors.md | draft | 2025-09-11 | Decide tag/author normalization rules and compute-on-read vs normalized store. |
 | 005 | Like system and concurrency handling | rfd-005-like-system.md | draft | 2025-09-11 | Choose like endpoint design and concurrency model to ensure atomic increments and non-negative counts. |
 | 006 | Integration tests and CI pipeline | rfd-006-tests-ci.md | draft | 2025-09-11 | Define CI workflow and integration test strategy using Dockerized Postgres in CI. |

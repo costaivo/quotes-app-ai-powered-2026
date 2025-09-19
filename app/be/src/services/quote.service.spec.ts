@@ -106,48 +106,7 @@ describe('QuoteService', () => {
       expect(result).toEqual(createdQuote);
     });
 
-    it('should throw BadRequestException for missing quote', async () => {
-      const quoteData = { quote: '', author: 'Author' };
-
-      await expect(service.createQuote(quoteData)).rejects.toThrow(
-        new BadRequestException('Quote and author are required')
-      );
-    });
-
-    it('should throw BadRequestException for missing author', async () => {
-      const quoteData = { quote: 'Test quote', author: '' };
-
-      await expect(service.createQuote(quoteData)).rejects.toThrow(
-        new BadRequestException('Quote and author are required')
-      );
-    });
-
-    it('should throw BadRequestException for quote too long', async () => {
-      const longQuote = 'A'.repeat(1001);
-      const quoteData = { quote: longQuote, author: 'Author' };
-
-      await expect(service.createQuote(quoteData)).rejects.toThrow(
-        new BadRequestException('Quote must be 1000 characters or less')
-      );
-    });
-
-    it('should throw BadRequestException for author too long', async () => {
-      const longAuthor = 'A'.repeat(201);
-      const quoteData = { quote: 'Test quote', author: longAuthor };
-
-      await expect(service.createQuote(quoteData)).rejects.toThrow(
-        new BadRequestException('Author must be 200 characters or less')
-      );
-    });
-
-    it('should throw BadRequestException for tags too long', async () => {
-      const longTags = 'A'.repeat(501);
-      const quoteData = { quote: 'Test quote', author: 'Author', tags: longTags };
-
-      await expect(service.createQuote(quoteData)).rejects.toThrow(
-        new BadRequestException('Tags must be 500 characters or less')
-      );
-    });
+    // Note: Validation is now handled by DTOs at the controller level
 
     it('should trim whitespace from input', async () => {
       const quoteData = { quote: '  Test quote  ', author: '  Author  ', tags: '  tag1;tag2  ' };
@@ -188,16 +147,7 @@ describe('QuoteService', () => {
       );
     });
 
-    it('should throw BadRequestException for quote too long', async () => {
-      const existingQuote = { id: '1', quote: 'Old quote', author: 'Author' } as Quote;
-      const longQuote = 'A'.repeat(1001);
-
-      mockRepository.findById.mockResolvedValue(existingQuote);
-
-      await expect(service.updateQuote('1', { quote: longQuote })).rejects.toThrow(
-        new BadRequestException('Quote must be 1000 characters or less')
-      );
-    });
+    // Note: Validation is now handled by DTOs at the controller level
   });
 
   describe('deleteQuote', () => {
