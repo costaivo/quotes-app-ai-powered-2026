@@ -29,42 +29,44 @@
 
 ## Tasks
 
-- [ ] 1.0 Set up GitHub Actions CI pipeline with PostgreSQL service
-  - [ ] 1.1 Update `.github/workflows/ci.yml` to replace placeholder content with actual CI steps
-  - [ ] 1.2 Add PostgreSQL service container configuration to CI workflow
-  - [ ] 1.3 Configure Node.js setup with proper version (18) and pnpm package manager
-  - [ ] 1.4 Add dependency caching for faster CI runs using pnpm cache
-  - [ ] 1.5 Set up environment variables for CI database connection
-  - [ ] 1.6 Configure CI to run on push to main/master and pull requests
+- [x] 1.0 Set up GitHub Actions CI pipeline with PostgreSQL service
+  - [x] 1.1 Update `.github/workflows/ci.yml` to replace placeholder content with actual CI steps
+  - [x] 1.2 Add PostgreSQL service container configuration to CI workflow
+  - [x] 1.3 Configure Node.js setup with proper version (18) and pnpm package manager
+  - [x] 1.4 Add dependency caching for faster CI runs using pnpm cache
+  - [x] 1.5 Set up environment variables for CI database connection
+  - [x] 1.6 Configure CI to run on push to main/master and pull requests
 
-- [ ] 2.0 Configure integration test infrastructure with Dockerized PostgreSQL
-  - [ ] 2.1 Create `app/be/src/config/database.ci.config.ts` for CI-specific database configuration
-  - [ ] 2.2 Create `app/be/test/e2e/quotes-postgres.e2e-spec.ts` for PostgreSQL integration tests
-  - [ ] 2.3 Add test database setup and teardown utilities for integration tests
-  - [ ] 2.4 Create `app/be/scripts/setup-test-db.sh` script for database schema initialization
-  - [ ] 2.5 Add integration test script to `app/be/package.json` (`test:integration`)
-  - [ ] 2.6 Configure Jest to handle both SQLite (existing) and PostgreSQL test environments
+- [x] 2.0 Configure integration test infrastructure with Dockerized PostgreSQL
+  - [x] 2.1 Create `app/be/src/config/database.ci.config.ts` for CI-specific database configuration
+  - [x] 2.2 Create `app/be/test/e2e/quotes-postgres.e2e-spec.ts` for PostgreSQL integration tests
+  - [x] 2.3 Add test database setup and teardown utilities for integration tests
+  - [x] 2.4 Create `app/be/scripts/setup-test-db.sh` script for database schema initialization
+  - [x] 2.5 Add integration test script to `app/be/package.json` (`test:integration`)
+  - [x] 2.6 Configure Jest to handle both SQLite (existing) and PostgreSQL test environments
 
-- [ ] 3.0 Implement CI workflow steps for backend testing and validation
-  - [ ] 3.1 Add linting step using existing ESLint configuration
-  - [ ] 3.2 Add unit test execution step with coverage reporting
-  - [ ] 3.3 Add integration test execution step against PostgreSQL service
-  - [ ] 3.4 Add build verification step to ensure application compiles successfully
-  - [ ] 3.5 Configure test result reporting and failure notifications
-  - [ ] 3.6 Add timeout configuration to prevent hanging CI jobs
+- [x] 3.0 Implement CI workflow steps for backend testing and validation
+  - [x] 3.1 Add linting step using existing ESLint configuration
+  - [x] 3.2 Add unit test execution step with coverage reporting
+  - [x] 3.3 Add integration test execution step against PostgreSQL service
+  - [x] 3.4 Add build verification step to ensure application compiles successfully
+  - [x] 3.5 Configure test result reporting and failure notifications
+  - [x] 3.6 Add timeout configuration to prevent hanging CI jobs
 
-- [ ] 4.0 Add test coverage reporting and gating rules
-  - [ ] 4.1 Configure Jest coverage thresholds in `app/be/jest.config.js`
-  - [ ] 4.2 Add coverage reporting to CI workflow using GitHub Actions
-  - [ ] 4.3 Set minimum coverage requirements (e.g., 80% overall, 70% per file)
-  - [ ] 4.4 Configure coverage badge generation for README
-  - [ ] 4.5 Add coverage report upload to CI artifacts for review
-  - [ ] 4.6 Document coverage requirements in project documentation
+- [x] 4.0 Add test coverage reporting and gating rules
+  - [x] 4.1 Configure Jest coverage thresholds in `app/be/jest.config.js`
+  - [x] 4.2 Add coverage reporting to CI workflow using GitHub Actions
+  - [x] 4.3 Set minimum coverage requirements (e.g., 80% overall, 70% per file)
+  - [x] 4.4 Configure coverage exclusions for test files and configuration files
+  - [x] 4.5 Add coverage badge to README.md
+  - [x] 4.6 Test coverage gating by running tests with coverage thresholds
 
-- [ ] 5.0 Configure branch protection rules and PR requirements
-  - [ ] 5.1 Set up branch protection rules for main/master branch
-  - [ ] 5.2 Require CI checks to pass before merging PRs
-  - [ ] 5.3 Require up-to-date branches before merging
-  - [ ] 5.4 Configure required status checks for CI workflow
-  - [ ] 5.5 Add PR template with testing checklist
-  - [ ] 5.6 Document CI requirements and expectations in README
+- [x] 5.0 Configure branch protection rules and PR requirements
+  - [x] 5.1 Set up branch protection rules for main/master branch
+  - [x] 5.2 Require CI checks to pass before merging PRs
+  - [x] 5.3 Require up-to-date branches before merging
+  - [x] 5.4 Configure required status checks for CI workflow
+  - [x] 5.5 Add PR template with testing checklist
+  - [x] 5.6 Document CI requirements and expectations in README
+
+
