@@ -26,7 +26,7 @@ Based on RFD-004-tags-authors.md, this task list implements the normalization an
 
 ## Tasks
 
-- [ ] 1.0 Update Tags Normalization Logic
+- [x] 1.0 Update Tags Normalization Logic
   - [x] 1.1 Implement proper tag normalization in QuoteRepository.findAllTags() method (trim, lowercase, dedupe, sort)
   - [x] 1.2 Add validation to disallow semicolons in tag values during quote creation/update
   - [x] 1.3 Handle edge cases: empty tags, duplicate tags, trailing semicolons, whitespace-only tags

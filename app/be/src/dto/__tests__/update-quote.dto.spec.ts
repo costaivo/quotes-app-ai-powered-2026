@@ -170,7 +170,7 @@ describe('UpdateQuoteDto', () => {
 
   describe('tags field (optional)', () => {
     it('should pass validation with valid tags', async () => {
-      dto.tags = 'updated;tags;here';
+      dto.tags = 'updated tags here';
 
       const errors = await validate(dto);
       const tagsErrors = errors.filter(error => error.property === 'tags');
@@ -240,7 +240,7 @@ describe('UpdateQuoteDto', () => {
     it('should pass validation with all valid fields', async () => {
       dto.quote = 'This is an updated quote.';
       dto.author = 'Updated Author';
-      dto.tags = 'updated;tags';
+      dto.tags = 'updated tags';
 
       const errors = await validate(dto);
       
@@ -285,7 +285,7 @@ describe('UpdateQuoteDto', () => {
     it('should pass validation with mixed valid and undefined fields', async () => {
       dto.quote = 'Only updating the quote.';
       dto.author = undefined;
-      dto.tags = 'new;tags';
+      dto.tags = 'new tags';
 
       const errors = await validate(dto);
       
