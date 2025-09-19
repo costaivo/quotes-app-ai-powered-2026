@@ -156,42 +156,46 @@ export class RateLimitFactory {
    * Create rate limit middleware for like endpoints
    * Default: 10 requests per minute per IP
    */
-  static forLikeEndpoints(): RateLimitMiddleware {
-    return new RateLimitMiddleware({
+  static forLikeEndpoints(): (req: Request, res: Response, next: NextFunction) => void {
+    const middleware = new RateLimitMiddleware({
       windowMs: 60 * 1000, // 1 minute
       maxRequests: 10, // 10 requests per minute
       message: 'Too many like/unlike requests. Please wait before trying again.',
     });
+    return middleware.use.bind(middleware);
   }
 
   /**
    * Create rate limit middleware for general API endpoints
    * Default: 100 requests per minute per IP
    */
-  static forGeneralAPI(): RateLimitMiddleware {
-    return new RateLimitMiddleware({
+  static forGeneralAPI(): (req: Request, res: Response, next: NextFunction) => void {
+    const middleware = new RateLimitMiddleware({
       windowMs: 60 * 1000, // 1 minute
       maxRequests: 100, // 100 requests per minute
       message: 'Too many requests. Please wait before trying again.',
     });
+    return middleware.use.bind(middleware);
   }
 
   /**
    * Create rate limit middleware for strict endpoints
    * Default: 5 requests per minute per IP
    */
-  static forStrictEndpoints(): RateLimitMiddleware {
-    return new RateLimitMiddleware({
+  static forStrictEndpoints(): (req: Request, res: Response, next: NextFunction) => void {
+    const middleware = new RateLimitMiddleware({
       windowMs: 60 * 1000, // 1 minute
       maxRequests: 5, // 5 requests per minute
       message: 'Rate limit exceeded for this endpoint. Please wait before trying again.',
     });
+    return middleware.use.bind(middleware);
   }
 
   /**
    * Create custom rate limit middleware
    */
-  static custom(config: RateLimitConfig): RateLimitMiddleware {
-    return new RateLimitMiddleware(config);
+  static custom(config: RateLimitConfig): (req: Request, res: Response, next: NextFunction) => void {
+    const middleware = new RateLimitMiddleware(config);
+    return middleware.use.bind(middleware);
   }
 }
