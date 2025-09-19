@@ -51,7 +51,3 @@
 - [x] 6.0 Documentation and rollout
   - [x] 6.1 Add documentation updates to `docs/product/rfd/rfd-003-api-validation.md` linking implemented artifacts.
   - [x] 6.2 Provide migration/rollback guidance in `docs/ops/deploy.md` if needed.
-
-## Approval
-
-- **Next Sub-task**: Awaiting approval
