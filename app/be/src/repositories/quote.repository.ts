@@ -36,25 +36,38 @@ export class QuoteRepository {
   }
 
   async incrementLikeCount(id: string): Promise<Quote | null> {
-    const quote = await this.findById(id);
-    if (!quote) {
-      return null;
-    }
+    // Use atomic SQL operation to increment like_count and return updated entity
+    const result = await this.repository
+      .createQueryBuilder()
+      .update(Quote)
+      .set({ 
+        like_count: () => 'like_count + 1',
+        updated_at: () => 'CURRENT_TIMESTAMP'
+      })
+      .where('id = :id', { id })
+      .andWhere('like_count >= 0') // Additional safety check
+      .returning('*')
+      .execute();
 
-    // Ensure like_count never goes negative
-    const newLikeCount = Math.max(0, quote.like_count + 1);
-    return this.update(id, { like_count: newLikeCount });
+    // Return the updated quote if any rows were affected
+    return result.affected > 0 ? result.raw[0] : null;
   }
 
   async decrementLikeCount(id: string): Promise<Quote | null> {
-    const quote = await this.findById(id);
-    if (!quote) {
-      return null;
-    }
+    // Use atomic SQL operation to decrement like_count and return updated entity
+    const result = await this.repository
+      .createQueryBuilder()
+      .update(Quote)
+      .set({ 
+        like_count: () => 'GREATEST(like_count - 1, 0)',
+        updated_at: () => 'CURRENT_TIMESTAMP'
+      })
+      .where('id = :id', { id })
+      .returning('*')
+      .execute();
 
-    // Ensure like_count never goes negative
-    const newLikeCount = Math.max(0, quote.like_count - 1);
-    return this.update(id, { like_count: newLikeCount });
+    // Return the updated quote if any rows were affected
+    return result.affected > 0 ? result.raw[0] : null;
   }
 
   /**

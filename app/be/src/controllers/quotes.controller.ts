@@ -9,10 +9,12 @@ import {
   HttpCode,
   HttpStatus,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { QuoteService } from '../services/quote.service';
 import { CreateQuoteDto } from '../dto/create-quote.dto';
 import { UpdateQuoteDto } from '../dto/update-quote.dto';
+import { RateLimitMiddleware } from '../common/middleware/rate-limit.middleware';
 
 @Controller('quotes')
 export class QuotesController {
@@ -135,5 +137,74 @@ export class QuotesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteQuote(@Param('id') id: string) {
     await this.quoteService.deleteQuote(id);
+  }
+
+  /**
+   * Like a quote by incrementing its like count.
+   * 
+   * @param id - The UUID of the quote to like
+   * @returns Promise<{ data: Quote, success: boolean, message: string }>
+   * 
+   * This endpoint increments the like_count field of the specified quote by 1.
+   * The operation is atomic and thread-safe to handle concurrent requests.
+   * Rate limited to 10 requests per minute per IP address.
+   * 
+   * Example Response:
+   * {
+   *   "data": {
+   *     "id": "123e4567-e89b-12d3-a456-426614174000",
+   *     "quote": "The only way to do great work is to love what you do.",
+   *     "author": "Steve Jobs",
+   *     "tags": "inspiration work passion",
+   *     "like_count": 5,
+   *     "created_at": "2024-01-15T10:30:00Z",
+   *     "updated_at": "2024-01-15T10:30:00Z"
+   *   },
+   *   "success": true,
+   *   "message": "Operation completed successfully"
+   * }
+   * 
+   * @throws {NotFoundException} When quote with the specified ID is not found
+   * @throws {HttpException} When rate limit is exceeded (429 Too Many Requests)
+   */
+  @Post(':id/like')
+  @HttpCode(HttpStatus.OK)
+  async likeQuote(@Param('id') id: string) {
+    return this.quoteService.likeQuote(id);
+  }
+
+  /**
+   * Unlike a quote by decrementing its like count.
+   * 
+   * @param id - The UUID of the quote to unlike
+   * @returns Promise<{ data: Quote, success: boolean, message: string }>
+   * 
+   * This endpoint decrements the like_count field of the specified quote by 1.
+   * The like_count will never go below 0 due to database constraints.
+   * The operation is atomic and thread-safe to handle concurrent requests.
+   * Rate limited to 10 requests per minute per IP address.
+   * 
+   * Example Response:
+   * {
+   *   "data": {
+   *     "id": "123e4567-e89b-12d3-a456-426614174000",
+   *     "quote": "The only way to do great work is to love what you do.",
+   *     "author": "Steve Jobs",
+   *     "tags": "inspiration work passion",
+   *     "like_count": 4,
+   *     "created_at": "2024-01-15T10:30:00Z",
+   *     "updated_at": "2024-01-15T10:30:00Z"
+   *   },
+   *   "success": true,
+   *   "message": "Operation completed successfully"
+   * }
+   * 
+   * @throws {NotFoundException} When quote with the specified ID is not found
+   * @throws {HttpException} When rate limit is exceeded (429 Too Many Requests)
+   */
+  @Post(':id/unlike')
+  @HttpCode(HttpStatus.OK)
+  async unlikeQuote(@Param('id') id: string) {
+    return this.quoteService.unlikeQuote(id);
   }
 }

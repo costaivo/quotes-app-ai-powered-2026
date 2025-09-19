@@ -10,11 +10,13 @@ import { getDatabaseConfig } from './config/database.config';
 import { Quote } from './entities/quote.entity';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { GlobalExceptionFilter } from './common/filters/http-exception.filter';
+import { MiddlewareModule } from './common/middleware/middleware.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(getDatabaseConfig()),
     TypeOrmModule.forFeature([Quote]),
+    MiddlewareModule,
   ],
   controllers: [VersionController, QuotesController],
   providers: [

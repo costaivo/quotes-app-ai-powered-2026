@@ -15,6 +15,8 @@ describe('QuotesController', () => {
     deleteQuote: jest.fn(),
     getAllTags: jest.fn(),
     getAllAuthors: jest.fn(),
+    likeQuote: jest.fn(),
+    unlikeQuote: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -130,6 +132,159 @@ describe('QuotesController', () => {
 
       expect(service.getAllAuthors).toHaveBeenCalled();
       expect(result).toEqual(authors);
+    });
+  });
+
+  describe('likeQuote', () => {
+    it('should like a quote and return updated quote', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
+      const updatedQuote = {
+        id: quoteId,
+        quote: 'The only way to do great work is to love what you do.',
+        author: 'Steve Jobs',
+        tags: 'inspiration work passion',
+        like_count: 5,
+        created_at: new Date('2024-01-15T10:30:00Z'),
+        updated_at: new Date('2024-01-15T10:30:00Z')
+      } as Quote;
+
+      mockQuoteService.likeQuote.mockResolvedValue(updatedQuote);
+
+      const result = await controller.likeQuote(quoteId);
+
+      expect(service.likeQuote).toHaveBeenCalledWith(quoteId);
+      expect(result).toEqual(updatedQuote);
+    });
+
+    it('should handle like request for non-existent quote', async () => {
+      const quoteId = 'nonexistent-id';
+      const error = new Error('Quote with ID nonexistent-id not found');
+
+      mockQuoteService.likeQuote.mockRejectedValue(error);
+
+      await expect(controller.likeQuote(quoteId)).rejects.toThrow(error);
+      expect(service.likeQuote).toHaveBeenCalledWith(quoteId);
+    });
+
+    it('should handle like request with invalid UUID format', async () => {
+      const invalidId = 'invalid-uuid';
+      const error = new Error('Invalid UUID format');
+
+      mockQuoteService.likeQuote.mockRejectedValue(error);
+
+      await expect(controller.likeQuote(invalidId)).rejects.toThrow(error);
+      expect(service.likeQuote).toHaveBeenCalledWith(invalidId);
+    });
+
+    it('should handle concurrent like requests', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
+      const updatedQuote = {
+        id: quoteId,
+        quote: 'Test quote',
+        author: 'Test Author',
+        tags: 'test',
+        like_count: 3,
+        created_at: new Date(),
+        updated_at: new Date()
+      } as Quote;
+
+      mockQuoteService.likeQuote.mockResolvedValue(updatedQuote);
+
+      // Simulate concurrent requests
+      const promises = Array.from({ length: 5 }, () => controller.likeQuote(quoteId));
+      const results = await Promise.all(promises);
+
+      expect(service.likeQuote).toHaveBeenCalledTimes(5);
+      results.forEach(result => {
+        expect(result).toEqual(updatedQuote);
+      });
+    });
+  });
+
+  describe('unlikeQuote', () => {
+    it('should unlike a quote and return updated quote', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
+      const updatedQuote = {
+        id: quoteId,
+        quote: 'The only way to do great work is to love what you do.',
+        author: 'Steve Jobs',
+        tags: 'inspiration work passion',
+        like_count: 4,
+        created_at: new Date('2024-01-15T10:30:00Z'),
+        updated_at: new Date('2024-01-15T10:30:00Z')
+      } as Quote;
+
+      mockQuoteService.unlikeQuote.mockResolvedValue(updatedQuote);
+
+      const result = await controller.unlikeQuote(quoteId);
+
+      expect(service.unlikeQuote).toHaveBeenCalledWith(quoteId);
+      expect(result).toEqual(updatedQuote);
+    });
+
+    it('should handle unlike request for non-existent quote', async () => {
+      const quoteId = 'nonexistent-id';
+      const error = new Error('Quote with ID nonexistent-id not found');
+
+      mockQuoteService.unlikeQuote.mockRejectedValue(error);
+
+      await expect(controller.unlikeQuote(quoteId)).rejects.toThrow(error);
+      expect(service.unlikeQuote).toHaveBeenCalledWith(quoteId);
+    });
+
+    it('should handle unlike request with invalid UUID format', async () => {
+      const invalidId = 'invalid-uuid';
+      const error = new Error('Invalid UUID format');
+
+      mockQuoteService.unlikeQuote.mockRejectedValue(error);
+
+      await expect(controller.unlikeQuote(invalidId)).rejects.toThrow(error);
+      expect(service.unlikeQuote).toHaveBeenCalledWith(invalidId);
+    });
+
+    it('should handle unlike request when like_count is already 0', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
+      const updatedQuote = {
+        id: quoteId,
+        quote: 'Test quote',
+        author: 'Test Author',
+        tags: 'test',
+        like_count: 0, // Already at 0, should remain 0
+        created_at: new Date(),
+        updated_at: new Date()
+      } as Quote;
+
+      mockQuoteService.unlikeQuote.mockResolvedValue(updatedQuote);
+
+      const result = await controller.unlikeQuote(quoteId);
+
+      expect(service.unlikeQuote).toHaveBeenCalledWith(quoteId);
+      expect(result).toEqual(updatedQuote);
+      expect(result.like_count).toBe(0);
+    });
+
+    it('should handle concurrent unlike requests', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
+      const updatedQuote = {
+        id: quoteId,
+        quote: 'Test quote',
+        author: 'Test Author',
+        tags: 'test',
+        like_count: 2,
+        created_at: new Date(),
+        updated_at: new Date()
+      } as Quote;
+
+      mockQuoteService.unlikeQuote.mockResolvedValue(updatedQuote);
+
+      // Simulate concurrent requests
+      const promises = Array.from({ length: 3 }, () => controller.unlikeQuote(quoteId));
+      const results = await Promise.all(promises);
+
+      expect(service.unlikeQuote).toHaveBeenCalledTimes(3);
+      results.forEach(result => {
+        expect(result).toEqual(updatedQuote);
+      });
     });
   });
 });

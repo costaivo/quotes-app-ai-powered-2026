@@ -9,6 +9,15 @@ describe('QuoteRepository', () => {
   let mockRepository: jest.Mocked<Repository<Quote>>;
 
   beforeEach(async () => {
+    const mockQueryBuilder = {
+      update: jest.fn().mockReturnThis(),
+      set: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      returning: jest.fn().mockReturnThis(),
+      execute: jest.fn(),
+    };
+
     const mockRepo = {
       find: jest.fn(),
       findOne: jest.fn(),
@@ -16,6 +25,7 @@ describe('QuoteRepository', () => {
       save: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
+      createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -124,21 +134,35 @@ describe('QuoteRepository', () => {
 
   describe('incrementLikeCount', () => {
     it('should increment like count and return updated quote', async () => {
-      const existingQuote = { id: '1', like_count: 5 } as Quote;
       const updatedQuote = { id: '1', like_count: 6 } as Quote;
+      const mockQueryBuilder = mockRepository.createQueryBuilder();
 
-      mockRepository.findOne.mockResolvedValue(existingQuote);
-      mockRepository.update.mockResolvedValue({ affected: 1 } as any);
-      mockRepository.findOne.mockResolvedValueOnce(existingQuote).mockResolvedValueOnce(updatedQuote);
+      mockQueryBuilder.execute.mockResolvedValue({
+        affected: 1,
+        raw: [updatedQuote]
+      });
 
       const result = await repository.incrementLikeCount('1');
 
-      expect(mockRepository.update).toHaveBeenCalledWith('1', { like_count: 6 });
+      expect(mockRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(mockQueryBuilder.update).toHaveBeenCalledWith(Quote);
+      expect(mockQueryBuilder.set).toHaveBeenCalledWith({ 
+        like_count: expect.any(Function),
+        updated_at: expect.any(Function)
+      });
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith('id = :id', { id: '1' });
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith('like_count >= 0');
+      expect(mockQueryBuilder.returning).toHaveBeenCalledWith('*');
       expect(result).toEqual(updatedQuote);
     });
 
     it('should return null if quote not found', async () => {
-      mockRepository.findOne.mockResolvedValue(null);
+      const mockQueryBuilder = mockRepository.createQueryBuilder();
+
+      mockQueryBuilder.execute.mockResolvedValue({
+        affected: 0,
+        raw: []
+      });
 
       const result = await repository.incrementLikeCount('nonexistent');
 
@@ -148,30 +172,46 @@ describe('QuoteRepository', () => {
 
   describe('decrementLikeCount', () => {
     it('should decrement like count and return updated quote', async () => {
-      const existingQuote = { id: '1', like_count: 5 } as Quote;
       const updatedQuote = { id: '1', like_count: 4 } as Quote;
+      const mockQueryBuilder = mockRepository.createQueryBuilder();
 
-      mockRepository.findOne.mockResolvedValue(existingQuote);
-      mockRepository.update.mockResolvedValue({ affected: 1 } as any);
-      mockRepository.findOne.mockResolvedValueOnce(existingQuote).mockResolvedValueOnce(updatedQuote);
+      mockQueryBuilder.execute.mockResolvedValue({
+        affected: 1,
+        raw: [updatedQuote]
+      });
 
       const result = await repository.decrementLikeCount('1');
 
-      expect(mockRepository.update).toHaveBeenCalledWith('1', { like_count: 4 });
+      expect(mockRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(mockQueryBuilder.update).toHaveBeenCalledWith(Quote);
+      expect(mockQueryBuilder.set).toHaveBeenCalledWith({ 
+        like_count: expect.any(Function),
+        updated_at: expect.any(Function)
+      });
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith('id = :id', { id: '1' });
+      expect(mockQueryBuilder.returning).toHaveBeenCalledWith('*');
       expect(result).toEqual(updatedQuote);
     });
 
     it('should not allow negative like count', async () => {
-      const existingQuote = { id: '1', like_count: 0 } as Quote;
       const updatedQuote = { id: '1', like_count: 0 } as Quote;
+      const mockQueryBuilder = mockRepository.createQueryBuilder();
 
-      mockRepository.findOne.mockResolvedValue(existingQuote);
-      mockRepository.update.mockResolvedValue({ affected: 1 } as any);
-      mockRepository.findOne.mockResolvedValueOnce(existingQuote).mockResolvedValueOnce(updatedQuote);
+      mockQueryBuilder.execute.mockResolvedValue({
+        affected: 1,
+        raw: [updatedQuote]
+      });
 
       const result = await repository.decrementLikeCount('1');
 
-      expect(mockRepository.update).toHaveBeenCalledWith('1', { like_count: 0 });
+      expect(mockRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(mockQueryBuilder.update).toHaveBeenCalledWith(Quote);
+      expect(mockQueryBuilder.set).toHaveBeenCalledWith({ 
+        like_count: expect.any(Function),
+        updated_at: expect.any(Function)
+      });
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith('id = :id', { id: '1' });
+      expect(mockQueryBuilder.returning).toHaveBeenCalledWith('*');
       expect(result).toEqual(updatedQuote);
     });
   });

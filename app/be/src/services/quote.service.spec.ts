@@ -206,6 +206,192 @@ describe('QuoteService', () => {
         new NotFoundException('Quote with ID nonexistent not found')
       );
     });
+
+    it('should handle unlike when like_count is already 0', async () => {
+      const updatedQuote = { id: '1', like_count: 0 } as Quote;
+      mockRepository.decrementLikeCount.mockResolvedValue(updatedQuote);
+
+      const result = await service.unlikeQuote('1');
+
+      expect(mockRepository.decrementLikeCount).toHaveBeenCalledWith('1');
+      expect(result).toEqual(updatedQuote);
+      expect(result.like_count).toBe(0);
+    });
+  });
+
+  describe('Concurrency Tests', () => {
+    describe('likeQuote concurrency', () => {
+      it('should handle multiple simultaneous like requests', async () => {
+        const quoteId = '1';
+        const initialLikeCount = 5;
+        const updatedQuote = { id: quoteId, like_count: initialLikeCount + 1 } as Quote;
+        
+        mockRepository.incrementLikeCount.mockResolvedValue(updatedQuote);
+
+        // Simulate 10 concurrent like requests
+        const promises = Array.from({ length: 10 }, () => service.likeQuote(quoteId));
+        const results = await Promise.all(promises);
+
+        // All requests should succeed
+        expect(results).toHaveLength(10);
+        results.forEach(result => {
+          expect(result).toEqual(updatedQuote);
+        });
+
+        // Repository method should be called 10 times
+        expect(mockRepository.incrementLikeCount).toHaveBeenCalledTimes(10);
+        expect(mockRepository.incrementLikeCount).toHaveBeenCalledWith(quoteId);
+      });
+
+      it('should handle mixed like/unlike concurrent requests', async () => {
+        const quoteId = '1';
+        const likeResult = { id: quoteId, like_count: 6 } as Quote;
+        const unlikeResult = { id: quoteId, like_count: 4 } as Quote;
+        
+        mockRepository.incrementLikeCount.mockResolvedValue(likeResult);
+        mockRepository.decrementLikeCount.mockResolvedValue(unlikeResult);
+
+        // Simulate mixed concurrent requests
+        const likePromises = Array.from({ length: 3 }, () => service.likeQuote(quoteId));
+        const unlikePromises = Array.from({ length: 2 }, () => service.unlikeQuote(quoteId));
+        
+        const [likeResults, unlikeResults] = await Promise.all([
+          Promise.all(likePromises),
+          Promise.all(unlikePromises)
+        ]);
+
+        // All like requests should succeed
+        expect(likeResults).toHaveLength(3);
+        likeResults.forEach(result => {
+          expect(result).toEqual(likeResult);
+        });
+
+        // All unlike requests should succeed
+        expect(unlikeResults).toHaveLength(2);
+        unlikeResults.forEach(result => {
+          expect(result).toEqual(unlikeResult);
+        });
+
+        // Verify method calls
+        expect(mockRepository.incrementLikeCount).toHaveBeenCalledTimes(3);
+        expect(mockRepository.decrementLikeCount).toHaveBeenCalledTimes(2);
+      });
+
+      it('should handle concurrent requests with some failures', async () => {
+        const quoteId = '1';
+        const successResult = { id: quoteId, like_count: 6 } as Quote;
+        const error = new NotFoundException('Quote with ID 1 not found');
+        
+        // Mock some successes and some failures
+        mockRepository.incrementLikeCount
+          .mockResolvedValueOnce(successResult)
+          .mockResolvedValueOnce(successResult)
+          .mockResolvedValueOnce(null) // Simulate quote not found
+          .mockResolvedValueOnce(successResult);
+
+        const promises = Array.from({ length: 4 }, () => service.likeQuote(quoteId));
+        
+        // Some should succeed, one should fail
+        const results = await Promise.allSettled(promises);
+        
+        const successful = results.filter(r => r.status === 'fulfilled');
+        const failed = results.filter(r => r.status === 'rejected');
+        
+        expect(successful).toHaveLength(3);
+        expect(failed).toHaveLength(1);
+        
+        // Check that the failed request throws the correct error
+        if (failed[0].status === 'rejected') {
+          expect(failed[0].reason).toBeInstanceOf(NotFoundException);
+        }
+      });
+    });
+
+    describe('unlikeQuote concurrency', () => {
+      it('should handle multiple simultaneous unlike requests', async () => {
+        const quoteId = '1';
+        const initialLikeCount = 10;
+        const updatedQuote = { id: quoteId, like_count: initialLikeCount - 1 } as Quote;
+        
+        mockRepository.decrementLikeCount.mockResolvedValue(updatedQuote);
+
+        // Simulate 5 concurrent unlike requests
+        const promises = Array.from({ length: 5 }, () => service.unlikeQuote(quoteId));
+        const results = await Promise.all(promises);
+
+        // All requests should succeed
+        expect(results).toHaveLength(5);
+        results.forEach(result => {
+          expect(result).toEqual(updatedQuote);
+        });
+
+        // Repository method should be called 5 times
+        expect(mockRepository.decrementLikeCount).toHaveBeenCalledTimes(5);
+        expect(mockRepository.decrementLikeCount).toHaveBeenCalledWith(quoteId);
+      });
+
+      it('should handle unlike requests when like_count reaches 0', async () => {
+        const quoteId = '1';
+        const zeroLikeQuote = { id: quoteId, like_count: 0 } as Quote;
+        
+        mockRepository.decrementLikeCount.mockResolvedValue(zeroLikeQuote);
+
+        // Simulate unlike requests when count is already 0
+        const promises = Array.from({ length: 3 }, () => service.unlikeQuote(quoteId));
+        const results = await Promise.all(promises);
+
+        // All requests should succeed and like_count should remain 0
+        expect(results).toHaveLength(3);
+        results.forEach(result => {
+          expect(result).toEqual(zeroLikeQuote);
+          expect(result.like_count).toBe(0);
+        });
+      });
+    });
+
+    describe('Edge cases and boundary conditions', () => {
+      it('should handle like_count never going negative under any conditions', async () => {
+        const quoteId = '1';
+        const zeroLikeQuote = { id: quoteId, like_count: 0 } as Quote;
+        
+        mockRepository.decrementLikeCount.mockResolvedValue(zeroLikeQuote);
+
+        // Try to unlike a quote with 0 likes multiple times
+        const promises = Array.from({ length: 10 }, () => service.unlikeQuote(quoteId));
+        const results = await Promise.all(promises);
+
+        // All results should have like_count = 0
+        results.forEach(result => {
+          expect(result.like_count).toBeGreaterThanOrEqual(0);
+          expect(result.like_count).toBe(0);
+        });
+      });
+
+      it('should handle rapid like/unlike cycles', async () => {
+        const quoteId = '1';
+        const likeResult = { id: quoteId, like_count: 1 } as Quote;
+        const unlikeResult = { id: quoteId, like_count: 0 } as Quote;
+        
+        mockRepository.incrementLikeCount.mockResolvedValue(likeResult);
+        mockRepository.decrementLikeCount.mockResolvedValue(unlikeResult);
+
+        // Simulate rapid like/unlike cycles
+        const operations = [];
+        for (let i = 0; i < 5; i++) {
+          operations.push(service.likeQuote(quoteId));
+          operations.push(service.unlikeQuote(quoteId));
+        }
+
+        const results = await Promise.all(operations);
+
+        // Should have 10 results (5 likes + 5 unlikes)
+        expect(results).toHaveLength(10);
+        
+        // Verify method calls
+        expect(mockRepository.incrementLikeCount).toHaveBeenCalledTimes(5);
+        expect(mockRepository.decrementLikeCount).toHaveBeenCalledTimes(5);
+      });
+    });
   });
 
   describe('getAllTags', () => {
