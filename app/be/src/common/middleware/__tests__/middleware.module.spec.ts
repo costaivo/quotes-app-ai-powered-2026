@@ -40,10 +40,10 @@ describe('MiddlewareModule', () => {
     module.configure(consumer);
 
     // Verify that apply was called with a function (the middleware)
-    expect(consumer.apply).toHaveBeenCalledWith(expect.any(Function));
+    expect(mockMiddlewareConsumer.apply).toHaveBeenCalledWith(expect.any(Function));
 
     // Verify that forRoutes was called with the correct routes
-    expect(consumer.forRoutes).toHaveBeenCalledWith(
+    expect(mockMiddlewareConsumer.forRoutes).toHaveBeenCalledWith(
       'quotes/*/like',
       'quotes/*/unlike',
     );
