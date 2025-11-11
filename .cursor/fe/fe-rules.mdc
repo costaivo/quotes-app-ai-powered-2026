@@ -64,10 +64,13 @@ src/
 - API functions: `camelCase`.
 
 ## 8. Linting & Formatting
-- ESLint with TypeScript plugin.
-- Prettier for code formatting.
-- Enforce Tailwind class order using `eslint-plugin-tailwindcss`.
-- Use git hooks to format and lint code on commit.
+- **Biome** for linting and formatting (replaces ESLint & Prettier)
+  - Fast, all-in-one toolchain: format, lint, and check all at once
+  - 366+ rules with excellent error messages and auto-fixes
+  - Run with: `biome check --write ./src`
+  - Configuration via `biome.json` in project root
+- Tailwind class order managed via Biome's built-in CSS support
+- Use git hooks to lint and format code on commit (via Biome)
 
 ## 9. Testing Rules
 - Use React Testing Library + Vitest/Jest.

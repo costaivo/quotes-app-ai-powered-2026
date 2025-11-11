@@ -98,8 +98,10 @@ alwaysApply: false
 - Logging structured (JSON) for easier observability
 
 ## Code Style / Conventions
-- Use **Prettier** for formatting
-- Use **ESLint** with NestJS recommended rules
+- Use **Biome** for linting and formatting (replaces ESLint & Prettier)
+  - 366+ rules covering best practices from ESLint, TypeScript ESLint, and other sources
+  - Fast, single-tool approach: `biome check --write ./src`
+  - Configuration via `biome.json` in project root
 - Use **PascalCase** for classes, **camelCase** for variables/functions
 - Keep module files **organized by feature**
 - Avoid circular dependencies
