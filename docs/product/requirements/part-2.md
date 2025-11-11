@@ -1,0 +1,1 @@
+Implement authentication system so that only authenticated users can create, edit or delete quotes.
