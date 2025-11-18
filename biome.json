@@ -37,6 +37,9 @@
       "trailingCommas": "all",
       "arrowParentheses": "always",
       "quoteStyle": "double"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
     }
   }
 }

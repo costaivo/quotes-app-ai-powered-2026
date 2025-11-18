@@ -1,7 +1,7 @@
 {
   "name": "be",
   "version": "0.0.1",
-  "description": "",
+  "description": "Backend application for Quotes Application - REST API built with NestJS, TypeORM, and PostgreSQL",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
@@ -19,18 +19,30 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate -d ormconfig.ts",
+    "migration:create": "typeorm-ts-node-commonjs migration:create",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d ormconfig.ts",
+    "migration:revert": "typeorm-ts-node-commonjs migration:revert -d ormconfig.ts",
+    "migration:show": "typeorm-ts-node-commonjs migration:show -d ormconfig.ts",
+    "docs:generate": "compodoc -p tsconfig.json -s",
+    "docs:serve": "compodoc -p tsconfig.json -s --serve --port 8081"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
-    "@nestjs/config": "4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "11.2.3",
+    "@nestjs/typeorm": "11.0.0",
+    "pg": "8.16.3",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "5.0.1",
+    "typeorm": "0.3.27"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.6",
+    "@compodoc/compodoc": "1.1.32",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",

@@ -1,0 +1,49 @@
+{
+  "name": "Quotes Application Backend",
+  "output": "docs/compodoc",
+  "theme": "gitbook",
+  "includes": "**/*.ts",
+  "excludes": [
+    "**/*.spec.ts",
+    "**/*.e2e-spec.ts",
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/test/**"
+  ],
+  "disableSourceCode": false,
+  "disableDomTree": false,
+  "disableTemplateTab": false,
+  "disableStyleTab": false,
+  "disableGraph": false,
+  "disableCoverage": false,
+  "disablePrivateOrInternalSupport": false,
+  "disableLifeCycleHooks": false,
+  "hideGenerator": false,
+  "navTabConfig": [
+    {
+      "id": "info",
+      "label": "Info"
+    },
+    {
+      "id": "readme",
+      "label": "README"
+    },
+    {
+      "id": "source",
+      "label": "Source"
+    },
+    {
+      "id": "template",
+      "label": "Template"
+    },
+    {
+      "id": "style",
+      "label": "Style"
+    },
+    {
+      "id": "tree",
+      "label": "Tree"
+    }
+  ]
+}
+
