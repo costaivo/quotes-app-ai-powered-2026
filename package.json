@@ -1,6 +1,7 @@
 {
+  "name": "quotes-app-monorepo",
   "type": "module",
-  "packageManager": "pnpm@8.7.0",
+  "packageManager": "pnpm@9.15.0",
   "devDependencies": {
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
@@ -11,7 +12,29 @@
   "scripts": {
     "preinstall": "node -e \"const ua=process.env.npm_config_user_agent||''; if(!ua.includes('pnpm')){console.error('This repo requires pnpm. Install with: corepack enable && corepack prepare pnpm@latest --activate'); process.exit(1)}\"",
     "prepare": "husky",
-    "test": "echo \"No tests to run in root yet\" && exit 0",
-    "dev": "concurrently \"pnpm --prefix ./app/be run start:dev\" \"pnpm --prefix ./app/fe run dev\""
+    "dev": "concurrently \"pnpm --filter be run start:dev\" \"pnpm --filter fe run dev\"",
+    "dev:be": "pnpm --filter be run start:dev",
+    "dev:fe": "pnpm --filter fe run dev",
+    "build": "pnpm --filter be run build && pnpm --filter fe run build",
+    "build:be": "pnpm --filter be run build",
+    "build:fe": "pnpm --filter fe run build",
+    "test": "pnpm --filter be run test && pnpm --filter fe run test",
+    "test:be": "pnpm --filter be run test",
+    "test:fe": "pnpm --filter fe run test",
+    "lint": "pnpm --filter be run lint && pnpm --filter fe run lint",
+    "lint:be": "pnpm --filter be run lint",
+    "lint:fe": "pnpm --filter fe run lint",
+    "lint:fix": "pnpm --filter be run lint:fix && pnpm --filter fe run lint:fix",
+    "lint:fix:be": "pnpm --filter be run lint:fix",
+    "lint:fix:fe": "pnpm --filter fe run lint:fix",
+    "format": "pnpm --filter be run format && pnpm --filter fe run format",
+    "format:be": "pnpm --filter be run format",
+    "format:fe": "pnpm --filter fe run format",
+    "format:write": "pnpm --filter be run format:write && pnpm --filter fe run format:write",
+    "format:write:be": "pnpm --filter be run format:write",
+    "format:write:fe": "pnpm --filter fe run format:write",
+    "clean": "pnpm --filter be run clean 2>/dev/null || true && pnpm --filter fe run clean 2>/dev/null || true",
+    "install:all": "pnpm install",
+    "update": "pnpm update"
   }
 }
