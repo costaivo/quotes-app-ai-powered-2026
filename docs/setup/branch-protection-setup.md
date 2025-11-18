@@ -1,6 +1,6 @@
 # Branch Protection Rules Setup
 
-This document provides instructions for setting up branch protection rules for the main/master branch in GitHub.
+This document provides instructions for setting up branch protection rules for the **main** branch in GitHub.
 
 ## Required Branch Protection Rules
 
