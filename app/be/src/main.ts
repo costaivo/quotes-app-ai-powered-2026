@@ -31,6 +31,29 @@ if (!envLoaded) {
   console.log(`  Using default environment variables (usually defaults to "db" for host)`);
 }
 
+// Log loaded environment variables in development mode
+if (process.env.NODE_ENV === "development") {
+  console.log(`\n📋 Loaded Environment Variables:`);
+  const envVars = {
+    NODE_ENV: process.env.NODE_ENV,
+    PORT: process.env.PORT,
+    POSTGRES_HOST: process.env.POSTGRES_HOST,
+    POSTGRES_PORT: process.env.POSTGRES_PORT,
+    POSTGRES_USER: process.env.POSTGRES_USER,
+    POSTGRES_DB: process.env.POSTGRES_DB,
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ? "***" : undefined,
+    DATABASE_URL: process.env.DATABASE_URL
+      ? `${process.env.DATABASE_URL.split("@")[0].split("://")[0]}://***@${process.env.DATABASE_URL.split("@")[1]}`
+      : undefined,
+  };
+  Object.entries(envVars).forEach(([key, value]) => {
+    if (value !== undefined) {
+      console.log(`  ${key}: ${value}`);
+    }
+  });
+  console.log("");
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
