@@ -25,7 +25,20 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-**Linting & Formatting**: This project uses [Biome](https://biomejs.dev/) for fast, unified linting and formatting instead of ESLint/Prettier.
+**Tech Stack:**
+- **Framework**: [NestJS](https://nestjs.com/) with TypeScript
+- **Database**: PostgreSQL with [TypeORM](https://typeorm.io/)
+- **API Documentation**: [Swagger/OpenAPI](https://swagger.io/) with [NestJS Swagger](https://docs.nestjs.com/openapi/introduction)
+- **Linting & Formatting**: [Biome](https://biomejs.dev/) for fast, unified code quality
+- **Documentation**: [Compodoc](https://compodoc.app/) for API documentation
+
+**Features:**
+- REST API with proper error handling
+- Database integration with TypeORM and migrations
+- Health checks and application monitoring
+- Version endpoint for API versioning
+- Comprehensive API documentation
+- Full test coverage
 
 ## Project setup
 
@@ -33,30 +46,112 @@
 $ pnpm install
 ```
 
-## Compile and run the project
+## Available Scripts
 
+### Development
 ```bash
-# development
-$ pnpm run start
+# Install dependencies
+$ pnpm install
 
-# watch mode
+# Start in development mode (with watch)
 $ pnpm run start:dev
 
-# production mode
+# Start in production mode
 $ pnpm run start:prod
+
+# Build the application
+$ pnpm run build
 ```
 
-## Run tests
-
+### Testing
 ```bash
-# unit tests
+# Run all tests
 $ pnpm run test
 
-# e2e tests
+# Run tests in watch mode
+$ pnpm run test:watch
+
+# Run e2e tests
 $ pnpm run test:e2e
 
-# test coverage
+# Run tests with coverage
 $ pnpm run test:cov
+
+# Debug tests
+$ pnpm run test:debug
+```
+
+### Code Quality
+```bash
+# Lint code (check for issues)
+$ pnpm run lint
+
+# Auto-fix linting issues
+$ pnpm run lint:fix
+
+# Format code (check formatting)
+$ pnpm run format
+
+# Auto-format code
+$ pnpm run format:write
+```
+
+### Database Migrations
+```bash
+# Generate migration from entity changes
+$ pnpm run migration:generate -- -n MigrationName
+
+# Create empty migration file
+$ pnpm run migration:create -- -n MigrationName
+
+# Run pending migrations
+$ pnpm run migration:run
+
+# Revert last migration
+$ pnpm run migration:revert
+
+# Show migration status
+$ pnpm run migration:show
+```
+
+### Documentation
+```bash
+# Generate API documentation
+$ pnpm run docs:generate
+
+# Serve documentation locally (port 8081)
+$ pnpm run docs:serve
+```
+
+## API Endpoints
+
+The application provides the following REST API endpoints:
+
+### Health & Monitoring
+- `GET /api/health` - Comprehensive health check (database, application, memory)
+- `GET /api/version` - Application version information
+
+### API Documentation
+- `GET /api/docs` - Swagger/OpenAPI documentation (development only)
+
+## Project Structure
+
+```
+src/
+├── main.ts                 # Application bootstrap
+├── app.module.ts           # Root application module
+├── database/               # Database configuration
+│   ├── database.config.ts
+│   └── database.module.ts
+├── health/                 # Health monitoring
+│   ├── health.controller.ts
+│   ├── health.service.ts
+│   └── health.module.ts
+├── version/                # Version endpoint
+│   ├── version.controller.ts
+│   ├── version.service.ts
+│   └── version.module.ts
+└── database/migrations/    # TypeORM migrations
 ```
 
 ## Deployment
@@ -74,26 +169,24 @@ With Mau, you can deploy your application in just a few clicks, allowing you to 
 
 ## Resources
 
-Check out a few resources that may come in handy when working with NestJS:
+### Documentation & Learning
+- [NestJS Documentation](https://docs.nestjs.com) - Official NestJS docs
+- [TypeORM Documentation](https://typeorm.io/) - Database ORM docs
+- [Biome Documentation](https://biomejs.dev/) - Code quality tooling
+- [Swagger/OpenAPI](https://swagger.io/docs/) - API documentation
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Development Tools
+- [NestJS CLI](https://docs.nestjs.com/cli/overview) - Command-line interface
+- [TypeORM CLI](https://typeorm.io/using-cli) - Database migration tools
+- [Compodoc](https://compodoc.app/) - API documentation generator
 
-## Support
+### Testing & Quality
+- [Jest](https://jestjs.io/) - Testing framework
+- [Biome](https://biomejs.dev/) - Fast linting and formatting
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Community Support
+- [NestJS Discord](https://discord.gg/G7Qnnhy) - Community support
+- [Stack Overflow](https://stackoverflow.com/questions/tagged/nestjs) - Q&A platform
 
 ## License
 
