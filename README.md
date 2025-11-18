@@ -104,6 +104,13 @@ cd quotes-app-ai-powered-2026
 # Install dependencies
 pnpm install
 
+# Create environment file from example
+cp env.example .env
+
+# Edit .env file with your specific configuration
+# IMPORTANT: Never commit the .env file to version control
+nano .env  # or use your preferred editor
+
 # Set up environment variable symlinks
 ln -s ../.env app/be/.env
 ln -s ../.env app/fe/.env
@@ -120,7 +127,12 @@ The root `.env` file contains all shared configuration:
 - **Frontend**: API endpoints, app configuration
 - **Database**: PostgreSQL settings
 
-**Important**: The `.env` file is gitignored and must be created manually or provided by your team.
+**Setup Instructions:**
+1. Copy the example file: `cp env.example .env`
+2. Edit `.env` with your specific values (database credentials, API endpoints, etc.)
+3. The `.env` file is gitignored and must be created locally - never commit it to version control
+
+**Note**: The `env.example` file provides default values suitable for local Docker development.
 
 ## CI/CD Pipeline
 
