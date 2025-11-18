@@ -25,6 +25,8 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+**Linting & Formatting**: This project uses [Biome](https://biomejs.dev/) for fast, unified linting and formatting instead of ESLint/Prettier.
+
 ## Project setup
 
 ```bash

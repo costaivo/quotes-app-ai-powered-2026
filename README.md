@@ -90,6 +90,38 @@ Notes:
 - The compose file mounts local source into the containers (`./app/be:/usr/src/app`, `./app/fe:/app`), so changes to the code are picked up by the dev servers (Vite for FE, `npm run start:dev` for BE) without rebuilding the image.
 - Rebuild only when you change a Dockerfile, dependency install step, or when producing production images.
 
+## Local Development Setup
+
+This monorepo uses a shared `.env` file in the root directory for all environment variables. After cloning the repository, set up symlinks to ensure both applications can access the shared configuration:
+
+### Initial Setup (One-time)
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd quotes-app-ai-powered-2026
+
+# Install dependencies
+pnpm install
+
+# Set up environment variable symlinks
+ln -s ../.env app/be/.env
+ln -s ../.env app/fe/.env
+
+# Verify symlinks exist
+ls -la app/be/.env app/fe/.env
+```
+
+### Environment Variables
+
+The root `.env` file contains all shared configuration:
+
+- **Backend**: Database connections, server settings
+- **Frontend**: API endpoints, app configuration
+- **Database**: PostgreSQL settings
+
+**Important**: The `.env` file is gitignored and must be created manually or provided by your team.
+
 ## CI/CD Pipeline
 
 This repository uses GitHub Actions for continuous integration and deployment.
@@ -148,7 +180,7 @@ pnpm lint              # Linting (if configured)
 
 The CI pipeline runs on:
 - **Node.js**: 18.x
-- **Package Manager**: pnpm 8.7.0
+- **Package Manager**: pnpm 9.15.0
 - **Database**: PostgreSQL 15 (for integration tests)
 - **OS**: Ubuntu Latest
 
