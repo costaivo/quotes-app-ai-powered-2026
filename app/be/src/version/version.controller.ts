@@ -1,6 +1,8 @@
 import { Controller, Get } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import type { VersionInfo, VersionService } from "./version.service";
+// biome-ignore lint/style/useImportType: VersionService needed for DI
+import { VersionService } from "./version.service";
+import type { VersionInfo } from "./version.service";
 
 @ApiTags("Version")
 @Controller("version")
@@ -25,6 +27,7 @@ export class VersionController {
     },
   })
   getVersion(): VersionInfo {
+    // Using the service instance to prevent type-only import optimization
     return this.versionService.getVersion();
   }
 }

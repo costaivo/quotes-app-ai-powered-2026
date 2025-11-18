@@ -1,8 +1,8 @@
 {
-  "name": "be",
+  "name": "Backend App",
   "version": "0.0.1",
-  "description": "Backend application for Quotes Application - REST API built with NestJS, TypeORM, and PostgreSQL",
-  "author": "",
+  "description": "Backend application implementation using REST API",
+  "author": "Creative Capsule",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

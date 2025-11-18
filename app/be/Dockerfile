@@ -9,11 +9,11 @@ COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
 # Install and enable corepack, then activate pnpm
-RUN corepack enable && corepack prepare pnpm@8.7.0 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 # Use BuildKit cache for pnpm store to speed up repeated builds
 RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
-    pnpm install --frozen-lockfile
+    pnpm install
 
 # Copy the rest of the application source code
 COPY . .
@@ -31,8 +31,8 @@ COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
 # Enable pnpm and install all dependencies (including dev dependencies)
-RUN corepack enable && corepack prepare pnpm@8.7.0 --activate && \
-    pnpm install --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate && \
+    pnpm install
 
 # Copy the source code
 COPY . .
@@ -53,8 +53,8 @@ COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
 # Enable pnpm and install only production dependencies
-RUN corepack enable && corepack prepare pnpm@8.7.0 --activate && \
-    pnpm install --prod --frozen-lockfile
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate && \
+    pnpm install --prod
 
 # Copy the built application from the builder stage
 COPY --from=builder /usr/src/app/dist ./dist

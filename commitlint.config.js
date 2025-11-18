@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   extends: ['@commitlint/config-conventional'],
   rules: {
     // allow longer commit headers and bodies; keep conventional commits but relax line limits

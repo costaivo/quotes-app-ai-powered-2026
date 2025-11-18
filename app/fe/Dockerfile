@@ -9,11 +9,11 @@ COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
 # Install and enable corepack, then activate pnpm with specific version
-RUN corepack enable && corepack prepare pnpm@8.7.0 --activate
+RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 # Use BuildKit cache for pnpm store to speed up repeated builds
 RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
-    pnpm install --frozen-lockfile
+    pnpm install
 
 # Copy the rest of the application files
 COPY . .

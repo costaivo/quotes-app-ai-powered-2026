@@ -1,6 +1,8 @@
 import { Controller, Get, HttpCode, HttpStatus } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import type { HealthService, HealthStatus } from "./health.service";
+// biome-ignore lint/style/useImportType: HealthService needed for DI
+import { HealthService } from "./health.service";
+import type { HealthStatus } from "./health.service";
 
 @ApiTags("Health")
 @Controller("health")
