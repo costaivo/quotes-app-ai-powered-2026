@@ -1,8 +1,35 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { config } from "dotenv";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { AppModule } from "./app.module";
+
+// Load .env from root directory if running locally
+// Try multiple possible root paths
+const possibleRootPaths = [
+  path.join(process.cwd(), ".env"), // Current working directory
+  path.join(process.cwd(), "../../.env"), // From app/be/
+  path.join(process.cwd(), "../.env"), // From app/
+];
+
+let envLoaded = false;
+for (const envPath of possibleRootPaths) {
+  if (fs.existsSync(envPath)) {
+    console.log(`✓ Loading environment variables from: ${envPath}`);
+    config({ path: envPath });
+    envLoaded = true;
+    break;
+  }
+}
+
+if (!envLoaded) {
+  console.log(`⚠ Root .env file not found. Checked:`);
+  for (const p of possibleRootPaths) {
+    console.log(`  - ${p}`);
+  }
+  console.log(`  Using default environment variables (usually defaults to "db" for host)`);
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -1,7 +1,7 @@
 import type { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 export const getDatabaseConfig = (): TypeOrmModuleOptions => {
-  return {
+  const config: TypeOrmModuleOptions = {
     type: "postgres",
     host: process.env.POSTGRES_HOST || "db",
     port: parseInt(process.env.POSTGRES_PORT || "5432", 10),
@@ -14,4 +14,15 @@ export const getDatabaseConfig = (): TypeOrmModuleOptions => {
     logging: process.env.NODE_ENV === "development",
     migrationsRun: false,
   };
+
+  // Log database connection details (redact password for security)
+  if (process.env.NODE_ENV === "development") {
+    console.log(`📊 Database Configuration:`);
+    console.log(`  Host: ${config.host}`);
+    console.log(`  Port: ${config.port}`);
+    console.log(`  Username: ${config.username}`);
+    console.log(`  Database: ${config.database}`);
+  }
+
+  return config;
 };
