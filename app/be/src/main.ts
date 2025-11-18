@@ -37,11 +37,11 @@ if (process.env.NODE_ENV === "development") {
   const envVars = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
-    POSTGRES_HOST: process.env.POSTGRES_HOST,
-    POSTGRES_PORT: process.env.POSTGRES_PORT,
-    POSTGRES_USER: process.env.POSTGRES_USER,
-    POSTGRES_DB: process.env.POSTGRES_DB,
-    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ? "***" : undefined,
+    POSTGRES_HOST:process.env.POSTGRES_HOST,
+    POSTGRES_PORT:process.env.POSTGRES_PORT,
+    POSTGRES_USER:process.env.POSTGRES_USER,
+    POSTGRES_DB:process.env.POSTGRES_DB,
+    POSTGRES_PASSWORD:process.env.POSTGRES_PASSWORD ? "***" : undefined,
     DATABASE_URL: process.env.DATABASE_URL
       ? `${process.env.DATABASE_URL.split("@")[0].split("://")[0]}://***@${process.env.DATABASE_URL.split("@")[1]}`
       : undefined,

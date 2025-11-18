@@ -8,6 +8,7 @@ services:
     volumes:
       - ./app/be:/usr/src/app
       - /usr/src/app/node_modules
+      - ./.env:/usr/src/app/.env
     env_file:
       - .env
     environment:
