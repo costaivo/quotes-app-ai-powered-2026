@@ -7,6 +7,14 @@
       }
     }
   },
+  "overrides": [
+    {
+      "includes": ["app/fe/src/routeTree.gen.ts"],
+      "linter": {
+        "enabled": false
+      }
+    }
+  ],
   "linter": {
     "enabled": true,
     "rules": {
@@ -40,6 +48,11 @@
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }
