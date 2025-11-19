@@ -9,15 +9,16 @@ import {
   HttpStatus,
   HttpCode,
   ParseUUIDPipe,
+  Inject,
 } from "@nestjs/common";
 import { QuoteService } from "../services/quote.service";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
 import type { QuoteResponseDto } from "../dto/quote-response.dto";
 
-@Controller("api/v1/quotes")
+@Controller("v1/quotes")
 export class QuoteController {
-  constructor(private quoteService: QuoteService) {}
+  constructor(@Inject(QuoteService) private quoteService: QuoteService) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)

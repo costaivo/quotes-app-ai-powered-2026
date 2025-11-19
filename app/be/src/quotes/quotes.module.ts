@@ -10,11 +10,15 @@ import { QuoteController } from "./controllers/quote.controller";
   imports: [TypeOrmModule.forFeature([Quote])],
   providers: [
     {
-      provide: QuoteRepository,
+      provide: "QUOTE_REPOSITORY",
       useFactory: (dataSource: DataSource) => new QuoteRepository(dataSource),
       inject: [DataSource],
     },
-    QuoteService,
+    {
+      provide: QuoteService,
+      useFactory: (repository: QuoteRepository) => new QuoteService(repository),
+      inject: ["QUOTE_REPOSITORY"],
+    },
   ],
   controllers: [QuoteController],
 })
