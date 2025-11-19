@@ -38,7 +38,12 @@ Also create a postman collection for all API endpoints with tests written to val
 @rfd-001-quote-management-part1-implementation.md generate tasks using the prompt @generate-tasks.md 
 ```
 
-## Processing Tasks - Code implementation
+## Processing Phase 0 Tasks - Code implementation
 ```markdown
 @tasks-rfd-001-quote-management-part1-implementation.md Start Phase 0 tasks using prompt @process-task-list.md 
+```
+
+## Process Phase 1 Tasks - Code Implementation
+```markdown
+@tasks-rfd-001-quote-management-part1-implementation.md Process all steps in Phase 1 using the prompt defined in @process-task-list.md 
 ```
