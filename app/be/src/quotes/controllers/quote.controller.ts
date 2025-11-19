@@ -12,9 +12,9 @@ import {
   Inject,
 } from "@nestjs/common";
 import { QuoteService } from "../services/quote.service";
-import type { CreateQuoteDto } from "../dto/create-quote.dto";
-import type { UpdateQuoteDto } from "../dto/update-quote.dto";
-import type { QuoteResponseDto } from "../dto/quote-response.dto";
+import { CreateQuoteDto } from "../dto/create-quote.dto";
+import { UpdateQuoteDto } from "../dto/update-quote.dto";
+import { QuoteResponseDto } from "../dto/quote-response.dto";
 
 @Controller("v1/quotes")
 export class QuoteController {
