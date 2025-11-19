@@ -8,38 +8,56 @@ set -eu
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT_DIR"
 
-# If an argument is provided, accept `db` (or variants) to start only DB and Adminer,
-# or `all` to start everything. If no argument is provided, prompt interactively.
+# If an argument is provided, accept options for different service combinations.
+# If no argument is provided, prompt interactively.
 SERVICES=""
 if [ "$#" -gt 0 ]; then
   case "$1" in
-    db|db-only|--db|-d)
-      SERVICES="db adminer"
-      ;;
-    all|--all|-a)
+    all|--all|-a|1)
       SERVICES=""
       ;;
+    db|db-only|--db|-d|2)
+      SERVICES="db adminer pgadmin"
+      ;;
+    be|backend|--be|--backend|-b|3)
+      SERVICES="backend db adminer pgadmin"
+      ;;
+    fe|frontend|--fe|--frontend|-f|4)
+      SERVICES="frontend"
+      ;;
     help|-h|--help)
-      echo "Usage: $0 [all|db]"
+      echo "Usage: $0 [all|db|be|fe]"
+      echo "  all/1: Start all services (backend + frontend + db + adminer + pgadmin)"
+      echo "  db/2:  Start only DB and DB Clients (db + adminer + pgadmin)"
+      echo "  be/3:  Start only BE and DB and DB clients (backend + db + adminer + pgadmin)"
+      echo "  fe/4:  Start only FE (frontend)"
       exit 0
       ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $0 [all|db]"
+      echo "Usage: $0 [all|db|be|fe]"
       exit 2
       ;;
   esac
 else
   echo "Choose which services to start:"
-  echo "  1) All services (backend + frontend + db + adminer) [default]"
-  echo "  2) Only db and adminer (development)"
-  printf "Enter 1 or 2: "
+  echo "  1) Start ALL (backend + frontend + db + adminer + pgadmin)"
+  echo "  2) Start only DB and DB Clients (db + adminer + pgadmin)"
+  echo "  3) Start only BE and DB and DB clients (backend + db + adminer + pgadmin)"
+  echo "  4) Start only FE (frontend)"
+  printf "Enter 1, 2, 3, or 4 [default: 1]: "
   if ! read choice; then
     choice="1"
   fi
   case "$choice" in
     2)
-      SERVICES="db adminer"
+      SERVICES="db adminer pgadmin"
+      ;;
+    3)
+      SERVICES="backend db adminer pgadmin"
+      ;;
+    4)
+      SERVICES="frontend"
       ;;
     *)
       SERVICES=""
@@ -50,7 +68,7 @@ fi
 echo "Starting docker compose (detached, with build)..."
 if [ -z "$SERVICES" ]; then
   if docker compose up -d --build; then
-    echo "Docker compose started successfully."
+    echo "Docker compose started successfully (all services)."
     # Print where the backend and frontend will be available
     # Backend URL: use PORT env var if set, default to 3000
     BE_PORT="${PORT:-3000}"
@@ -59,17 +77,47 @@ if [ -z "$SERVICES" ]; then
     echo "Frontend running at http://localhost:5173"
     # Adminer (Database UI)
     echo "Adminer (DB UI) running at http://localhost:8080"
+    # pgAdmin (PostgreSQL Admin)
+    echo "pgAdmin (DB UI) running at http://localhost:5050"
     exit 0
   else
     echo "Docker compose failed." >&2
     exit 1
   fi
-else
+elif [ "$SERVICES" = "db adminer pgadmin" ]; then
   if docker compose up -d --build $SERVICES; then
-    echo "Docker compose started successfully (db + adminer)."
+    echo "Docker compose started successfully (db + adminer + pgadmin)."
     # Adminer (Database UI)
     echo "Adminer (DB UI) running at http://localhost:8080"
+    # pgAdmin (PostgreSQL Admin)
+    echo "pgAdmin (DB UI) running at http://localhost:5050"
     echo "Database service started."
+    exit 0
+  else
+    echo "Docker compose failed." >&2
+    exit 1
+  fi
+elif [ "$SERVICES" = "backend db adminer pgadmin" ]; then
+  if docker compose up -d --build $SERVICES; then
+    echo "Docker compose started successfully (backend + db + adminer + pgadmin)."
+    # Backend URL: use PORT env var if set, default to 3000
+    BE_PORT="${PORT:-3000}"
+    echo "Backend running at http://localhost:${BE_PORT}"
+    # Adminer (Database UI)
+    echo "Adminer (DB UI) running at http://localhost:8080"
+    # pgAdmin (PostgreSQL Admin)
+    echo "pgAdmin (DB UI) running at http://localhost:5050"
+    echo "Database service started."
+    exit 0
+  else
+    echo "Docker compose failed." >&2
+    exit 1
+  fi
+elif [ "$SERVICES" = "frontend" ]; then
+  if docker compose up -d --build $SERVICES; then
+    echo "Docker compose started successfully (frontend only)."
+    # Frontend URL: Vite default port 5173 (mapped in docker-compose.yml)
+    echo "Frontend running at http://localhost:5173"
     exit 0
   else
     echo "Docker compose failed." >&2

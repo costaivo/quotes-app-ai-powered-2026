@@ -23,8 +23,7 @@ export function HealthCard({ healthStatus }: HealthCardProps) {
         <strong>Timestamp:</strong> {new Date(healthStatus.timestamp).toLocaleString()}
       </p>
       <p>
-        <strong>Uptime:</strong> {Math.floor(healthStatus.uptime / 60)}m{" "}
-        {healthStatus.uptime % 60}s
+        <strong>Uptime:</strong> {Math.floor(healthStatus.uptime / 60)}m {healthStatus.uptime % 60}s
       </p>
 
       <h4>Health Checks:</h4>

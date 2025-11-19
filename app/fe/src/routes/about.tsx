@@ -1,16 +1,16 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useAppData } from '../hooks/useAppData'
-import { VersionCard } from '../components/VersionCard'
-import { HealthCard } from '../components/HealthCard'
-import { LoadingSpinner } from '../components/LoadingSpinner'
-import { ErrorCard } from '../components/ErrorCard'
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useAppData } from "../hooks/useAppData";
+import { VersionCard } from "../components/VersionCard";
+import { HealthCard } from "../components/HealthCard";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { ErrorCard } from "../components/ErrorCard";
 
-export const Route = createFileRoute('/about')({
+export const Route = createFileRoute("/about")({
   component: About,
-})
+});
 
 function About() {
-  const { versionInfo, healthStatus, loading, error } = useAppData()
+  const { versionInfo, healthStatus, loading, error } = useAppData();
 
   return (
     <>
@@ -27,5 +27,5 @@ function About() {
 
       {healthStatus && <HealthCard healthStatus={healthStatus} />}
     </>
-  )
+  );
 }
