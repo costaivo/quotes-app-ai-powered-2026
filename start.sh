@@ -20,10 +20,10 @@ if [ "$#" -gt 0 ]; then
       SERVICES="db adminer pgadmin"
       ;;
     be|backend|--be|--backend|-b|3)
-      SERVICES="backend db adminer pgadmin"
+      SERVICES="be db adminer pgadmin"
       ;;
     fe|frontend|--fe|--frontend|-f|4)
-      SERVICES="frontend"
+      SERVICES="fe"
       ;;
     help|-h|--help)
       echo "Usage: $0 [all|db|be|fe]"
@@ -54,10 +54,10 @@ else
       SERVICES="db adminer pgadmin"
       ;;
     3)
-      SERVICES="backend db adminer pgadmin"
+      SERVICES="be db adminer pgadmin"
       ;;
     4)
-      SERVICES="frontend"
+      SERVICES="fe"
       ;;
     *)
       SERVICES=""
@@ -97,7 +97,7 @@ elif [ "$SERVICES" = "db adminer pgadmin" ]; then
     echo "Docker compose failed." >&2
     exit 1
   fi
-elif [ "$SERVICES" = "backend db adminer pgadmin" ]; then
+elif [ "$SERVICES" = "be db adminer pgadmin" ]; then
   if docker compose up -d --build $SERVICES; then
     echo "Docker compose started successfully (backend + db + adminer + pgadmin)."
     # Backend URL: use PORT env var if set, default to 3000
@@ -113,7 +113,7 @@ elif [ "$SERVICES" = "backend db adminer pgadmin" ]; then
     echo "Docker compose failed." >&2
     exit 1
   fi
-elif [ "$SERVICES" = "frontend" ]; then
+elif [ "$SERVICES" = "fe" ]; then
   if docker compose up -d --build $SERVICES; then
     echo "Docker compose started successfully (frontend only)."
     # Frontend URL: Vite default port 5173 (mapped in docker-compose.yml)
