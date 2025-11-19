@@ -25,12 +25,12 @@
 
 ### API Layer
 - `app/be/src/quotes/controllers/quote.controller.ts` - REST controller implementing all 7 endpoints with Swagger decorators
-- `app/be/src/common/filters/global-exception.filter.ts` - Global exception filter for standardized error responses
-- `app/be/src/common/interceptors/logging.interceptor.ts` - Request/response logging interceptor
+- `app/be/src/common/filters/global-exception.filter.ts` - Global exception filter for standardized error responses (new)
+- `app/be/src/common/interceptors/logging.interceptor.ts` - Request/response logging interceptor (new)
 
 ### Configuration & Module Updates
 - `app/be/src/app.module.ts` - Update to import QuotesModule
-- `app/be/src/main.ts` - Update to setup Swagger and register global filters/interceptors
+- `app/be/src/main.ts` - Update to setup Swagger and register global filters/interceptors (modified)
 
 ### Testing & Documentation
 - `app/be/src/quotes/controllers/quote.controller.spec.ts` - E2E/controller tests for all endpoints
@@ -42,6 +42,9 @@
 - Unit tests in `*.spec.ts` files should be created alongside their implementation files
 - Postman collection should include environment variables, fake data generators, and pre-request scripts
 - Documentation should include schema overview and error code reference
+
+Approval:
+- **Next Sub-task**: yes
 
 ---
 
@@ -135,48 +138,48 @@
 
 ### Phase 2.1: REST API Endpoints Implementation
 
-- [ ] 2.1.1 Implement Quote Controller with All 7 Endpoints
-  - [ ] 2.1.1.1 Implement `GET /api/v1/quotes` → return all quotes
+- [x] 2.1.1 Implement Quote Controller with All 7 Endpoints
+  - [x] 2.1.1.1 Implement `GET /api/v1/quotes` → return all quotes
     - Add `@Get()` decorator
     - Call `quoteService.findAll()`
     - Return Array<QuoteResponseDto> with status 200
-  - [ ] 2.1.1.2 Implement `POST /api/v1/quotes` → create new quote
+  - [x] 2.1.1.2 Implement `POST /api/v1/quotes` → create new quote
     - Add `@Post()` decorator
     - Accept `CreateQuoteDto` body
     - Call `quoteService.create(dto)`
     - Return created quote with status 201
-  - [ ] 2.1.1.3 Implement `GET /api/v1/quotes/:id` → fetch single quote
+  - [x] 2.1.1.3 Implement `GET /api/v1/quotes/:id` → fetch single quote
     - Add `@Get(':id')` decorator
     - Extract UUID from path parameter
     - Call `quoteService.findById(id)`
     - Return QuoteResponseDto with status 200, or 404 if not found
-  - [ ] 2.1.1.4 Implement `PATCH /api/v1/quotes/:id` → update quote
+  - [x] 2.1.1.4 Implement `PATCH /api/v1/quotes/:id` → update quote
     - Add `@Patch(':id')` decorator
     - Accept `UpdateQuoteDto` body
     - Call `quoteService.update(id, dto)`
     - Return updated quote with status 200, or 404 if not found
-  - [ ] 2.1.1.5 Implement `DELETE /api/v1/quotes/:id` → delete quote
+  - [x] 2.1.1.5 Implement `DELETE /api/v1/quotes/:id` → delete quote
     - Add `@Delete(':id')` decorator
     - Call `quoteService.delete(id)`
     - Return empty response with status 204, or 404 if not found
-  - [ ] 2.1.1.6 Implement `GET /api/v1/quotes/tags/all` → fetch all unique tags
+  - [x] 2.1.1.6 Implement `GET /api/v1/quotes/tags/all` → fetch all unique tags
     - Add `@Get('tags/all')` decorator (place BEFORE `:id` route to avoid conflict)
     - Call `quoteService.findAllTags()`
     - Return Array<string> with status 200
-  - [ ] 2.1.1.7 Implement `GET /api/v1/quotes/authors/all` → fetch all unique authors
+  - [x] 2.1.1.7 Implement `GET /api/v1/quotes/authors/all` → fetch all unique authors
     - Add `@Get('authors/all')` decorator
     - Call `quoteService.findAllAuthors()`
     - Return Array<string> with status 200
 
 - [ ] 2.1.2 Add Request/Response Logging Interceptor
-  - [ ] 2.1.2.1 Create `logging.interceptor.ts` in `app/be/src/common/interceptors`
-  - [ ] 2.1.2.2 Log incoming request method, path, and body
-  - [ ] 2.1.2.3 Log outgoing response status code and body
-  - [ ] 2.1.2.4 Register interceptor globally in `main.ts`
+  - [x] 2.1.2.1 Create `logging.interceptor.ts` in `app/be/src/common/interceptors`
+  - [x] 2.1.2.2 Log incoming request method, path, and body
+  - [x] 2.1.2.3 Log outgoing response status code and body
+  - [x] 2.1.2.4 Register interceptor globally in `main.ts`
 
-- [ ] 2.1.3 Verify All Routes Respond Correctly
-  - [ ] 2.1.3.1 Start backend server locally: `pnpm dev:be`
-  - [ ] 2.1.3.2 Test each endpoint manually with curl or Postman:
+- [x] 2.1.3 Verify All Routes Respond Correctly
+  - [x] 2.1.3.1 Start backend server locally: `pnpm dev:be`
+  - [x] 2.1.3.2 Test each endpoint manually with curl or Postman:
     - GET /api/v1/quotes (should return 200, empty or existing quotes)
     - POST /api/v1/quotes (create a test quote, expect 201)
     - GET /api/v1/quotes/:id (fetch created quote, expect 200)
@@ -184,27 +187,27 @@
     - DELETE /api/v1/quotes/:id (delete quote, expect 204)
     - GET /api/v1/quotes/tags/all (expect 200, array)
     - GET /api/v1/quotes/authors/all (expect 200, array)
-  - [ ] 2.1.3.3 Verify logs are being written correctly
+  - [x] 2.1.3.3 Verify logs are being written correctly
 
 ---
 
 ### Phase 2.2: Input Validation & Error Handling
 
-- [ ] 2.2.1 Implement Global Error Handling Middleware
-  - [ ] 2.2.1.1 Create `global-exception.filter.ts` in `app/be/src/common/filters`
-  - [ ] 2.2.1.2 Create custom error response format per PRD:
+- [x] 2.2.1 Implement Global Error Handling Middleware
+  - [x] 2.2.1.1 Create `global-exception.filter.ts` in `app/be/src/common/filters`
+  - [x] 2.2.1.2 Create custom error response format per PRD:
     ```json
     { "error": "...", "statusCode": 400, "details": "..." }
     ```
-  - [ ] 2.2.1.3 Handle 404 errors (resource not found)
+  - [x] 2.2.1.3 Handle 404 errors (resource not found)
     - Return 404 status with descriptive error message
-  - [ ] 2.2.1.4 Handle 400 errors (bad request, validation failures)
+  - [x] 2.2.1.4 Handle 400 errors (bad request, validation failures)
     - Parse validation errors from DTOs
     - Return detailed field-level validation errors
-  - [ ] 2.2.1.5 Handle 500 errors (internal server errors)
+  - [x] 2.2.1.5 Handle 500 errors (internal server errors)
     - Log error details server-side
     - Return generic error message to client
-  - [ ] 2.2.1.6 Register exception filter globally in `main.ts`
+  - [x] 2.2.1.6 Register exception filter globally in `main.ts`
 
 - [ ] 2.2.2 Validate All Input Fields
   - [ ] 2.2.2.1 Update `CreateQuoteDto` with comprehensive validation:

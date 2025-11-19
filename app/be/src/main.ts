@@ -3,6 +3,8 @@ import * as path from "node:path";
 import { config } from "dotenv";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
+import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
 import { AppModule } from "./app.module";
 
 // Load .env from root directory if running locally
@@ -59,6 +61,12 @@ async function bootstrap() {
 
   // Set global API prefix
   app.setGlobalPrefix("api");
+
+  // Register global interceptors
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
+  // Register global filters
+  app.useGlobalFilters(new GlobalExceptionFilter());
 
   // Swagger configuration (only in development)
   if (process.env.NODE_ENV === "development") {

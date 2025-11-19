@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString, MaxLength, Min } from "class-validator";
+import { IsNumber, IsOptional, IsString, MaxLength, Min, Matches } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class UpdateQuoteDto {
@@ -37,10 +37,13 @@ export class UpdateQuoteDto {
 
   @ApiProperty({
     description: "Comma-separated tags for the quote",
-    example: "classic,drama",
+    example: "classic;drama",
     required: false,
   })
   @IsOptional()
   @IsString()
+  @Matches(/^[a-zA-Z0-9\s\-_]+(;[a-zA-Z0-9\s\-_]+)*$/, {
+    message: "Tags must be semicolon-separated alphanumeric strings",
+  })
   tags?: string;
 }
