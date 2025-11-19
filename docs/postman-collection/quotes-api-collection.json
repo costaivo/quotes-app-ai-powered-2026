@@ -1,0 +1,413 @@
+{
+	"info": {
+		"_postman_id": "e82703c3-5b8d-4e43-8f2a-4f4f2a4f4f2a",
+		"name": "Quotes API",
+		"description": "Collection for testing the Quotes API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CRUD Operations",
+			"item": [
+				{
+					"name": "Create Quote",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const randomText = pm.variables.replaceIn('{{$randomLoremSentence}}');",
+									"const randomAuthor = pm.variables.replaceIn('{{$randomFullName}}');",
+									"const tags = ['motivation', 'life', 'coding', 'wisdom', 'future'];",
+									"const randomTags = tags.sort(() => 0.5 - Math.random()).slice(0, 2).join(';');",
+									"",
+									"pm.collectionVariables.set('randomText', randomText);",
+									"pm.collectionVariables.set('randomAuthor', randomAuthor);",
+									"pm.collectionVariables.set('randomTags', randomTags);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response has required fields\", function () {",
+									"    pm.expect(jsonData).to.have.property('id');",
+									"    pm.expect(jsonData).to.have.property('text');",
+									"    pm.expect(jsonData).to.have.property('author');",
+									"    pm.expect(jsonData).to.have.property('likes');",
+									"    pm.expect(jsonData).to.have.property('tags');",
+									"    pm.expect(jsonData).to.have.property('createdAt');",
+									"    pm.expect(jsonData).to.have.property('updatedAt');",
+									"});",
+									"",
+									"if (jsonData.id) {",
+									"    pm.collectionVariables.set(\"quoteId\", jsonData.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"{{randomText}}\",\n  \"author\": \"{{randomAuthor}}\",\n  \"tags\": \"{{randomTags}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/quotes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Quotes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response is an array\", function () {",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Quote",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"ID matches\", function () {",
+									"    pm.expect(jsonData.id).to.eql(pm.collectionVariables.get(\"quoteId\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes/{{quoteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes",
+								"{{quoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Quote",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Likes updated\", function () {",
+									"    pm.expect(jsonData.likes).to.eql(42);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"likes\": 42\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/quotes/{{quoteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes",
+								"{{quoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quote",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes/{{quoteId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes",
+								"{{quoteId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Data Retrieval",
+			"item": [
+				{
+					"name": "Get All Tags",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response is an array\", function () {",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes/tags/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes",
+								"tags",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Authors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response is an array\", function () {",
+									"    pm.expect(jsonData).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes/authors/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes",
+								"authors",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Scenarios",
+			"item": [
+				{
+					"name": "Create Invalid Quote (Missing Text)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"author\": \"Someone\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/quotes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Non-existent Quote",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes/00000000-0000-0000-0000-000000000000",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes",
+								"00000000-0000-0000-0000-000000000000"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "quoteId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomText",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomAuthor",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "randomTags",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

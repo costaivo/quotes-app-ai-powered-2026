@@ -54,3 +54,4 @@ When processing a task file, the AI must strictly adhere to the following rules:
 4.  **Follow Completion Protocol**: Execute the testing and commit sequence exactly as described.
 5.  **Maintain File List**: Keep the "Relevant Files" section accurate and up-to-date, noting whether files are `new` or `modified`.
 6.  **Pause for Approval**: After completing a sub-task and updating the task file, reset the `Approval` status to `Awaiting approval` and pause all work until it is set back to `yes`.
+7. **DO NOT CREATE ANY DOCUMENTATIONS** Ask for permission before creating any documents related to the tasks done, which is not explicilty asked. If in doubt, ask for permission and only then proceed with creation of new documents. 
