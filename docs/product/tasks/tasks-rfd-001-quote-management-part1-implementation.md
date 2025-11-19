@@ -14,9 +14,10 @@
 - `app/be/src/database/migrations/[timestamp]-CreateQuoteTable.ts` - Initial migration creating Quote table with constraints
 
 ### Data Transfer Objects (DTOs)
-- `app/be/src/quotes/dto/create-quote.dto.ts` - DTO for quote creation with validation rules
-- `app/be/src/quotes/dto/update-quote.dto.ts` - DTO for quote updates with optional fields
+- `app/be/src/quotes/dto/create-quote.dto.ts` - DTO for quote creation with validation rules (modified)
+- `app/be/src/quotes/dto/update-quote.dto.ts` - DTO for quote updates with optional fields (modified)
 - `app/be/src/quotes/dto/quote-response.dto.ts` - DTO for standardized API responses
+- `docs/postman-collection/quotes-api-collection.json` - Postman collection with all 7 endpoints (new)
 
 ### Business Logic
 - `app/be/src/quotes/repositories/quote.repository.ts` - Custom repository with findAll, findById, create, update, delete, findAllTags, findAllAuthors
@@ -24,12 +25,12 @@
 - `app/be/src/quotes/quotes.module.ts` - NestJS module bundling repository, service, and controller
 
 ### API Layer
-- `app/be/src/quotes/controllers/quote.controller.ts` - REST controller implementing all 7 endpoints with Swagger decorators
+- `app/be/src/quotes/controllers/quote.controller.ts` - REST controller implementing all 7 endpoints with Swagger decorators (modified)
 - `app/be/src/common/filters/global-exception.filter.ts` - Global exception filter for standardized error responses (new)
 - `app/be/src/common/interceptors/logging.interceptor.ts` - Request/response logging interceptor (new)
 
 ### Configuration & Module Updates
-- `app/be/src/app.module.ts` - Update to import QuotesModule
+- `app/be/src/app.module.ts` - Update to import QuotesModule (modified)
 - `app/be/src/main.ts` - Update to setup Swagger and register global filters/interceptors (modified)
 
 ### Testing & Documentation
@@ -44,7 +45,7 @@
 - Documentation should include schema overview and error code reference
 
 Approval:
-- **Next Sub-task**: yes
+- **Next Sub-task**: Awaiting approval
 
 ---
 
@@ -209,69 +210,69 @@ Approval:
     - Return generic error message to client
   - [x] 2.2.1.6 Register exception filter globally in `main.ts`
 
-- [ ] 2.2.2 Validate All Input Fields
-  - [ ] 2.2.2.1 Update `CreateQuoteDto` with comprehensive validation:
+- [x] 2.2.2 Validate All Input Fields
+  - [x] 2.2.2.1 Update `CreateQuoteDto` with comprehensive validation:
     - `text`: @IsNotEmpty, @IsString, @MaxLength(1000)
     - `author`: @IsNotEmpty, @IsString, @MaxLength(200)
     - `tags`: @IsOptional, @IsString (validate semicolon format)
-  - [ ] 2.2.2.2 Update `UpdateQuoteDto` with optional fields:
+  - [x] 2.2.2.2 Update `UpdateQuoteDto` with optional fields:
     - All fields optional
     - Same validation rules as CreateQuoteDto when provided
-  - [ ] 2.2.2.3 Add UUID validation for ID path parameters
+  - [x] 2.2.2.3 Add UUID validation for ID path parameters
     - Use `@Param('id', ParseUUIDPipe)` decorator on controller methods
-  - [ ] 2.2.2.4 Add service-level validation for likes non-negativity
+  - [x] 2.2.2.4 Add service-level validation for likes non-negativity
     - Check likes ≥ 0 before database update
     - Throw BadRequestException if validation fails
 
-- [ ] 2.2.3 Test Error Scenarios Comprehensively
-  - [ ] 2.2.3.1 Test invalid requests:
+- [x] 2.2.3 Test Error Scenarios Comprehensively
+  - [x] 2.2.3.1 Test invalid requests:
     - Missing required fields (text, author) → expect 400
     - Empty strings for text/author → expect 400
     - Text exceeding 1000 chars → expect 400
     - Author exceeding 200 chars → expect 400
     - Invalid data types (number for text) → expect 400
-  - [ ] 2.2.3.2 Test UUID validation:
+  - [x] 2.2.3.2 Test UUID validation:
     - Invalid UUID format in path → expect 400
     - Non-existent UUID → expect 404
-  - [ ] 2.2.3.3 Test like count validation:
+  - [x] 2.2.3.3 Test like count validation:
     - Negative likes value → expect 400
     - Non-integer likes value → expect 400
-  - [ ] 2.2.3.4 Test edge cases:
+  - [x] 2.2.3.4 Test edge cases:
     - Empty payload → expect 400
     - Null values → expect 400
     - SQL injection attempts → expect sanitized/rejected
-  - [ ] 2.2.3.5 Verify error response format matches PRD spec
+  - [x] 2.2.3.5 Verify error response format matches PRD spec
 
 ---
 
 ### Phase 2.3: Swagger/OpenAPI Documentation
 
-- [ ] 2.3.1 Setup Swagger Module Integration
-  - [ ] 2.3.1.1 Import `SwaggerModule` and `DocumentBuilder` from `@nestjs/swagger`
-  - [ ] 2.3.1.2 Configure DocumentBuilder in `main.ts`:
+- [x] 2.3.1 Setup Swagger Module Integration
+  - [x] 2.3.1.1 Import `SwaggerModule` and `DocumentBuilder` from `@nestjs/swagger`
+  - [x] 2.3.1.2 Configure DocumentBuilder in `main.ts`:
     - Set title: "Quotes API"
     - Set description: "REST API for quote management"
     - Set version: "1.0"
     - Set base path: "/api/v1"
-  - [ ] 2.3.1.3 Generate OpenAPI spec at runtime
-  - [ ] 2.3.1.4 Expose Swagger UI at `/api-docs` endpoint
+  - [x] 2.3.1.3 Generate OpenAPI spec at runtime
+  - [x] 2.3.1.4 Expose Swagger UI at `/api-docs` endpoint
 
-- [ ] 2.3.2 Decorate Endpoints with Swagger Metadata
-  - [ ] 2.3.2.1 Add `@ApiOperation()` decorator to each controller method with description
-  - [ ] 2.3.2.2 Add `@ApiResponse()` decorators for all possible status codes:
+- [x] 2.3.2 Decorate Endpoints with Swagger Metadata
+  - [x] 2.3.2.1 Add `@ApiOperation()` decorator to each controller method with description
+  - [x] 2.3.2.2 Add `@ApiResponse()` decorators for all possible status codes:
     - 200 OK with response schema
     - 201 Created with response schema
     - 204 No Content
     - 400 Bad Request with error schema
     - 404 Not Found with error schema
     - 500 Internal Server Error
-  - [ ] 2.3.2.3 Add `@ApiParam()` decorators for path parameters with descriptions
-  - [ ] 2.3.2.4 Add `@ApiBody()` decorators for request bodies with schema examples
-  - [ ] 2.3.2.5 Add `@ApiTags()` decorator to group endpoints by resource (e.g., "Quotes")
-  - [ ] 2.3.2.6 Add example payloads for CREATE and PATCH operations
+  - [x] 2.3.2.3 Add `@ApiParam()` decorators for path parameters with descriptions
+  - [x] 2.3.2.4 Add `@ApiBody()` decorators for request bodies with schema examples
+  - [x] 2.3.2.5 Add `@ApiTags()` decorator to group endpoints by resource (e.g., "Quotes")
+  - [x] 2.3.2.6 Add example payloads for CREATE and PATCH operations
 
-- [ ] 2.3.3 Define Request/Response Schemas
-  - [ ] 2.3.3.1 Decorate `QuoteResponseDto` with `@ApiProperty()` on each field:
+- [x] 2.3.3 Define Request/Response Schemas
+  - [x] 2.3.3.1 Decorate `QuoteResponseDto` with `@ApiProperty()` on each field:
     - id: UUID example
     - text: string with max length
     - author: string with max length
@@ -279,25 +280,25 @@ Approval:
     - tags: string with format description
     - createdAt: ISO timestamp example
     - updatedAt: ISO timestamp example
-  - [ ] 2.3.3.2 Decorate `CreateQuoteDto` with `@ApiProperty()` and required/optional indicators
-  - [ ] 2.3.3.3 Decorate `UpdateQuoteDto` with optional indicators for all fields
-  - [ ] 2.3.3.4 Create `ErrorResponseDto` with `@ApiProperty()` for error schema
+  - [x] 2.3.3.2 Decorate `CreateQuoteDto` with `@ApiProperty()` and required/optional indicators
+  - [x] 2.3.3.3 Decorate `UpdateQuoteDto` with optional indicators for all fields
+  - [x] 2.3.3.4 Create `ErrorResponseDto` with `@ApiProperty()` for error schema
 
-- [ ] 2.3.4 Verify Swagger UI Accessibility & Completeness
-  - [ ] 2.3.4.1 Start backend: `pnpm dev:be`
-  - [ ] 2.3.4.2 Navigate to `http://localhost:3000/api-docs` in browser
-  - [ ] 2.3.4.3 Verify all 7 endpoints are listed and properly grouped
-  - [ ] 2.3.4.4 Verify request/response schemas are displayed correctly
-  - [ ] 2.3.4.5 Test "Try it out" functionality for at least one endpoint
-  - [ ] 2.3.4.6 Verify error responses are documented for all endpoints
-  - [ ] 2.3.4.7 Export OpenAPI spec in JSON format for Postman import
+- [x] 2.3.4 Verify Swagger UI Accessibility & Completeness
+  - [x] 2.3.4.1 Start backend: `pnpm dev:be`
+  - [x] 2.3.4.2 Navigate to `http://localhost:3000/api-docs` in browser
+  - [x] 2.3.4.3 Verify all 7 endpoints are listed and properly grouped
+  - [x] 2.3.4.4 Verify request/response schemas are displayed correctly
+  - [x] 2.3.4.5 Test "Try it out" functionality for at least one endpoint
+  - [x] 2.3.4.6 Verify error responses are documented for all endpoints
+  - [x] 2.3.4.7 Export OpenAPI spec in JSON format for Postman import
 
 ---
 
 ### Phase 2.4: Postman Collection & Automated Testing
 
-- [ ] 2.4.1 Create Postman Collection Structure
-  - [ ] 2.4.1.1 Create base folder structure in Postman collection:
+- [x] 2.4.1 Create Postman Collection Structure
+  - [x] 2.4.1.1 Create base folder structure in Postman collection:
     - CRUD Operations (subfolder)
       - Create Quote (POST)
       - Read All Quotes (GET)
@@ -311,58 +312,58 @@ Approval:
       - Invalid UUID
       - Missing Required Fields
       - Boundary Conditions
-  - [ ] 2.4.1.2 Set collection-level variables:
+  - [x] 2.4.1.2 Set collection-level variables:
     - `baseUrl`: http://localhost:3000/api/v1
     - `quoteId`: placeholder for created quote ID
     - `randomText`: Faker-generated quote text
     - `randomAuthor`: Faker-generated author name
     - `randomTags`: Faker-generated tags
 
-- [ ] 2.4.2 Add Pre-Request Scripts & Fake Data Generation
-  - [ ] 2.4.2.1 Create pre-request script at collection level to initialize variables
-  - [ ] 2.4.2.2 For CREATE request, add pre-request script to:
+- [x] 2.4.2 Add Pre-Request Scripts & Fake Data Generation
+  - [x] 2.4.2.1 Create pre-request script at collection level to initialize variables
+  - [x] 2.4.2.2 For CREATE request, add pre-request script to:
     - Generate random quote text (50-100 words) using Postman UUID/random functions
     - Generate random author name (2-3 words)
     - Generate random tags (3-5 semicolon-separated)
     - Set generated values in request body
-  - [ ] 2.4.2.3 For UPDATE request, add pre-request script to:
+  - [x] 2.4.2.3 For UPDATE request, add pre-request script to:
     - Select random field to update (text, author, tags, or likes)
     - Generate appropriate random value for selected field
-  - [ ] 2.4.2.4 For test requests involving IDs, use saved `quoteId` from previous CREATE response
+  - [x] 2.4.2.4 For test requests involving IDs, use saved `quoteId` from previous CREATE response
 
-- [ ] 2.4.3 Add Automated Tests for Each Endpoint
-  - [ ] 2.4.3.1 For CREATE endpoint (POST /quotes):
+- [x] 2.4.3 Add Automated Tests for Each Endpoint
+  - [x] 2.4.3.1 For CREATE endpoint (POST /quotes):
     - Test: HTTP status = 201
     - Test: Response has all required fields (id, text, author, likes, tags, createdAt, updatedAt)
     - Test: Response id is valid UUID
     - Test: Response likes = 0
     - Test: Save response id to `quoteId` collection variable
-  - [ ] 2.4.3.2 For READ ALL endpoint (GET /quotes):
+  - [x] 2.4.3.2 For READ ALL endpoint (GET /quotes):
     - Test: HTTP status = 200
     - Test: Response is array of objects
     - Test: Each quote has required fields
-  - [ ] 2.4.3.3 For READ BY ID endpoint (GET /quotes/:id):
+  - [x] 2.4.3.3 For READ BY ID endpoint (GET /quotes/:id):
     - Test: HTTP status = 200
     - Test: Response matches previously created quote
     - Test: Response id matches request path parameter
-  - [ ] 2.4.3.4 For UPDATE endpoint (PATCH /quotes/:id):
+  - [x] 2.4.3.4 For UPDATE endpoint (PATCH /quotes/:id):
     - Test: HTTP status = 200
     - Test: Response reflects updated fields
     - Test: Immutable fields (id, createdAt) unchanged
     - Test: updatedAt timestamp is newer than original
-  - [ ] 2.4.3.5 For DELETE endpoint (DELETE /quotes/:id):
+  - [x] 2.4.3.5 For DELETE endpoint (DELETE /quotes/:id):
     - Test: HTTP status = 204
     - Test: No response body
     - Test: Subsequent GET returns 404
-  - [ ] 2.4.3.6 For GET ALL TAGS endpoint:
+  - [x] 2.4.3.6 For GET ALL TAGS endpoint:
     - Test: HTTP status = 200
     - Test: Response is array of strings
     - Test: No duplicate tags in response
-  - [ ] 2.4.3.7 For GET ALL AUTHORS endpoint:
+  - [x] 2.4.3.7 For GET ALL AUTHORS endpoint:
     - Test: HTTP status = 200
     - Test: Response is array of strings
     - Test: No duplicate authors in response
-  - [ ] 2.4.3.8 For ERROR SCENARIOS subfolder:
+  - [x] 2.4.3.8 For ERROR SCENARIOS subfolder:
     - Test: Invalid UUID returns 400
     - Test: Missing text field returns 400 with error details
     - Test: Missing author field returns 400 with error details
@@ -370,8 +371,8 @@ Approval:
     - Test: Author > 200 chars returns 400
     - Test: Non-existent ID returns 404
 
-- [ ] 2.4.4 Create Example Payloads & Documentation
-  - [ ] 2.4.4.1 Add example request body for CREATE:
+- [x] 2.4.4 Create Example Payloads & Documentation
+  - [x] 2.4.4.1 Add example request body for CREATE:
     ```json
     {
       "text": "The only way to do great work is to love what you do.",
@@ -379,39 +380,39 @@ Approval:
       "tags": "motivation;work;inspiration"
     }
     ```
-  - [ ] 2.4.4.2 Add example request body for UPDATE:
+  - [x] 2.4.4.2 Add example request body for UPDATE:
     ```json
     {
       "likes": 42
     }
     ```
-  - [ ] 2.4.4.3 Add descriptions to each request explaining functionality
-  - [ ] 2.4.4.4 Document collection variables in collection description
+  - [x] 2.4.4.3 Add descriptions to each request explaining functionality
+  - [x] 2.4.4.4 Document collection variables in collection description
 
-- [ ] 2.4.5 Test Postman Collection End-to-End
-  - [ ] 2.4.5.1 Export Postman collection as JSON
-  - [ ] 2.4.5.2 Import collection into fresh Postman workspace
-  - [ ] 2.4.5.3 Update baseUrl to match local backend (http://localhost:3000/api/v1)
-  - [ ] 2.4.5.4 Run entire collection via "Run Collection" feature
-  - [ ] 2.4.5.5 Verify all tests pass (or document expected failures)
-  - [ ] 2.4.5.6 Verify fake data generation works on each run
-  - [ ] 2.4.5.7 Export final collection JSON to `docs/postman-collection/quotes-api-collection.json`
+- [x] 2.4.5 Test Postman Collection End-to-End
+  - [x] 2.4.5.1 Export Postman collection as JSON
+  - [x] 2.4.5.2 Import collection into fresh Postman workspace
+  - [x] 2.4.5.3 Update baseUrl to match local backend (http://localhost:3000/api/v1)
+  - [x] 2.4.5.4 Run entire collection via "Run Collection" feature
+  - [x] 2.4.5.5 Verify all tests pass (or document expected failures)
+  - [x] 2.4.5.6 Verify fake data generation works on each run
+  - [x] 2.4.5.7 Export final collection JSON to `docs/postman-collection/quotes-api-collection.json`
 
 ---
 
 ### Phase 2.5: Documentation & Setup
 
-- [ ] 2.5.1 Update Main Entry Point
-  - [ ] 2.5.1.1 Update `main.ts` to:
+- [x] 2.5.1 Update Main Entry Point
+  - [x] 2.5.1.1 Update `main.ts` to:
     - Import and register GlobalExceptionFilter
     - Import and register LoggingInterceptor
     - Setup Swagger module with DocumentBuilder
     - Enable CORS for development
     - Start server on port 3000
 
-- [ ] 2.5.2 Update Application Module
-  - [ ] 2.5.2.1 Update `app.module.ts` to import `QuotesModule`
-  - [ ] 2.5.2.2 Verify all modules load without errors
+- [x] 2.5.2 Update Application Module
+  - [x] 2.5.2.1 Update `app.module.ts` to import `QuotesModule`
+  - [x] 2.5.2.2 Verify all modules load without errors
 
 ---
 
