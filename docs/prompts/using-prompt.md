@@ -32,3 +32,13 @@ Removing Unit tests, integrations tests, CI/CD. Add postman collection and tests
 Focus on implementing the API endpoints and API documentation using swagger. 
 Also create a postman collection for all API endpoints with tests written to validate the API endpoints, for input parameters make use of fake data to generate data. 
 ```
+
+## Generating Tasks
+```markdown
+@rfd-001-quote-management-part1-implementation.md generate tasks using the prompt @generate-tasks.md 
+```
+
+## Processing Tasks - Code implementation
+```markdown
+@tasks-rfd-001-quote-management-part1-implementation.md Start Phase 0 tasks using prompt @process-task-list.md 
+```
