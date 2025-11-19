@@ -22,7 +22,7 @@ export class VersionService {
       const packageJson = JSON.parse(packageJsonContent);
 
       return {
-        name: packageJson.name || "unknown",
+        name: "be-quotes-app",
         version: packageJson.version || "unknown",
         description: packageJson.description || "",
       };
