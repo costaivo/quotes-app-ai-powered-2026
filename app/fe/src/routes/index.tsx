@@ -49,8 +49,14 @@ function Home() {
             </span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            <span className="mb-14 text-blue-950">Discover inspiring quotes to start your day with a smile.</span> <br/>
-            <span className="mb-8 text-blue-600">Get personalized recommendations and explore an extensive collection of wisdom from around the world.</span>
+            <span className="mb-14 text-blue-950">
+              Discover inspiring quotes to start your day with a smile.
+            </span>{" "}
+            <br />
+            <span className="mb-8 text-blue-600">
+              Get personalized recommendations and explore an extensive collection of wisdom from
+              around the world.
+            </span>
           </p>
         </div>
       </div>

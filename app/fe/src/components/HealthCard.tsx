@@ -13,9 +13,7 @@ const getStatusColor = (status: string) => {
 };
 
 const getStatusBgColor = (status: string) => {
-  return status === "healthy"
-    ? "bg-green-50 dark:bg-green-950"
-    : "bg-red-50 dark:bg-red-950";
+  return status === "healthy" ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950";
 };
 
 const StatusIcon = ({ status }: { status: string }) => {
@@ -35,7 +33,9 @@ export function HealthCard({ healthStatus }: HealthCardProps) {
             <Activity className="h-5 w-5" />
             System Health Status
           </CardTitle>
-          <span className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.status)}`}>
+          <span
+            className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.status)}`}
+          >
             <StatusIcon status={healthStatus.status} />
             {healthStatus.status.toUpperCase()}
           </span>
@@ -58,35 +58,47 @@ export function HealthCard({ healthStatus }: HealthCardProps) {
         <div className="space-y-3 border-t pt-4">
           <h4 className="font-semibold text-sm">Health Checks</h4>
 
-          <div className={`rounded-lg p-3 ${getStatusBgColor(healthStatus.checks.database.status)}`}>
+          <div
+            className={`rounded-lg p-3 ${getStatusBgColor(healthStatus.checks.database.status)}`}
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <HardDrive className="h-4 w-4" />
                 <span className="font-medium">Database</span>
               </div>
-              <span className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.checks.database.status)}`}>
+              <span
+                className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.checks.database.status)}`}
+              >
                 <StatusIcon status={healthStatus.checks.database.status} />
                 {healthStatus.checks.database.status.toUpperCase()}
               </span>
             </div>
             {healthStatus.checks.database.message && (
-              <p className="text-xs mt-1 text-muted-foreground">{healthStatus.checks.database.message}</p>
+              <p className="text-xs mt-1 text-muted-foreground">
+                {healthStatus.checks.database.message}
+              </p>
             )}
           </div>
 
-          <div className={`rounded-lg p-3 ${getStatusBgColor(healthStatus.checks.application.status)}`}>
+          <div
+            className={`rounded-lg p-3 ${getStatusBgColor(healthStatus.checks.application.status)}`}
+          >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Activity className="h-4 w-4" />
                 <span className="font-medium">Application</span>
               </div>
-              <span className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.checks.application.status)}`}>
+              <span
+                className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.checks.application.status)}`}
+              >
                 <StatusIcon status={healthStatus.checks.application.status} />
                 {healthStatus.checks.application.status.toUpperCase()}
               </span>
             </div>
             {healthStatus.checks.application.message && (
-              <p className="text-xs mt-1 text-muted-foreground">{healthStatus.checks.application.message}</p>
+              <p className="text-xs mt-1 text-muted-foreground">
+                {healthStatus.checks.application.message}
+              </p>
             )}
           </div>
 
@@ -96,13 +108,16 @@ export function HealthCard({ healthStatus }: HealthCardProps) {
                 <HardDrive className="h-4 w-4" />
                 <span className="font-medium">Memory</span>
               </div>
-              <span className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.checks.memory.status)}`}>
+              <span
+                className={`flex items-center gap-1 text-sm font-semibold ${getStatusColor(healthStatus.checks.memory.status)}`}
+              >
                 <StatusIcon status={healthStatus.checks.memory.status} />
                 {healthStatus.checks.memory.status.toUpperCase()}
               </span>
             </div>
             <p className="text-xs mt-1 text-muted-foreground">
-              {healthStatus.checks.memory.used}MB / {healthStatus.checks.memory.total}MB ({healthStatus.checks.memory.percentage}%)
+              {healthStatus.checks.memory.used}MB / {healthStatus.checks.memory.total}MB (
+              {healthStatus.checks.memory.percentage}%)
             </p>
           </div>
         </div>

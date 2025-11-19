@@ -34,7 +34,7 @@ export function NavBar() {
                   asChild
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    isActive(link.href) && "bg-accent text-accent-foreground"
+                    isActive(link.href) && "bg-accent text-accent-foreground",
                   )}
                 >
                   <div>{link.label}</div>
@@ -47,4 +47,3 @@ export function NavBar() {
     </nav>
   );
 }
-
