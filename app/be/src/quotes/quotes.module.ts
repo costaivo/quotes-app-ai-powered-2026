@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import type { DataSource } from "typeorm";
+import { DataSource } from "typeorm";
 import { Quote } from "./entities/quote.entity";
 import { QuoteRepository } from "./repositories/quote.repository";
 import { QuoteService } from "./services/quote.service";

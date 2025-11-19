@@ -47,4 +47,3 @@ export class Quote {
   })
   updatedAt!: Date;
 }
-
