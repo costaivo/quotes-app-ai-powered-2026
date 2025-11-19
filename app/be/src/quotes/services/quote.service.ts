@@ -26,7 +26,7 @@ export class QuoteService {
 
   async create(dto: CreateQuoteDto): Promise<QuoteResponseDto> {
     this.validateCreateDto(dto);
-    const quote = await this.quoteRepository.create(dto);
+    const quote = await this.quoteRepository.createQuote(dto);
     return this.mapToDto(quote);
   }
 
@@ -40,7 +40,7 @@ export class QuoteService {
       throw new NotFoundException(`Quote with id ${id} not found`);
     }
 
-    const updatedQuote = await this.quoteRepository.update(id, dto);
+    const updatedQuote = await this.quoteRepository.updateQuote(id, dto);
     if (!updatedQuote) {
       throw new NotFoundException(`Quote with id ${id} not found`);
     }
@@ -57,7 +57,7 @@ export class QuoteService {
       throw new NotFoundException(`Quote with id ${id} not found`);
     }
 
-    await this.quoteRepository.delete(id);
+    await this.quoteRepository.deleteQuote(id);
   }
 
   async findAllTags(): Promise<string[]> {

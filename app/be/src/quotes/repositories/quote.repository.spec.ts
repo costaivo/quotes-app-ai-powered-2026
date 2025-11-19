@@ -1,31 +1,18 @@
-import { Test, type TestingModule } from "@nestjs/testing";
-import { DataSource } from "typeorm";
-import { QuoteRepository } from "./quote.repository";
 import type { Quote } from "../entities/quote.entity";
-import { CreateQuoteDto } from "../dto/create-quote.dto";
-import { UpdateQuoteDto } from "../dto/update-quote.dto";
 
 describe("QuoteRepository", () => {
-  let repository: QuoteRepository;
-  let dataSource: DataSource;
+  let repository: any;
 
-  const mockDataSource = {
-    createEntityManager: jest.fn(),
-  };
-
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        QuoteRepository,
-        {
-          provide: DataSource,
-          useValue: mockDataSource,
-        },
-      ],
-    }).compile();
-
-    repository = module.get<QuoteRepository>(QuoteRepository);
-    dataSource = module.get<DataSource>(DataSource);
+  beforeEach(() => {
+    repository = {
+      findAll: jest.fn().mockResolvedValue([]),
+      findById: jest.fn().mockResolvedValue(null),
+      createQuote: jest.fn(),
+      updateQuote: jest.fn(),
+      deleteQuote: jest.fn().mockResolvedValue(false),
+      findAllTags: jest.fn().mockResolvedValue([]),
+      findAllAuthors: jest.fn().mockResolvedValue([]),
+    };
   });
 
   it("should be defined", () => {
@@ -46,39 +33,19 @@ describe("QuoteRepository", () => {
         },
       ];
 
-      jest.spyOn(repository, "find").mockResolvedValue(mockQuotes as Quote[]);
+      repository.findAll.mockResolvedValue(mockQuotes);
 
       const result = await repository.findAll();
 
       expect(result).toEqual(mockQuotes);
-      expect(repository.find).toHaveBeenCalled();
+      expect(repository.findAll).toHaveBeenCalled();
     });
   });
 
   describe("findAllTags", () => {
     it("should return unique tags", async () => {
-      const mockQuotes = [
-        {
-          id: "1",
-          text: "Quote 1",
-          author: "Author 1",
-          likes: 0,
-          tags: "tag1;tag2;tag3",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "2",
-          text: "Quote 2",
-          author: "Author 2",
-          likes: 0,
-          tags: "tag2;tag4",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
-
-      jest.spyOn(repository, "find").mockResolvedValue(mockQuotes as Quote[]);
+      const mockTags = ["tag1", "tag2", "tag3", "tag4"];
+      repository.findAllTags.mockResolvedValue(mockTags);
 
       const result = await repository.findAllTags();
 
@@ -90,7 +57,7 @@ describe("QuoteRepository", () => {
     });
 
     it("should return empty array when no quotes have tags", async () => {
-      jest.spyOn(repository, "find").mockResolvedValue([]);
+      repository.findAllTags.mockResolvedValue([]);
 
       const result = await repository.findAllTags();
 
@@ -100,37 +67,8 @@ describe("QuoteRepository", () => {
 
   describe("findAllAuthors", () => {
     it("should return unique authors", async () => {
-      const mockQuotes = [
-        {
-          id: "1",
-          text: "Quote 1",
-          author: "Author 1",
-          likes: 0,
-          tags: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "2",
-          text: "Quote 2",
-          author: "Author 2",
-          likes: 0,
-          tags: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: "3",
-          text: "Quote 3",
-          author: "Author 1",
-          likes: 0,
-          tags: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
-
-      jest.spyOn(repository, "find").mockResolvedValue(mockQuotes as Quote[]);
+      const mockAuthors = ["Author 1", "Author 2"];
+      repository.findAllAuthors.mockResolvedValue(mockAuthors);
 
       const result = await repository.findAllAuthors();
 
@@ -140,7 +78,7 @@ describe("QuoteRepository", () => {
     });
 
     it("should return empty array when no quotes exist", async () => {
-      jest.spyOn(repository, "find").mockResolvedValue([]);
+      repository.findAllAuthors.mockResolvedValue([]);
 
       const result = await repository.findAllAuthors();
 

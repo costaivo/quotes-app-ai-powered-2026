@@ -1,37 +1,25 @@
-import { Test, type TestingModule } from "@nestjs/testing";
 import { NotFoundException, BadRequestException } from "@nestjs/common";
 import { QuoteService } from "./quote.service";
-import { QuoteRepository } from "../repositories/quote.repository";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
 
 describe("QuoteService", () => {
   let service: QuoteService;
-  let repository: QuoteRepository;
+  let repository: any;
 
   const mockRepository = {
     findAll: jest.fn(),
     findById: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    createQuote: jest.fn(),
+    updateQuote: jest.fn(),
+    deleteQuote: jest.fn(),
     findAllTags: jest.fn(),
     findAllAuthors: jest.fn(),
   };
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        QuoteService,
-        {
-          provide: QuoteRepository,
-          useValue: mockRepository,
-        },
-      ],
-    }).compile();
-
-    service = module.get<QuoteService>(QuoteService);
-    repository = module.get<QuoteRepository>(QuoteRepository);
+  beforeEach(() => {
+    repository = mockRepository;
+    service = new QuoteService(repository);
   });
 
   afterEach(() => {
@@ -118,14 +106,14 @@ describe("QuoteService", () => {
         updatedAt: new Date(),
       };
 
-      mockRepository.create.mockResolvedValue(mockCreatedQuote);
+      mockRepository.createQuote.mockResolvedValue(mockCreatedQuote);
 
       const result = await service.create(createDto);
 
       expect(result.text).toBe(createDto.text);
       expect(result.author).toBe(createDto.author);
       expect(result.likes).toBe(0);
-      expect(mockRepository.create).toHaveBeenCalledWith(createDto);
+      expect(mockRepository.createQuote).toHaveBeenCalledWith(createDto);
     });
 
     it("should throw BadRequestException for missing text", async () => {
@@ -171,12 +159,12 @@ describe("QuoteService", () => {
       };
 
       mockRepository.findById.mockResolvedValue(existingQuote);
-      mockRepository.update.mockResolvedValue(updatedQuote);
+      mockRepository.updateQuote.mockResolvedValue(updatedQuote);
 
       const result = await service.update(quoteId, updateDto);
 
       expect(result.text).toBe(updateDto.text);
-      expect(mockRepository.update).toHaveBeenCalledWith(quoteId, updateDto);
+      expect(mockRepository.updateQuote).toHaveBeenCalledWith(quoteId, updateDto);
     });
 
     it("should throw NotFoundException when quote not found", async () => {
@@ -224,11 +212,11 @@ describe("QuoteService", () => {
       };
 
       mockRepository.findById.mockResolvedValue(mockQuote);
-      mockRepository.delete.mockResolvedValue(true);
+      mockRepository.deleteQuote.mockResolvedValue(true);
 
       await service.delete(quoteId);
 
-      expect(mockRepository.delete).toHaveBeenCalledWith(quoteId);
+      expect(mockRepository.deleteQuote).toHaveBeenCalledWith(quoteId);
     });
 
     it("should throw NotFoundException when quote not found", async () => {

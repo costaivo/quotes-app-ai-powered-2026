@@ -18,7 +18,7 @@ export class QuoteRepository extends Repository<Quote> {
     return this.findOne({ where: { id } });
   }
 
-  async create(dto: CreateQuoteDto): Promise<Quote> {
+  async createQuote(dto: CreateQuoteDto): Promise<Quote> {
     const quote = this.createQueryBuilder()
       .insert()
       .into(Quote)
@@ -35,13 +35,13 @@ export class QuoteRepository extends Repository<Quote> {
     return result.generatedMaps[0] as Quote;
   }
 
-  async update(id: string, dto: UpdateQuoteDto): Promise<Quote | null> {
+  async updateQuote(id: string, dto: UpdateQuoteDto): Promise<Quote | null> {
     await this.createQueryBuilder().update(Quote).set(dto).where("id = :id", { id }).execute();
 
     return this.findById(id);
   }
 
-  async delete(id: string): Promise<boolean> {
+  async deleteQuote(id: string): Promise<boolean> {
     const result = await this.createQueryBuilder()
       .delete()
       .from(Quote)
