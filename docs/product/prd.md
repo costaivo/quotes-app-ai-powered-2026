@@ -204,14 +204,124 @@ All API requests and responses use **JSON** format with standard HTTP headers:
 - [ ] Integration tests for all endpoints
 
 ---
+---
+
+## 🎯 Feature: API Search and Filtering (Part 2)
+
+### Metadata
+- **Version**: 1.1
+- **Date**: 2025-11-20
+- **Status**: Approved
+- **Part**: 2 of N
 
 ---
+
+## 📝 Introduction & Overview
+
+This feature enhances the existing Quotes API by adding search and filtering capabilities to the `GET /api/v1/quotes` endpoint. It allows users to find specific quotes based on their content and author, making the API more powerful for client applications that need to display specific or filtered sets of quotes.
+
+---
+
+## 🎯 Goals
+
+1.  **Enhance Quote Retrieval**: Allow filtering quotes by author and content.
+2.  **Provide Flexible Search**: Implement case-insensitive, partial matching for search terms.
+3.  **Support Combined Filters**: Enable filtering by both author and content simultaneously.
+4.  **Maintain Backward Compatibility**: Ensure the existing `GET /api/v1/quotes` functionality remains unchanged when no filter parameters are provided.
+
+---
+
+## 👥 User Stories
+
+- As a user, I want to search for quotes by author to see all quotes from a specific person.
+- As a user, I want to search for quotes containing a specific word so I can find relevant content.
+- As a developer, I want to filter quotes by both author and content to build a powerful search interface.
+
+---
+
+## 📋 Functional Requirements
+
+### 1. Enhanced `GET /api/v1/quotes` Endpoint
+
+The `GET /api/v1/quotes` endpoint will be updated to accept optional query parameters for filtering.
+
+| Parameter | Type   | Description                                            |
+|-----------|--------|--------------------------------------------------------|
+| `author`  | String | Filter quotes by author name (case-insensitive, partial match). |
+| `query`   | String | Filter quotes by content (case-insensitive, partial match).   |
+
+### 2. Search Logic
+
+-   **Case-Insensitive**: Searches for `author` and `query` must be case-insensitive. For example, a search for `einstein` should match "Einstein".
+-   **Partial Match**: Searches must match partial strings. A `query` of "inspire" should match quotes containing "inspiration" or "inspiring".
+-   **Combined Filtering**: When both `author` and `query` parameters are provided, the filter should apply `AND` logic, returning only quotes that match both criteria.
+-   **No Results**: If no quotes match the filter criteria, the API must return a `200 OK` status with an empty JSON array `[]`.
+
+### 3. API Endpoint Definition
+
+| # | Method | Endpoint                      | Description                                   | Response                  | Status Codes |
+|---|--------|-------------------------------|-----------------------------------------------|---------------------------|--------------|
+| 1 | GET    | `/api/v1/quotes`              | Fetch all quotes.                             | Array of Quote objects    | 200 OK       |
+| 1 | GET    | `/api/v1/quotes?author={name}` | Fetch quotes filtered by author.              | Array of Quote objects    | 200 OK       |
+| 1 | GET    | `/api/v1/quotes?query={text}`  | Fetch quotes filtered by content.             | Array of Quote objects    | 200 OK       |
+| 1 | GET    | `/api/v1/quotes?author={name}&query={text}` | Fetch quotes filtered by author and content. | Array of Quote objects | 200 OK       |
+
+
+---
+
+## 🚫 Non-Goals (Out of Scope)
+
+-   **Pagination**: The API will return all matching results; pagination is not required for this iteration.
+-   **Complex Search Syntax**: The feature will not support regular expressions, `OR` logic within a field, or other complex query languages.
+-   **Full-Text Search Engine**: Integration with a dedicated search engine like Elasticsearch is not in scope. The search will be implemented at the database level.
+-   **Sorting**: Results will be returned in the default order (e.g., by creation date); explicit sorting parameters will not be added.
+
+---
+
+## 🎨 Design Considerations
+
+-   **Simplicity**: The query parameters should be simple and intuitive for developers to use.
+-   **Performance**: While full-text search is not a goal, the implementation should be reasonably performant to not degrade the user experience on the client-side.
+
+---
+
+## ⚙️ Technical Considerations
+
+-   **Database Indexing**: To ensure efficient querying, the `author` and `text` columns in the quotes table may require database indexes.
+-   **Query Optimization**: The implementation should be mindful of generating efficient SQL queries to avoid performance bottlenecks (e.g., avoiding patterns that prevent index usage).
+
+---
+
+## ✅ Success Metrics
+
+-   **Functionality**: Users can successfully filter quotes by author, content, and both combined.
+-   **Performance**: The response time for unfiltered requests to `GET /api/v1/quotes` does not significantly degrade.
+-   **API Contract Adherence**: The API correctly handles filter parameters and returns expected results, including an empty array for no matches.
+
+---
+
+## ❓ Open Questions
+
+-   Should there be a minimum length for search terms to prevent overly broad or inefficient queries (e.g., searching for a single letter)?
+-   How will the system handle special characters or symbols in search queries?
+
+---
+
+## ✔️ Acceptance Criteria
+
+-   [ ] When `GET /api/v1/quotes` is called with no parameters, it returns all quotes.
+-   [ ] `GET /api/v1/quotes?author=ein` returns all quotes where the author's name contains "ein" (case-insensitive).
+-   [ ] `GET /api/v1/quotes?query=world` returns all quotes where the text contains "world" (case-insensitive).
+-   [ ] `GET /api/v1/quotes?author=sagan&query=stars` returns quotes by authors containing "sagan" AND with content containing "stars".
+-   [ ] If a search for a specific author and query yields no results, the API returns `200 OK` with an empty array `[]`.
+-   [ ] Existing API endpoints (`POST`, `PATCH`, `DELETE`, etc.) remain unaffected.
 
 ## 📋 RFD Register
 
 | RFD # | Title | Filename | Status | Date | Short summary |
 |---:|---|---|---|---|---|
-| 001 | Quote Management System - Part 1 Implementation Roadmap | rfd-001-quote-management-part1-implementation.md | draft | 2025-11-19 | Master implementation roadmap consolidating phases, milestones, and team responsibilities for delivering all MVP features with unified strategy. |
+| 001 | Quote Management System - Part 1 Implementation Roadmap | rfd-001-quote-management-part1-implementation.md | draft | 2025-11-19 | Master implementation roadmap for delivering all MVP features. |
+| 002 | Search and Filtering of Quotes | rfd-002-search-and-filtering-of-quotes.md | draft | 2025-11-20 | Defines the technical approach for adding search and filtering to the quotes API. |
 
 ---
 
@@ -224,4 +334,3 @@ All API requests and responses use **JSON** format with standard HTTP headers:
 
 **Document Status**: Draft → Ready for Development  
 **Last Updated**: 2025-11-19
-
