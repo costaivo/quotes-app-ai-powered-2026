@@ -3,7 +3,7 @@ title: "Search and Filtering of Quotes"
 filename: "rfd-002-search-and-filtering-of-quotes.md"
 date: 2025-11-20
 author: Gemini
-status: draft
+status: Approved
 rfd_number: 002
 ---
 
@@ -67,10 +67,11 @@ Given that performance is a consideration and the user experience depends on res
 
 # Open Questions
 -   Should there be a minimum length for search terms to prevent overly broad queries? (To be addressed in a future iteration if performance issues are observed).
+Decision: skip for now
 
 # Approvals
--   [Engineering Lead] — pending
--   [Product Manager] — pending
+-   [Engineering Lead] — Ivo Costa  
+-   [Product Manager] — Arti Dhoot
 
 # Change Log
 -   rfd-002 created 2025-11-20 by Gemini
