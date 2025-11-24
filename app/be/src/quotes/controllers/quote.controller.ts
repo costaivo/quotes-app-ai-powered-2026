@@ -6,16 +6,18 @@ import {
   Delete,
   Body,
   Param,
+  Query,
   HttpStatus,
   HttpCode,
   ParseUUIDPipe,
   Inject,
 } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from "@nestjs/swagger";
 import { QuoteService } from "../services/quote.service";
 import { CreateQuoteDto } from "../dto/create-quote.dto";
 import { UpdateQuoteDto } from "../dto/update-quote.dto";
 import { QuoteResponseDto } from "../dto/quote-response.dto";
+import { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 @ApiTags("Quotes")
 @Controller("v1/quotes")
@@ -30,8 +32,8 @@ export class QuoteController {
     description: "Return all quotes.",
     type: [QuoteResponseDto],
   })
-  async findAll(): Promise<QuoteResponseDto[]> {
-    return this.quoteService.findAll();
+  async findAll(@Query() query: FindAllQuotesDto): Promise<QuoteResponseDto[]> {
+    return this.quoteService.findAll(query);
   }
 
   @Get("tags/all")

@@ -3,6 +3,7 @@ import { type DataSource, Repository } from "typeorm";
 import { Quote } from "../entities/quote.entity";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
+import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 @Injectable()
 export class QuoteRepository extends Repository<Quote> {
@@ -10,8 +11,18 @@ export class QuoteRepository extends Repository<Quote> {
     super(Quote, dataSource.createEntityManager());
   }
 
-  async findAll(): Promise<Quote[]> {
-    return this.find();
+  async findAll(query: FindAllQuotesDto): Promise<Quote[]> {
+    const qb = this.createQueryBuilder("quote");
+
+    if (query.author) {
+      qb.andWhere("quote.author ILIKE :author", { author: `%${query.author}%` });
+    }
+
+    if (query.query) {
+      qb.andWhere("quote.text ILIKE :text", { text: `%${query.query}%` });
+    }
+
+    return qb.getMany();
   }
 
   async findById(id: string): Promise<Quote | null> {

@@ -21,7 +21,7 @@ The AI will process a markdown file containing a task list structured as follows
 Relevant Files:
 - `fe/src/components/LoginForm.js`: New login form. (new)
 
-Approval:
+**Approval:**
 - **Next Sub-task**: yes
 ```
 

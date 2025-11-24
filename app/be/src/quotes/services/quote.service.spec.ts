@@ -2,6 +2,7 @@ import { NotFoundException, BadRequestException } from "@nestjs/common";
 import { QuoteService } from "./quote.service";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
+import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 describe("QuoteService", () => {
   let service: QuoteService;
@@ -31,7 +32,7 @@ describe("QuoteService", () => {
   });
 
   describe("findAll", () => {
-    it("should return all quotes", async () => {
+    it("should return all quotes when no filters are provided", async () => {
       const mockQuotes = [
         {
           id: "123e4567-e89b-12d3-a456-426614174000",
@@ -46,11 +47,38 @@ describe("QuoteService", () => {
 
       mockRepository.findAll.mockResolvedValue(mockQuotes);
 
-      const result = await service.findAll();
+      const result = await service.findAll({});
 
       expect(result).toHaveLength(1);
       expect(result[0].text).toBe("Test quote");
-      expect(mockRepository.findAll).toHaveBeenCalled();
+      expect(mockRepository.findAll).toHaveBeenCalledWith({});
+    });
+
+    it("should pass author filter to repository", async () => {
+      const query: FindAllQuotesDto = { author: "Test" };
+      mockRepository.findAll.mockResolvedValue([]);
+
+      await service.findAll(query);
+
+      expect(mockRepository.findAll).toHaveBeenCalledWith(query);
+    });
+
+    it("should pass query filter to repository", async () => {
+      const query: FindAllQuotesDto = { query: "something" };
+      mockRepository.findAll.mockResolvedValue([]);
+
+      await service.findAll(query);
+
+      expect(mockRepository.findAll).toHaveBeenCalledWith(query);
+    });
+
+    it("should pass both filters to repository", async () => {
+      const query: FindAllQuotesDto = { author: "Test", query: "something" };
+      mockRepository.findAll.mockResolvedValue([]);
+
+      await service.findAll(query);
+
+      expect(mockRepository.findAll).toHaveBeenCalledWith(query);
     });
   });
 
