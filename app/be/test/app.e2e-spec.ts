@@ -7,7 +7,7 @@ import type { CreateQuoteDto } from "../src/quotes/dto/create-quote.dto";
 
 describe("Quotes E2E", () => {
   let app: INestApplication<App>;
-  let createdQuoteIds: string[] = [];
+  const createdQuoteIds: string[] = [];
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -53,9 +53,7 @@ describe("Quotes E2E", () => {
 
   describe("GET /api/v1/quotes", () => {
     it("should return all quotes when no parameters provided", async () => {
-      const response = await request(app.getHttpServer())
-        .get("/api/v1/quotes")
-        .expect(200);
+      const response = await request(app.getHttpServer()).get("/api/v1/quotes").expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
       expect(response.body.length).toBeGreaterThanOrEqual(3);

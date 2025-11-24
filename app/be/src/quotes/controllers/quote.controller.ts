@@ -17,7 +17,7 @@ import { QuoteService } from "../services/quote.service";
 import { CreateQuoteDto } from "../dto/create-quote.dto";
 import { UpdateQuoteDto } from "../dto/update-quote.dto";
 import { QuoteResponseDto } from "../dto/quote-response.dto";
-import { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
+import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 @ApiTags("Quotes")
 @Controller("v1/quotes")
