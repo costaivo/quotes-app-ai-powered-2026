@@ -316,6 +316,152 @@ The `GET /api/v1/quotes` endpoint will be updated to accept optional query param
 -   [ ] If a search for a specific author and query yields no results, the API returns `200 OK` with an empty array `[]`.
 -   [ ] Existing API endpoints (`POST`, `PATCH`, `DELETE`, etc.) remain unaffected.
 
+---
+
+## 🎯 Feature: Pagination Implementation (Part 3)
+
+### Metadata
+- **Version**: 1.0
+- **Date**: 2025-11-25
+- **Status**: Draft
+- **Part**: 3 of N
+
+---
+
+## 📝 Introduction & Overview
+
+The Quotes Application needs pagination functionality to efficiently browse large collections of quotes by dividing them into manageable pages. This feature enhances the `GET /api/v1/quotes` endpoint to support pagination parameters, improving performance and user experience with large datasets.
+
+---
+
+## 🎯 Goals
+
+1.  **Enhanced Retrieval**: Support fetching quotes in pages to handle large datasets efficiently.
+2.  **Standardized Metadata**: Provide clear pagination information (total pages, current page) in the API response.
+3.  **Consistency**: Maintain existing search and filtering capabilities while adding pagination.
+4.  **Performance**: Optimize database queries using limits and offsets.
+
+---
+
+## 👥 User Stories
+
+- As a **user**, I want to **browse quotes page by page** so that I am not overwhelmed by a massive list.
+- As a **frontend developer**, I want to **receive total page counts** so that I can build a proper pagination UI (e.g., "Page 1 of 10").
+- As a **system administrator**, I want to **limit the maximum number of quotes** returned per request to protect the server from overload.
+
+---
+
+## 📋 Functional Requirements
+
+### 1. Pagination Metadata
+
+The API response will include a metadata object with the following fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `currentPage` | Integer | Current page number (1-indexed). |
+| `totalPages` | Integer | Total number of available pages. |
+| `totalRecords` | Integer | Total number of records matching the query. |
+| `pageSize` | Integer | Number of records per page (max 100). |
+| `hasNextPage` | Boolean | True if there is a subsequent page. |
+| `hasPreviousPage` | Boolean | True if there is a preceding page. |
+
+*(Note: Field names use camelCase to match project conventions).*
+
+### 2. API Endpoint Updates
+
+#### `GET /api/v1/quotes`
+
+**Query Parameters:**
+
+| Parameter | Type | Default | Constraints | Description |
+|-----------|------|---------|-------------|-------------|
+| `page` | Integer | 1 | Min: 1 | The page number to retrieve. |
+| `limit` | Integer | 20 | Max: 100 | The number of quotes per page. |
+| `author` | String | - | - | (Existing) Filter by author. |
+| `query` | String | - | - | (Existing) Filter by content. |
+
+**Response Format:**
+
+The response structure changes from a simple array to an object containing `data` and `pagination` fields:
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "text": "Quote text...",
+      "author": "Author Name",
+      "likes": 0,
+      "tags": "tag1;tag2",
+      "createdAt": "2025-11-25T10:00:00Z",
+      "updatedAt": "2025-11-25T10:00:00Z"
+    }
+  ],
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 5,
+    "totalRecords": 92,
+    "pageSize": 20,
+    "hasNextPage": true,
+    "hasPreviousPage": false
+  }
+}
+```
+
+### 3. Backward Compatibility & Integration
+
+- If `page` or `limit` are not provided, the defaults (`page=1`, `limit=20`) are used.
+- The search parameters (`author`, `query`) from Part 2 must work in conjunction with pagination. The `totalRecords` and `totalPages` must reflect the *filtered* dataset.
+
+---
+
+## 🚫 Non-Goals (Out of Scope)
+
+- **Cursor-based Pagination**: This iteration uses offset-based pagination (`page`/`limit`).
+- **Link Headers**: Pagination links are returned in the response body, not HTTP Link headers.
+
+---
+
+## 🎨 Design Considerations
+
+- **Defaults**: Smart defaults ensure the API works immediately without complex parameter construction.
+- **Protection**: A hard limit of 100 records per page prevents denial-of-service via massive data requests.
+
+---
+
+## ⚙️ Technical Considerations
+
+- **Query Performance**: Use `LIMIT` and `OFFSET` in SQL queries.
+- **Count Performance**: A secondary query (or window function) is required to get `totalRecords`. Ensure this is optimized.
+- **Zero State**: If the requested page exceeds `totalPages`, return an empty `data` array with valid metadata.
+
+---
+
+## ✅ Success Metrics
+
+- **Response Time**: Paged requests (default limit) respond within 200ms.
+- **Usability**: Clients can successfully navigate the entire dataset using the provided metadata.
+
+---
+
+## ❓ Open Questions
+
+- N/A
+
+---
+
+## ✔️ Acceptance Criteria
+
+- [ ] `GET /api/v1/quotes` supports `page` and `limit` query parameters.
+- [ ] Default values (page=1, limit=20) are applied if parameters are missing.
+- [ ] `limit` parameter is capped at 100.
+- [ ] Response follows the new `{ data: [...], pagination: {...} }` structure.
+- [ ] Pagination metadata (`totalRecords`, `totalPages`, etc.) is accurate.
+- [ ] Pagination works correctly with `author` and `query` filters.
+- [ ] Requesting a page out of range returns empty data and correct metadata.
+- [ ] Invalid parameters (e.g., `page=-1`) return `400 Bad Request`.
+
 ## 📋 RFD Register
 
 | RFD # | Title | Filename | Status | Date | Short summary |
