@@ -249,7 +249,7 @@ export class SeedQuotes1763578758431 implements MigrationInterface {
       ('However difficult life may seem, there is always something you can do and succeed at.', 'Stephen Hawking', 'hope,success', 0),
       ('People who boast about their I.Q. are losers.', 'Stephen Hawking', 'intelligence,humility', 0),
       ('Life would be tragic if it weren''t funny.', 'Stephen Hawking', 'life,humor', 0),
-      ('We are just an advanced breed of monkeys on a minor planet of a very average star. But we can understand the Universe. That makes us something very special.', 'Stephen Hawking', 'science,perspective', 0)`
+      ('We are just an advanced breed of monkeys on a minor planet of a very average star. But we can understand the Universe. That makes us something very special.', 'Stephen Hawking', 'science,perspective', 0)`,
     );
   }
 
