@@ -1,0 +1,45 @@
+## Relevant Files
+
+- `app/be/src/quotes/dto/pagination-query.dto.ts` - New DTO for `page` and `limit` query parameters.
+- `app/be/src/quotes/dto/paginated-response.dto.ts` - New DTO for the standardized paginated response structure.
+- `app/be/src/quotes/repositories/quote.repository.ts` - Updates to `findAll` to support `skip` and `take`.
+- `app/be/src/quotes/services/quote.service.ts` - Logic to calculate pagination metadata and structure the response.
+- `app/be/src/quotes/api/quote.controller.ts` - Updates to the `findAll` endpoint signature.
+- `app/be/src/quotes/services/quote.service.spec.ts` - Unit tests for pagination calculations.
+
+### Notes
+
+- The `limit` parameter is capped at 100 to prevent performance issues.
+- Pagination uses 1-based indexing for the `page` parameter but 0-based `skip` for the database.
+- The existing `author` and `query` filters must be preserved and work in conjunction with pagination.
+
+## Tasks
+
+- [ ] 1.0 Define DTOs and Interfaces
+  - [ ] 1.1 Create `PaginationQueryDto` with `page` (default 1) and `limit` (default 20, max 100) properties, extending `FindAllQuotesDto` if appropriate or composing it.
+  - [ ] 1.2 Create `PaginationMetaDto` to define the shape of the pagination metadata (`currentPage`, `totalPages`, `totalRecords`, etc.).
+  - [ ] 1.3 Create `PaginatedResponseDto<T>` generic class that contains `data: T[]` and `pagination: PaginationMetaDto`.
+
+- [ ] 2.0 Implement Repository Layer Changes
+  - [ ] 2.1 Update `QuoteRepository.findAll` to accept `skip` and `take` parameters derived from the query.
+  - [ ] 2.2 Modify the query builder to return both the data and the total count using `getManyAndCount()`.
+  - [ ] 2.3 Ensure existing filters (`author`, `query`) are applied before counting and pagination.
+
+- [ ] 3.0 Update Service Layer Logic
+  - [ ] 3.1 Update `QuoteService.findAll` method signature to return `Promise<PaginatedResponseDto<QuoteResponseDto>>` instead of `Promise<QuoteResponseDto[]>`.
+  - [ ] 3.2 Implement logic to calculate `skip` from `page` and `limit` (e.g., `skip = (page - 1) * limit`).
+  - [ ] 3.3 Call the updated repository method to get `[items, total]`.
+  - [ ] 3.4 Implement logic to calculate derived metadata: `totalPages`, `hasNextPage`, `hasPreviousPage`.
+  - [ ] 3.5 Map the entity results to `QuoteResponseDto` and construct the final `PaginatedResponseDto`.
+
+- [ ] 4.0 Update Controller
+  - [ ] 4.1 Update `QuoteController.findAll` to use `PaginationQueryDto` (merging search params if needed).
+  - [ ] 4.2 Update the `@ApiResponse` decorator to reflect the new paginated schema.
+  - [ ] 4.3 Pass the query parameters correctly to the service.
+
+- [ ] 5.0 Testing and Verification
+  - [ ] 5.1 Add unit tests to `QuoteService` to verify pagination math (e.g., correct `skip` calculation, correct `totalPages`).
+  - [ ] 5.2 Verify that default values (page=1, limit=20) are applied when parameters are missing.
+  - [ ] 5.3 Verify that the `limit` cap (100) is enforced (via validation pipe or manual check).
+  - [ ] 5.4 Test that `hasNextPage` and `hasPreviousPage` flags are correct at boundaries (first page, last page, middle page).
+

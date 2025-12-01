@@ -39,7 +39,6 @@ Follow the guidelines in @generate-rfd.md and ensure the RFD covers:
 - Implementation approach
 - Dependencies and constraints
 - Risk assessment
-- Timeline estimates
 ```
 
 ## Refine Generated RFD After Review
