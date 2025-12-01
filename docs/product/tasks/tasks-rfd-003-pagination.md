@@ -1,7 +1,8 @@
 ## Relevant Files
 
-- `app/be/src/quotes/dto/pagination-query.dto.ts` - New DTO for `page` and `limit` query parameters.
-- `app/be/src/quotes/dto/paginated-response.dto.ts` - New DTO for the standardized paginated response structure.
+- `app/be/src/quotes/dto/pagination-query.dto.ts` - New DTO for `page` and `limit` query parameters. (new)
+- `app/be/src/quotes/dto/paginated-response.dto.ts` - New DTO for the standardized paginated response structure. (new)
+- `app/be/src/quotes/dto/pagination-meta.dto.ts` - New DTO for pagination metadata. (new)
 - `app/be/src/quotes/repositories/quote.repository.ts` - Updates to `findAll` to support `skip` and `take`.
 - `app/be/src/quotes/services/quote.service.ts` - Logic to calculate pagination metadata and structure the response.
 - `app/be/src/quotes/api/quote.controller.ts` - Updates to the `findAll` endpoint signature.
@@ -16,14 +17,14 @@
 ## Tasks
 
 - [ ] 1.0 Define DTOs and Interfaces
-  - [ ] 1.1 Create `PaginationQueryDto` with `page` (default 1) and `limit` (default 20, max 100) properties, extending `FindAllQuotesDto` if appropriate or composing it.
-  - [ ] 1.2 Create `PaginationMetaDto` to define the shape of the pagination metadata (`currentPage`, `totalPages`, `totalRecords`, etc.).
-  - [ ] 1.3 Create `PaginatedResponseDto<T>` generic class that contains `data: T[]` and `pagination: PaginationMetaDto`.
+  - [x] 1.1 Create `PaginationQueryDto` with `page` (default 1) and `limit` (default 20, max 100) properties, extending `FindAllQuotesDto` if appropriate or composing it.
+  - [x] 1.2 Create `PaginationMetaDto` to define the shape of the pagination metadata (`currentPage`, `totalPages`, `totalRecords`, etc.).
+  - [x] 1.3 Create `PaginatedResponseDto<T>` generic class that contains `data: T[]` and `pagination: PaginationMetaDto`.
 
 - [ ] 2.0 Implement Repository Layer Changes
-  - [ ] 2.1 Update `QuoteRepository.findAll` to accept `skip` and `take` parameters derived from the query.
-  - [ ] 2.2 Modify the query builder to return both the data and the total count using `getManyAndCount()`.
-  - [ ] 2.3 Ensure existing filters (`author`, `query`) are applied before counting and pagination.
+  - [x] 2.1 Update `QuoteRepository.findAll` to accept `skip` and `take` parameters derived from the query.
+  - [x] 2.2 Modify the query builder to return both the data and the total count using `getManyAndCount()`.
+  - [x] 2.3 Ensure existing filters (`author`, `query`) are applied before counting and pagination.
 
 - [ ] 3.0 Update Service Layer Logic
   - [ ] 3.1 Update `QuoteService.findAll` method signature to return `Promise<PaginatedResponseDto<QuoteResponseDto>>` instead of `Promise<QuoteResponseDto[]>`.
@@ -42,4 +43,20 @@
   - [ ] 5.2 Verify that default values (page=1, limit=20) are applied when parameters are missing.
   - [ ] 5.3 Verify that the `limit` cap (100) is enforced (via validation pipe or manual check).
   - [ ] 5.4 Test that `hasNextPage` and `hasPreviousPage` flags are correct at boundaries (first page, last page, middle page).
+  - [ ] 6.0 Update Postman collection with pagination queries and tests
+  - [ ] 6.1 Duplicate the request and rename it to "Get Quotes - Pagination".
+    - [ ] Add a query parameter `page` (e.g., `page=2`).
+    - [ ] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
+  - [ ] 6.2 Duplicate the request and rename it to "Get Quotes - Pagination with Filter".
+    - [ ] Add a query parameter `page` (e.g., `page=2`).
+    - [ ] Add a query parameter `author` (e.g., `author=einstein`).
+    - [ ] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
+  - [ ] 6.3 Duplicate the request and rename it to "Get Quotes - Pagination with Filter and Limit".
+    - [ ] Add a query parameter `page` (e.g., `page=2`).
+    - [ ] Add a query parameter `author` (e.g., `author=einstein`).
+    - [ ] Add a query parameter `limit` (e.g., `limit=10`).
+    - [ ] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
 
+
+**Approval:**
+- **Next Sub-task**: Awaiting approval

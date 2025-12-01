@@ -11,7 +11,7 @@ export class QuoteRepository extends Repository<Quote> {
     super(Quote, dataSource.createEntityManager());
   }
 
-  async findAll(query: FindAllQuotesDto): Promise<Quote[]> {
+  async findAll(query: FindAllQuotesDto, skip?: number, take?: number): Promise<[Quote[], number]> {
     const qb = this.createQueryBuilder("quote");
 
     if (query.author) {
@@ -22,7 +22,15 @@ export class QuoteRepository extends Repository<Quote> {
       qb.andWhere("quote.text ILIKE :text", { text: `%${query.query}%` });
     }
 
-    return qb.getMany();
+    if (skip !== undefined) {
+      qb.skip(skip);
+    }
+
+    if (take !== undefined) {
+      qb.take(take);
+    }
+
+    return qb.getManyAndCount();
   }
 
   async findById(id: string): Promise<Quote | null> {
