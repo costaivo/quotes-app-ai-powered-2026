@@ -7,7 +7,7 @@ import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 @Injectable()
 export class QuoteRepository extends Repository<Quote> {
-  constructor(private dataSource: DataSource) {
+  constructor(dataSource: DataSource) {
     super(Quote, dataSource.createEntityManager());
   }
 

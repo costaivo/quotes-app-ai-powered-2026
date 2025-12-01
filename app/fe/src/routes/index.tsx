@@ -1,39 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Sparkles, Zap, BookOpen, Brain } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Home,
 });
 
-interface Feature {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
+// interface Feature {
+//   icon: React.ReactNode;
+//   title: string;
+//   description: string;
+// }
 
-const features: Feature[] = [
-  {
-    icon: <Sparkles className="h-6 w-6" />,
-    title: "AI-Powered Quotes",
-    description: "Discover inspiring quotes generated and curated by advanced AI technology.",
-  },
-  {
-    icon: <Brain className="h-6 w-6" />,
-    title: "Smart Recommendations",
-    description: "Get personalized quote recommendations based on your preferences.",
-  },
-  {
-    icon: <Zap className="h-6 w-6" />,
-    title: "Lightning Fast",
-    description: "Experience blazingly fast quote retrieval and seamless interactions.",
-  },
-  {
-    icon: <BookOpen className="h-6 w-6" />,
-    title: "Extensive Collection",
-    description: "Browse through thousands of carefully curated quotes.",
-  },
-];
+// const features: Feature[] = [
+//   {
+//     icon: <Sparkles className="h-6 w-6" />,
+//     title: "AI-Powered Quotes",
+//     description: "Discover inspiring quotes generated and curated by advanced AI technology.",
+//   },
+//   {
+//     icon: <Brain className="h-6 w-6" />,
+//     title: "Smart Recommendations",
+//     description: "Get personalized quote recommendations based on your preferences.",
+//   },
+//   {
+//     icon: <Zap className="h-6 w-6" />,
+//     title: "Lightning Fast",
+//     description: "Experience blazingly fast quote retrieval and seamless interactions.",
+//   },
+//   {
+//     icon: <BookOpen className="h-6 w-6" />,
+//     title: "Extensive Collection",
+//     description: "Browse through thousands of carefully curated quotes.",
+//   },
+// ];
 
 function Home() {
   return (

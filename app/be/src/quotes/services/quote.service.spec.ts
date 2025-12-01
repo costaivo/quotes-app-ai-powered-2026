@@ -6,7 +6,7 @@ import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 describe("QuoteService", () => {
   let service: QuoteService;
-  let repository: any;
+  let repository: Record<string, jest.Mock>;
 
   const mockRepository = {
     findAll: jest.fn(),
@@ -20,7 +20,7 @@ describe("QuoteService", () => {
 
   beforeEach(() => {
     repository = mockRepository;
-    service = new QuoteService(repository);
+    service = new QuoteService(repository as unknown as QuoteRepository);
   });
 
   afterEach(() => {

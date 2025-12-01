@@ -1,7 +1,5 @@
-import type { Quote } from "../entities/quote.entity";
-
 describe("QuoteRepository", () => {
-  let repository: any;
+  let repository: Record<string, jest.Mock>;
 
   beforeEach(() => {
     repository = {

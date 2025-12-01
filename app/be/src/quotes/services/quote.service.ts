@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from "@nestjs/common";
+import type { Quote } from "../entities/quote.entity";
 import type { QuoteRepository } from "../repositories/quote.repository";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
@@ -122,7 +123,7 @@ export class QuoteService {
     }
   }
 
-  private mapToDto(quote: any): QuoteResponseDto {
+  private mapToDto(quote: Quote): QuoteResponseDto {
     return {
       id: quote.id,
       text: quote.text,

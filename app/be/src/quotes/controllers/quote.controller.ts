@@ -12,7 +12,7 @@ import {
   ParseUUIDPipe,
   Inject,
 } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiQuery } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from "@nestjs/swagger";
 import { QuoteService } from "../services/quote.service";
 import { CreateQuoteDto } from "../dto/create-quote.dto";
 import { UpdateQuoteDto } from "../dto/update-quote.dto";
