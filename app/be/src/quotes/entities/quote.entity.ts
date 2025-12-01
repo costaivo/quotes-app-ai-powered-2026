@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -11,11 +12,13 @@ export class Quote {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
+  @Index()
   @Column("text", {
     nullable: false,
   })
   text!: string;
 
+  @Index()
   @Column("varchar", {
     length: 200,
     nullable: false,

@@ -3,13 +3,14 @@ import type { QuoteRepository } from "../repositories/quote.repository";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
 import type { QuoteResponseDto } from "../dto/quote-response.dto";
+import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 @Injectable()
 export class QuoteService {
   constructor(private quoteRepository: QuoteRepository) {}
 
-  async findAll(): Promise<QuoteResponseDto[]> {
-    const quotes = await this.quoteRepository.findAll();
+  async findAll(query: FindAllQuotesDto): Promise<QuoteResponseDto[]> {
+    const quotes = await this.quoteRepository.findAll(query);
     return quotes.map(this.mapToDto);
   }
 
