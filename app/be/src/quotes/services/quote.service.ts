@@ -11,7 +11,7 @@ export class QuoteService {
   constructor(private quoteRepository: QuoteRepository) {}
 
   async findAll(query: FindAllQuotesDto): Promise<QuoteResponseDto[]> {
-    const quotes = await this.quoteRepository.findAll(query);
+    const [quotes] = await this.quoteRepository.findAll(query);
     return quotes.map(this.mapToDto);
   }
 
