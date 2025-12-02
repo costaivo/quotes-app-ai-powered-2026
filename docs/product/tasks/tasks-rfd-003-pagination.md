@@ -26,23 +26,23 @@
   - [x] 2.2 Modify the query builder to return both the data and the total count using `getManyAndCount()`.
   - [x] 2.3 Ensure existing filters (`author`, `query`) are applied before counting and pagination.
 
-- [ ] 3.0 Update Service Layer Logic
-  - [ ] 3.1 Update `QuoteService.findAll` method signature to return `Promise<PaginatedResponseDto<QuoteResponseDto>>` instead of `Promise<QuoteResponseDto[]>`.
-  - [ ] 3.2 Implement logic to calculate `skip` from `page` and `limit` (e.g., `skip = (page - 1) * limit`).
-  - [ ] 3.3 Call the updated repository method to get `[items, total]`.
-  - [ ] 3.4 Implement logic to calculate derived metadata: `totalPages`, `hasNextPage`, `hasPreviousPage`.
-  - [ ] 3.5 Map the entity results to `QuoteResponseDto` and construct the final `PaginatedResponseDto`.
+- [x] 3.0 Update Service Layer Logic
+  - [x] 3.1 Update `QuoteService.findAll` method signature to return `Promise<PaginatedResponseDto<QuoteResponseDto>>` instead of `Promise<QuoteResponseDto[]>`.
+  - [x] 3.2 Implement logic to calculate `skip` from `page` and `limit` (e.g., `skip = (page - 1) * limit`).
+  - [x] 3.3 Call the updated repository method to get `[items, total]`.
+  - [x] 3.4 Implement logic to calculate derived metadata: `totalPages`, `hasNextPage`, `hasPreviousPage`.
+  - [x] 3.5 Map the entity results to `QuoteResponseDto` and construct the final `PaginatedResponseDto`.
 
-- [ ] 4.0 Update Controller
-  - [ ] 4.1 Update `QuoteController.findAll` to use `PaginationQueryDto` (merging search params if needed).
-  - [ ] 4.2 Update the `@ApiResponse` decorator to reflect the new paginated schema.
-  - [ ] 4.3 Pass the query parameters correctly to the service.
+- [x] 4.0 Update Controller
+  - [x] 4.1 Update `QuoteController.findAll` to use `PaginationQueryDto` (merging search params if needed).
+  - [x] 4.2 Update the `@ApiResponse` decorator to reflect the new paginated schema.
+  - [x] 4.3 Pass the query parameters correctly to the service.
 
 - [ ] 5.0 Testing and Verification
-  - [ ] 5.1 Add unit tests to `QuoteService` to verify pagination math (e.g., correct `skip` calculation, correct `totalPages`).
-  - [ ] 5.2 Verify that default values (page=1, limit=20) are applied when parameters are missing.
+  - [x] 5.1 Add unit tests to `QuoteService` to verify pagination math (e.g., correct `skip` calculation, correct `totalPages`).
+  - [x] 5.2 Verify that default values (page=1, limit=20) are applied when parameters are missing.
   - [ ] 5.3 Verify that the `limit` cap (100) is enforced (via validation pipe or manual check).
-  - [ ] 5.4 Test that `hasNextPage` and `hasPreviousPage` flags are correct at boundaries (first page, last page, middle page).
+  - [x] 5.4 Test that `hasNextPage` and `hasPreviousPage` flags are correct at boundaries (first page, last page, middle page).
   - [ ] 6.0 Update Postman collection with pagination queries and tests
   - [ ] 6.1 Duplicate the request and rename it to "Get Quotes - Pagination".
     - [ ] Add a query parameter `page` (e.g., `page=2`).
