@@ -43,19 +43,19 @@
   - [x] 5.2 Verify that default values (page=1, limit=20) are applied when parameters are missing.
   - [x] 5.3 Verify that the `limit` cap (100) is enforced (via validation pipe or manual check).
   - [x] 5.4 Test that `hasNextPage` and `hasPreviousPage` flags are correct at boundaries (first page, last page, middle page).
-  - [ ] 6.0 Update Postman collection with pagination queries and tests
-  - [ ] 6.1 Duplicate the request and rename it to "Get Quotes - Pagination".
-    - [ ] Add a query parameter `page` (e.g., `page=2`).
-    - [ ] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
-  - [ ] 6.2 Duplicate the request and rename it to "Get Quotes - Pagination with Filter".
-    - [ ] Add a query parameter `page` (e.g., `page=2`).
-    - [ ] Add a query parameter `author` (e.g., `author=einstein`).
-    - [ ] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
-  - [ ] 6.3 Duplicate the request and rename it to "Get Quotes - Pagination with Filter and Limit".
-    - [ ] Add a query parameter `page` (e.g., `page=2`).
-    - [ ] Add a query parameter `author` (e.g., `author=einstein`).
-    - [ ] Add a query parameter `limit` (e.g., `limit=10`).
-    - [ ] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
+  - [x] 6.0 Update Postman collection with pagination queries and tests
+  - [x] 6.1 Duplicate the request and rename it to "Get Quotes - Pagination".
+    - [x] Add a query parameter `page` (e.g., `page=2`).
+    - [x] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
+  - [x] 6.2 Duplicate the request and rename it to "Get Quotes - Pagination with Filter".
+    - [x] Add a query parameter `page` (e.g., `page=2`).
+    - [x] Add a query parameter `author` (e.g., `author=einstein`).
+    - [x] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
+  - [x] 6.3 Duplicate the request and rename it to "Get Quotes - Pagination with Filter and Limit".
+    - [x] Add a query parameter `page` (e.g., `page=2`).
+    - [x] Add a query parameter `author` (e.g., `author=einstein`).
+    - [x] Add a query parameter `limit` (e.g., `limit=10`).
+    - [x] In the "Tests" tab, add a script to verify the response. It should check for a 200 status code and ensure the `currentPage` is 2.
 
 
 **Approval:**

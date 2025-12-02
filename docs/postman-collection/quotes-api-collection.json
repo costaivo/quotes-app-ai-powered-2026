@@ -422,6 +422,189 @@
 			]
 		},
 		{
+			"name": "Pagination",
+			"item": [
+				{
+					"name": "Get Quotes - Pagination",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response has data and pagination structure\", function () {",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});",
+									"",
+									"pm.test(\"Pagination metadata is correct\", function () {",
+									"    const pagination = jsonData.pagination;",
+									"    pm.expect(pagination).to.have.property('currentPage');",
+									"    pm.expect(pagination).to.have.property('totalPages');",
+									"    pm.expect(pagination).to.have.property('totalRecords');",
+									"    pm.expect(pagination).to.have.property('pageSize');",
+									"    pm.expect(pagination).to.have.property('hasNextPage');",
+									"    pm.expect(pagination).to.have.property('hasPreviousPage');",
+									"});",
+									"",
+									"pm.test(\"Current page is 2\", function () {",
+									"    pm.expect(jsonData.pagination.currentPage).to.eql(2);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes?page=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quotes - Pagination with Filter",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response has data and pagination structure\", function () {",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});",
+									"",
+									"pm.test(\"Current page is 2\", function () {",
+									"    pm.expect(jsonData.pagination.currentPage).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"All quotes match author filter\", function () {",
+									"    const authorFilter = 'einstein';",
+									"    jsonData.data.forEach(quote => {",
+									"        pm.expect(quote.author.toLowerCase()).to.include(authorFilter);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes?page=2&author=einstein",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "author",
+									"value": "einstein"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Quotes - Pagination with Filter and Limit",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Response has data and pagination structure\", function () {",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('pagination');",
+									"});",
+									"",
+									"pm.test(\"Current page is 2\", function () {",
+									"    pm.expect(jsonData.pagination.currentPage).to.eql(2);",
+									"});",
+									"",
+									"pm.test(\"Page size is 10\", function () {",
+									"    pm.expect(jsonData.pagination.pageSize).to.eql(10);",
+									"});",
+									"",
+									"pm.test(\"All quotes match author filter\", function () {",
+									"    const authorFilter = 'einstein';",
+									"    jsonData.data.forEach(quote => {",
+									"        pm.expect(quote.author.toLowerCase()).to.include(authorFilter);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/quotes?page=2&author=einstein&limit=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"quotes"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "author",
+									"value": "einstein"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Data Retrieval",
 			"item": [
 				{
