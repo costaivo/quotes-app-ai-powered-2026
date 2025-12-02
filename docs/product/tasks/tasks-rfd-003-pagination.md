@@ -41,7 +41,7 @@
 - [ ] 5.0 Testing and Verification
   - [x] 5.1 Add unit tests to `QuoteService` to verify pagination math (e.g., correct `skip` calculation, correct `totalPages`).
   - [x] 5.2 Verify that default values (page=1, limit=20) are applied when parameters are missing.
-  - [ ] 5.3 Verify that the `limit` cap (100) is enforced (via validation pipe or manual check).
+  - [x] 5.3 Verify that the `limit` cap (100) is enforced (via validation pipe or manual check).
   - [x] 5.4 Test that `hasNextPage` and `hasPreviousPage` flags are correct at boundaries (first page, last page, middle page).
   - [ ] 6.0 Update Postman collection with pagination queries and tests
   - [ ] 6.1 Duplicate the request and rename it to "Get Quotes - Pagination".

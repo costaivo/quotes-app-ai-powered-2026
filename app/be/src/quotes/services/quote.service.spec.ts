@@ -103,7 +103,7 @@ describe("QuoteService", () => {
 
     it("should set hasNextPage and hasPreviousPage correctly", async () => {
       mockRepository.findAll.mockResolvedValue([[], 30]);
-      
+
       // Case 1: First page
       let result = await service.findAll({ page: 1, limit: 10 });
       expect(result.meta.hasPreviousPage).toBe(false);
@@ -156,6 +156,32 @@ describe("QuoteService", () => {
       expect(result.meta.totalPages).toBe(5);
       expect(result.meta.hasNextPage).toBe(false);
       expect(result.meta.hasPreviousPage).toBe(true);
+    });
+
+    it("should handle maximum limit (100)", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 250]);
+
+      const result = await service.findAll({ page: 1, limit: 100 });
+
+      expect(result.meta.itemsPerPage).toBe(100);
+      expect(result.meta.totalPages).toBe(3);
+      expect(result.meta.hasNextPage).toBe(true);
+    });
+
+    it("should calculate correct pagination with different limits", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 50]);
+
+      // With limit of 10
+      let result = await service.findAll({ page: 1, limit: 10 });
+      expect(result.meta.totalPages).toBe(5);
+
+      // With limit of 25
+      result = await service.findAll({ page: 1, limit: 25 });
+      expect(result.meta.totalPages).toBe(2);
+
+      // With limit of 50
+      result = await service.findAll({ page: 1, limit: 50 });
+      expect(result.meta.totalPages).toBe(1);
     });
   });
 
