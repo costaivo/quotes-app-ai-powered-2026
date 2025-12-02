@@ -19,11 +19,7 @@ export class PaginationMetaDto {
   @ApiProperty({ description: "Whether there is a previous page" })
   hasPreviousPage: boolean;
 
-  constructor(
-    currentPage: number,
-    itemsPerPage: number,
-    totalItems: number,
-  ) {
+  constructor(currentPage: number, itemsPerPage: number, totalItems: number) {
     this.currentPage = currentPage;
     this.itemsPerPage = itemsPerPage;
     this.totalItems = totalItems;

@@ -3,7 +3,6 @@ import { QuoteService } from "./quote.service";
 import type { QuoteRepository } from "../repositories/quote.repository";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
-import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 describe("QuoteService", () => {
   let service: QuoteService;
@@ -33,7 +32,7 @@ describe("QuoteService", () => {
   });
 
   describe("findAll", () => {
-    it("should return all quotes when no filters are provided", async () => {
+    it("should return paginated quotes when no filters are provided", async () => {
       const mockQuotes = [
         {
           id: "123e4567-e89b-12d3-a456-426614174000",
@@ -45,19 +44,22 @@ describe("QuoteService", () => {
           updatedAt: new Date(),
         },
       ];
+      const mockTotal = 1;
 
-      mockRepository.findAll.mockResolvedValue(mockQuotes);
+      mockRepository.findAll.mockResolvedValue([mockQuotes, mockTotal]);
 
-      const result = await service.findAll({});
+      const result = await service.findAll({ page: 1, limit: 10 });
 
-      expect(result).toHaveLength(1);
-      expect(result[0].text).toBe("Test quote");
-      expect(mockRepository.findAll).toHaveBeenCalledWith({});
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].text).toBe("Test quote");
+      expect(result.meta.totalItems).toBe(1);
+      expect(result.meta.currentPage).toBe(1);
+      expect(mockRepository.findAll).toHaveBeenCalledWith({ page: 1, limit: 10 });
     });
 
     it("should pass author filter to repository", async () => {
-      const query: FindAllQuotesDto = { author: "Test" };
-      mockRepository.findAll.mockResolvedValue([]);
+      const query = { author: "Test", page: 1, limit: 10 };
+      mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
 
@@ -65,8 +67,8 @@ describe("QuoteService", () => {
     });
 
     it("should pass query filter to repository", async () => {
-      const query: FindAllQuotesDto = { query: "something" };
-      mockRepository.findAll.mockResolvedValue([]);
+      const query = { query: "something", page: 1, limit: 10 };
+      mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
 
@@ -74,8 +76,8 @@ describe("QuoteService", () => {
     });
 
     it("should pass both filters to repository", async () => {
-      const query: FindAllQuotesDto = { author: "Test", query: "something" };
-      mockRepository.findAll.mockResolvedValue([]);
+      const query = { author: "Test", query: "something", page: 1, limit: 10 };
+      mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
 
