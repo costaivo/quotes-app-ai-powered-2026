@@ -1,4 +1,7 @@
+# Parent: Implement Backend Logging (RFD-004)
+
 ## Relevant Files
+
 
 - `app/be/src/common/logger/logger.module.ts` - New module to encapsulate logging logic.
 - `app/be/src/common/logger/winston.config.ts` - Configuration for Winston transports and formats.

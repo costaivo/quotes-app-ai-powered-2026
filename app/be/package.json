@@ -1,6 +1,6 @@
 {
   "name": "be",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Backend application implementation using REST API",
   "author": "Creative Capsule",
   "private": true,
