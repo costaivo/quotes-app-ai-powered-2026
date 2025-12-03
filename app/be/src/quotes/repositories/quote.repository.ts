@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { type DataSource, Repository } from "typeorm";
-import { Quote } from "../entities/quote.entity";
-import type { CreateQuoteDto } from "../dto/create-quote.dto";
-import type { UpdateQuoteDto } from "../dto/update-quote.dto";
-import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
+import { Injectable } from '@nestjs/common';
+import { type DataSource, Repository } from 'typeorm';
+import { Quote } from '../entities/quote.entity';
+import type { CreateQuoteDto } from '../dto/create-quote.dto';
+import type { UpdateQuoteDto } from '../dto/update-quote.dto';
+import type { FindAllQuotesDto } from '../dto/find-all-quotes.dto';
 
 @Injectable()
 export class QuoteRepository extends Repository<Quote> {
@@ -12,14 +12,14 @@ export class QuoteRepository extends Repository<Quote> {
   }
 
   async findAll(query: FindAllQuotesDto, skip?: number, take?: number): Promise<[Quote[], number]> {
-    const qb = this.createQueryBuilder("quote");
+    const qb = this.createQueryBuilder('quote');
 
     if (query.author) {
-      qb.andWhere("quote.author ILIKE :author", { author: `%${query.author}%` });
+      qb.andWhere('quote.author ILIKE :author', { author: `%${query.author}%` });
     }
 
     if (query.query) {
-      qb.andWhere("quote.text ILIKE :text", { text: `%${query.query}%` });
+      qb.andWhere('quote.text ILIKE :text', { text: `%${query.query}%` });
     }
 
     if (skip !== undefined) {
@@ -47,7 +47,7 @@ export class QuoteRepository extends Repository<Quote> {
         tags: dto.tags || null,
         likes: 0,
       })
-      .returning("*")
+      .returning('*')
       .execute();
 
     const result = await quote;
@@ -55,7 +55,7 @@ export class QuoteRepository extends Repository<Quote> {
   }
 
   async updateQuote(id: string, dto: UpdateQuoteDto): Promise<Quote | null> {
-    await this.createQueryBuilder().update(Quote).set(dto).where("id = :id", { id }).execute();
+    await this.createQueryBuilder().update(Quote).set(dto).where('id = :id', { id }).execute();
 
     return this.findById(id);
   }
@@ -64,19 +64,19 @@ export class QuoteRepository extends Repository<Quote> {
     const result = await this.createQueryBuilder()
       .delete()
       .from(Quote)
-      .where("id = :id", { id })
+      .where('id = :id', { id })
       .execute();
 
     return result.affected ? result.affected > 0 : false;
   }
 
   async findAllTags(): Promise<string[]> {
-    const quotes = await this.find({ select: ["tags"] });
+    const quotes = await this.find({ select: ['tags'] });
     const tagSet = new Set<string>();
 
     quotes.forEach((quote) => {
       if (quote.tags) {
-        quote.tags.split(";").forEach((tag) => {
+        quote.tags.split(';').forEach((tag) => {
           const trimmedTag = tag.trim();
           if (trimmedTag) {
             tagSet.add(trimmedTag);
@@ -89,7 +89,7 @@ export class QuoteRepository extends Repository<Quote> {
   }
 
   async findAllAuthors(): Promise<string[]> {
-    const quotes = await this.find({ select: ["author"] });
+    const quotes = await this.find({ select: ['author'] });
     const authorSet = new Set<string>();
 
     quotes.forEach((quote) => {

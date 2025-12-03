@@ -5,8 +5,8 @@ import {
   HttpException,
   HttpStatus,
   Logger,
-} from "@nestjs/common";
-import type { Request, Response } from "express";
+} from '@nestjs/common';
+import type { Request, Response } from 'express';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -49,18 +49,18 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     details: unknown;
   } {
     const status = exception.getStatus();
-    let message: string | object = "Internal server error";
+    let message: string | object = 'Internal server error';
     let details: unknown = null;
 
     const exceptionResponse = exception.getResponse();
 
-    if (typeof exceptionResponse === "string") {
+    if (typeof exceptionResponse === 'string') {
       message = exceptionResponse;
-    } else if (typeof exceptionResponse === "object" && exceptionResponse !== null) {
+    } else if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
       const responseObj = exceptionResponse as Record<string, unknown>;
-      if (typeof responseObj.message === "string") {
+      if (typeof responseObj.message === 'string') {
         message = responseObj.message;
-      } else if (typeof responseObj.error === "string") {
+      } else if (typeof responseObj.error === 'string') {
         message = responseObj.error;
       }
       details = responseObj.message; // NestJS validation errors usually put array of errors in 'message'
@@ -82,7 +82,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     return {
       status: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: "Internal server error",
+      message: 'Internal server error',
       details: null,
     };
   }
@@ -90,13 +90,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   private getErrorName(status: number): string {
     switch (status) {
       case HttpStatus.BAD_REQUEST:
-        return "Bad Request";
+        return 'Bad Request';
       case HttpStatus.NOT_FOUND:
-        return "Not Found";
+        return 'Not Found';
       case HttpStatus.INTERNAL_SERVER_ERROR:
-        return "Internal Server Error";
+        return 'Internal Server Error';
       default:
-        return "Error";
+        return 'Error';
     }
   }
 }

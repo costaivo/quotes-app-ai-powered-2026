@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Home,
 });
 
@@ -42,14 +42,14 @@ function Home() {
           <h1 className="mb-4 text-5xl font-bold tracking-tight lg:text-6xl">
             Quotes App
             <span className="bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              {" "}
+              {' '}
               AI Powered 2026
             </span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             <span className="mb-14 text-blue-950">
               Discover inspiring quotes to start your day with a smile.
-            </span>{" "}
+            </span>{' '}
             <br />
             <span className="mb-8 text-blue-600">
               Get personalized recommendations and explore an extensive collection of wisdom from

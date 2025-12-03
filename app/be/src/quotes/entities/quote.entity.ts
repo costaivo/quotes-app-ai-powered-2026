@@ -5,48 +5,48 @@ import {
   Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from "typeorm";
+} from 'typeorm';
 
-@Entity("quotes")
+@Entity('quotes')
 export class Quote {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id!: string;
 
   @Index()
-  @Column("text", {
+  @Column('text', {
     nullable: false,
   })
   text!: string;
 
   @Index()
-  @Column("varchar", {
+  @Column('varchar', {
     length: 200,
     nullable: false,
   })
   author!: string;
 
-  @Column("integer", {
+  @Column('integer', {
     default: 0,
     nullable: false,
   })
   likes!: number;
 
-  @Column("varchar", {
+  @Column('varchar', {
     length: 500,
     nullable: true,
   })
   tags!: string | null;
 
   @CreateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP",
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt!: Date;
 
   @UpdateDateColumn({
-    type: "timestamp",
-    default: () => "CURRENT_TIMESTAMP",
-    onUpdate: "CURRENT_TIMESTAMP",
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt!: Date;
 }

@@ -1,10 +1,10 @@
-import { NotFoundException, BadRequestException } from "@nestjs/common";
-import { QuoteService } from "./quote.service";
-import type { QuoteRepository } from "../repositories/quote.repository";
-import type { CreateQuoteDto } from "../dto/create-quote.dto";
-import type { UpdateQuoteDto } from "../dto/update-quote.dto";
+import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { QuoteService } from './quote.service';
+import type { QuoteRepository } from '../repositories/quote.repository';
+import type { CreateQuoteDto } from '../dto/create-quote.dto';
+import type { UpdateQuoteDto } from '../dto/update-quote.dto';
 
-describe("QuoteService", () => {
+describe('QuoteService', () => {
   let service: QuoteService;
   let repository: Record<string, jest.Mock>;
 
@@ -27,17 +27,17 @@ describe("QuoteService", () => {
     jest.clearAllMocks();
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  describe("findAll", () => {
-    it("should return paginated quotes when no filters are provided", async () => {
+  describe('findAll', () => {
+    it('should return paginated quotes when no filters are provided', async () => {
       const mockQuotes = [
         {
-          id: "123e4567-e89b-12d3-a456-426614174000",
-          text: "Test quote",
-          author: "Test author",
+          id: '123e4567-e89b-12d3-a456-426614174000',
+          text: 'Test quote',
+          author: 'Test author',
           likes: 0,
           tags: null,
           createdAt: new Date(),
@@ -51,14 +51,14 @@ describe("QuoteService", () => {
       const result = await service.findAll({ page: 1, limit: 10 });
 
       expect(result.data).toHaveLength(1);
-      expect(result.data[0].text).toBe("Test quote");
+      expect(result.data[0].text).toBe('Test quote');
       expect(result.meta.totalItems).toBe(1);
       expect(result.meta.currentPage).toBe(1);
       expect(mockRepository.findAll).toHaveBeenCalledWith({ page: 1, limit: 10 });
     });
 
-    it("should pass author filter to repository", async () => {
-      const query = { author: "Test", page: 1, limit: 10 };
+    it('should pass author filter to repository', async () => {
+      const query = { author: 'Test', page: 1, limit: 10 };
       mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
@@ -66,8 +66,8 @@ describe("QuoteService", () => {
       expect(mockRepository.findAll).toHaveBeenCalledWith(query);
     });
 
-    it("should pass query filter to repository", async () => {
-      const query = { query: "something", page: 1, limit: 10 };
+    it('should pass query filter to repository', async () => {
+      const query = { query: 'something', page: 1, limit: 10 };
       mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
@@ -75,8 +75,8 @@ describe("QuoteService", () => {
       expect(mockRepository.findAll).toHaveBeenCalledWith(query);
     });
 
-    it("should pass both filters to repository", async () => {
-      const query = { author: "Test", query: "something", page: 1, limit: 10 };
+    it('should pass both filters to repository', async () => {
+      const query = { author: 'Test', query: 'something', page: 1, limit: 10 };
       mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
@@ -84,7 +84,7 @@ describe("QuoteService", () => {
       expect(mockRepository.findAll).toHaveBeenCalledWith(query);
     });
 
-    it("should calculate total pages correctly", async () => {
+    it('should calculate total pages correctly', async () => {
       mockRepository.findAll.mockResolvedValue([[], 25]);
 
       const result = await service.findAll({ page: 1, limit: 10 });
@@ -92,7 +92,7 @@ describe("QuoteService", () => {
       expect(result.meta.totalPages).toBe(3);
     });
 
-    it("should use default values when page and limit are missing", async () => {
+    it('should use default values when page and limit are missing', async () => {
       mockRepository.findAll.mockResolvedValue([[], 0]);
 
       const query = { page: 1, limit: 20 };
@@ -101,7 +101,7 @@ describe("QuoteService", () => {
       expect(mockRepository.findAll).toHaveBeenCalledWith(query);
     });
 
-    it("should set hasNextPage and hasPreviousPage correctly", async () => {
+    it('should set hasNextPage and hasPreviousPage correctly', async () => {
       mockRepository.findAll.mockResolvedValue([[], 30]);
 
       // Case 1: First page
@@ -120,7 +120,7 @@ describe("QuoteService", () => {
       expect(result.meta.hasNextPage).toBe(false);
     });
 
-    it("should apply defaults when page is not provided", async () => {
+    it('should apply defaults when page is not provided', async () => {
       mockRepository.findAll.mockResolvedValue([[], 40]);
 
       // Simulate query object without page (will use default 1)
@@ -129,7 +129,7 @@ describe("QuoteService", () => {
       expect(result.meta.currentPage).toBe(1 || result.meta.currentPage);
     });
 
-    it("should apply defaults when limit is not provided", async () => {
+    it('should apply defaults when limit is not provided', async () => {
       mockRepository.findAll.mockResolvedValue([[], 40]);
 
       // Simulate query object without limit (will use default 20)
@@ -138,7 +138,7 @@ describe("QuoteService", () => {
       expect(result.meta.itemsPerPage).toBe(20 || result.meta.itemsPerPage);
     });
 
-    it("should correctly handle single page dataset", async () => {
+    it('should correctly handle single page dataset', async () => {
       mockRepository.findAll.mockResolvedValue([[], 15]);
 
       const result = await service.findAll({ page: 1, limit: 20 });
@@ -148,7 +148,7 @@ describe("QuoteService", () => {
       expect(result.meta.hasPreviousPage).toBe(false);
     });
 
-    it("should correctly handle exact page boundary", async () => {
+    it('should correctly handle exact page boundary', async () => {
       mockRepository.findAll.mockResolvedValue([[], 100]);
 
       const result = await service.findAll({ page: 5, limit: 20 });
@@ -158,7 +158,7 @@ describe("QuoteService", () => {
       expect(result.meta.hasPreviousPage).toBe(true);
     });
 
-    it("should handle maximum limit (100)", async () => {
+    it('should handle maximum limit (100)', async () => {
       mockRepository.findAll.mockResolvedValue([[], 250]);
 
       const result = await service.findAll({ page: 1, limit: 100 });
@@ -168,7 +168,7 @@ describe("QuoteService", () => {
       expect(result.meta.hasNextPage).toBe(true);
     });
 
-    it("should calculate correct pagination with different limits", async () => {
+    it('should calculate correct pagination with different limits', async () => {
       mockRepository.findAll.mockResolvedValue([[], 50]);
 
       // With limit of 10
@@ -185,13 +185,13 @@ describe("QuoteService", () => {
     });
   });
 
-  describe("findById", () => {
-    it("should return a quote by id", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
+  describe('findById', () => {
+    it('should return a quote by id', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const mockQuote = {
         id: quoteId,
-        text: "Test quote",
-        author: "Test author",
+        text: 'Test quote',
+        author: 'Test author',
         likes: 0,
         tags: null,
         createdAt: new Date(),
@@ -203,34 +203,34 @@ describe("QuoteService", () => {
       const result = await service.findById(quoteId);
 
       expect(result.id).toBe(quoteId);
-      expect(result.text).toBe("Test quote");
+      expect(result.text).toBe('Test quote');
       expect(mockRepository.findById).toHaveBeenCalledWith(quoteId);
     });
 
-    it("should throw NotFoundException when quote not found", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
+    it('should throw NotFoundException when quote not found', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       mockRepository.findById.mockResolvedValue(null);
 
       await expect(service.findById(quoteId)).rejects.toThrow(NotFoundException);
     });
 
-    it("should throw BadRequestException for invalid UUID", async () => {
-      const invalidId = "invalid-uuid";
+    it('should throw BadRequestException for invalid UUID', async () => {
+      const invalidId = 'invalid-uuid';
 
       await expect(service.findById(invalidId)).rejects.toThrow(BadRequestException);
     });
   });
 
-  describe("create", () => {
-    it("should create a new quote", async () => {
+  describe('create', () => {
+    it('should create a new quote', async () => {
       const createDto: CreateQuoteDto = {
-        text: "New quote",
-        author: "New author",
-        tags: "tag1;tag2",
+        text: 'New quote',
+        author: 'New author',
+        tags: 'tag1;tag2',
       };
 
       const mockCreatedQuote = {
-        id: "123e4567-e89b-12d3-a456-426614174000",
+        id: '123e4567-e89b-12d3-a456-426614174000',
         ...createDto,
         likes: 0,
         createdAt: new Date(),
@@ -247,37 +247,37 @@ describe("QuoteService", () => {
       expect(mockRepository.createQuote).toHaveBeenCalledWith(createDto);
     });
 
-    it("should throw BadRequestException for missing text", async () => {
+    it('should throw BadRequestException for missing text', async () => {
       const createDto: CreateQuoteDto = {
-        text: "",
-        author: "Author",
-        tags: "tag1",
+        text: '',
+        author: 'Author',
+        tags: 'tag1',
       };
 
       await expect(service.create(createDto)).rejects.toThrow(BadRequestException);
     });
 
-    it("should throw BadRequestException for text exceeding 1000 characters", async () => {
+    it('should throw BadRequestException for text exceeding 1000 characters', async () => {
       const createDto: CreateQuoteDto = {
-        text: "a".repeat(1001),
-        author: "Author",
+        text: 'a'.repeat(1001),
+        author: 'Author',
       };
 
       await expect(service.create(createDto)).rejects.toThrow(BadRequestException);
     });
   });
 
-  describe("update", () => {
-    it("should update a quote", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
+  describe('update', () => {
+    it('should update a quote', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const updateDto: UpdateQuoteDto = {
-        text: "Updated quote",
+        text: 'Updated quote',
       };
 
       const existingQuote = {
         id: quoteId,
-        text: "Old quote",
-        author: "Author",
+        text: 'Old quote',
+        author: 'Author',
         likes: 0,
         tags: null,
         createdAt: new Date(),
@@ -299,25 +299,25 @@ describe("QuoteService", () => {
       expect(mockRepository.updateQuote).toHaveBeenCalledWith(quoteId, updateDto);
     });
 
-    it("should throw NotFoundException when quote not found", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
-      const updateDto: UpdateQuoteDto = { text: "Updated" };
+    it('should throw NotFoundException when quote not found', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
+      const updateDto: UpdateQuoteDto = { text: 'Updated' };
 
       mockRepository.findById.mockResolvedValue(null);
 
       await expect(service.update(quoteId, updateDto)).rejects.toThrow(NotFoundException);
     });
 
-    it("should throw BadRequestException for negative likes", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
+    it('should throw BadRequestException for negative likes', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const updateDto: UpdateQuoteDto = {
         likes: -1,
       };
 
       const existingQuote = {
         id: quoteId,
-        text: "Quote",
-        author: "Author",
+        text: 'Quote',
+        author: 'Author',
         likes: 0,
         tags: null,
         createdAt: new Date(),
@@ -330,13 +330,13 @@ describe("QuoteService", () => {
     });
   });
 
-  describe("delete", () => {
-    it("should delete a quote", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
+  describe('delete', () => {
+    it('should delete a quote', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const mockQuote = {
         id: quoteId,
-        text: "Quote to delete",
-        author: "Author",
+        text: 'Quote to delete',
+        author: 'Author',
         likes: 0,
         tags: null,
         createdAt: new Date(),
@@ -351,17 +351,17 @@ describe("QuoteService", () => {
       expect(mockRepository.deleteQuote).toHaveBeenCalledWith(quoteId);
     });
 
-    it("should throw NotFoundException when quote not found", async () => {
-      const quoteId = "123e4567-e89b-12d3-a456-426614174000";
+    it('should throw NotFoundException when quote not found', async () => {
+      const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       mockRepository.findById.mockResolvedValue(null);
 
       await expect(service.delete(quoteId)).rejects.toThrow(NotFoundException);
     });
   });
 
-  describe("findAllTags", () => {
-    it("should return all unique tags", async () => {
-      const mockTags = ["tag1", "tag2", "tag3"];
+  describe('findAllTags', () => {
+    it('should return all unique tags', async () => {
+      const mockTags = ['tag1', 'tag2', 'tag3'];
       mockRepository.findAllTags.mockResolvedValue(mockTags);
 
       const result = await service.findAllTags();
@@ -371,9 +371,9 @@ describe("QuoteService", () => {
     });
   });
 
-  describe("findAllAuthors", () => {
-    it("should return all unique authors", async () => {
-      const mockAuthors = ["Author 1", "Author 2"];
+  describe('findAllAuthors', () => {
+    it('should return all unique authors', async () => {
+      const mockAuthors = ['Author 1', 'Author 2'];
       mockRepository.findAllAuthors.mockResolvedValue(mockAuthors);
 
       const result = await service.findAllAuthors();

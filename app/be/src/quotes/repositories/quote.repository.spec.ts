@@ -1,4 +1,4 @@
-describe("QuoteRepository", () => {
+describe('QuoteRepository', () => {
   let repository: Record<string, jest.Mock>;
 
   beforeEach(() => {
@@ -13,17 +13,17 @@ describe("QuoteRepository", () => {
     };
   });
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(repository).toBeDefined();
   });
 
-  describe("findAll", () => {
-    it("should return all quotes", async () => {
+  describe('findAll', () => {
+    it('should return all quotes', async () => {
       const mockQuotes = [
         {
-          id: "1",
-          text: "Test quote 1",
-          author: "Author 1",
+          id: '1',
+          text: 'Test quote 1',
+          author: 'Author 1',
           likes: 0,
           tags: null,
           createdAt: new Date(),
@@ -40,21 +40,21 @@ describe("QuoteRepository", () => {
     });
   });
 
-  describe("findAllTags", () => {
-    it("should return unique tags", async () => {
-      const mockTags = ["tag1", "tag2", "tag3", "tag4"];
+  describe('findAllTags', () => {
+    it('should return unique tags', async () => {
+      const mockTags = ['tag1', 'tag2', 'tag3', 'tag4'];
       repository.findAllTags.mockResolvedValue(mockTags);
 
       const result = await repository.findAllTags();
 
-      expect(result).toContain("tag1");
-      expect(result).toContain("tag2");
-      expect(result).toContain("tag3");
-      expect(result).toContain("tag4");
+      expect(result).toContain('tag1');
+      expect(result).toContain('tag2');
+      expect(result).toContain('tag3');
+      expect(result).toContain('tag4');
       expect(result.length).toBe(4);
     });
 
-    it("should return empty array when no quotes have tags", async () => {
+    it('should return empty array when no quotes have tags', async () => {
       repository.findAllTags.mockResolvedValue([]);
 
       const result = await repository.findAllTags();
@@ -63,19 +63,19 @@ describe("QuoteRepository", () => {
     });
   });
 
-  describe("findAllAuthors", () => {
-    it("should return unique authors", async () => {
-      const mockAuthors = ["Author 1", "Author 2"];
+  describe('findAllAuthors', () => {
+    it('should return unique authors', async () => {
+      const mockAuthors = ['Author 1', 'Author 2'];
       repository.findAllAuthors.mockResolvedValue(mockAuthors);
 
       const result = await repository.findAllAuthors();
 
-      expect(result).toContain("Author 1");
-      expect(result).toContain("Author 2");
+      expect(result).toContain('Author 1');
+      expect(result).toContain('Author 2');
       expect(result.length).toBe(2);
     });
 
-    it("should return empty array when no quotes exist", async () => {
+    it('should return empty array when no quotes exist', async () => {
       repository.findAllAuthors.mockResolvedValue([]);
 
       const result = await repository.findAllAuthors();

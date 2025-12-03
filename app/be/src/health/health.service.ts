@@ -1,22 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { InjectDataSource } from "@nestjs/typeorm";
-import type { DataSource } from "typeorm";
+import { Injectable } from '@nestjs/common';
+import { InjectDataSource } from '@nestjs/typeorm';
+import type { DataSource } from 'typeorm';
 
 export interface HealthStatus {
-  status: "healthy" | "unhealthy";
+  status: 'healthy' | 'unhealthy';
   timestamp: string;
   uptime: number;
   checks: {
     database: {
-      status: "healthy" | "unhealthy";
+      status: 'healthy' | 'unhealthy';
       message?: string;
     };
     application: {
-      status: "healthy" | "unhealthy";
+      status: 'healthy' | 'unhealthy';
       message?: string;
     };
     memory: {
-      status: "healthy" | "unhealthy";
+      status: 'healthy' | 'unhealthy';
       used: number;
       total: number;
       percentage: number;
@@ -35,45 +35,45 @@ export class HealthService {
     this.startTime = Date.now();
   }
 
-  async checkDatabase(): Promise<{ status: "healthy" | "unhealthy"; message?: string }> {
+  async checkDatabase(): Promise<{ status: 'healthy' | 'unhealthy'; message?: string }> {
     try {
       if (!this._dataSource.isInitialized) {
         return {
-          status: "unhealthy",
-          message: "Database connection not initialized",
+          status: 'unhealthy',
+          message: 'Database connection not initialized',
         };
       }
 
-      await this._dataSource.query("SELECT 1");
-      return { status: "healthy" };
+      await this._dataSource.query('SELECT 1');
+      return { status: 'healthy' };
     } catch (error) {
       return {
-        status: "unhealthy",
-        message: error instanceof Error ? error.message : "Database check failed",
+        status: 'unhealthy',
+        message: error instanceof Error ? error.message : 'Database check failed',
       };
     }
   }
 
-  checkApplication(): { status: "healthy" | "unhealthy"; message?: string } {
+  checkApplication(): { status: 'healthy' | 'unhealthy'; message?: string } {
     try {
       const uptime = Date.now() - this.startTime;
       if (uptime < 0) {
         return {
-          status: "unhealthy",
-          message: "Invalid uptime calculation",
+          status: 'unhealthy',
+          message: 'Invalid uptime calculation',
         };
       }
-      return { status: "healthy" };
+      return { status: 'healthy' };
     } catch (error) {
       return {
-        status: "unhealthy",
-        message: error instanceof Error ? error.message : "Application check failed",
+        status: 'unhealthy',
+        message: error instanceof Error ? error.message : 'Application check failed',
       };
     }
   }
 
   checkMemory(): {
-    status: "healthy" | "unhealthy";
+    status: 'healthy' | 'unhealthy';
     used: number;
     total: number;
     percentage: number;
@@ -84,7 +84,7 @@ export class HealthService {
     const percentage = (used / total) * 100;
 
     // Consider memory unhealthy if usage exceeds 90%
-    const status: "healthy" | "unhealthy" = percentage > 90 ? "unhealthy" : "healthy";
+    const status: 'healthy' | 'unhealthy' = percentage > 90 ? 'unhealthy' : 'healthy';
 
     return {
       status,
@@ -102,12 +102,12 @@ export class HealthService {
 
     const memoryCheck = this.checkMemory();
 
-    const overallStatus: "healthy" | "unhealthy" =
-      databaseCheck.status === "healthy" &&
-      applicationCheck.status === "healthy" &&
-      memoryCheck.status === "healthy"
-        ? "healthy"
-        : "unhealthy";
+    const overallStatus: 'healthy' | 'unhealthy' =
+      databaseCheck.status === 'healthy' &&
+      applicationCheck.status === 'healthy' &&
+      memoryCheck.status === 'healthy'
+        ? 'healthy'
+        : 'unhealthy';
 
     return {
       status: overallStatus,

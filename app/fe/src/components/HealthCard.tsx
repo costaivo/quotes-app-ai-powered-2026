@@ -1,23 +1,23 @@
-import type { HealthStatus } from "../types/api";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { CheckCircle2, AlertCircle, HardDrive, Activity } from "lucide-react";
+import type { HealthStatus } from '../types/api';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { CheckCircle2, AlertCircle, HardDrive, Activity } from 'lucide-react';
 
 interface HealthCardProps {
   healthStatus: HealthStatus;
 }
 
 const getStatusColor = (status: string) => {
-  return status === "healthy"
-    ? "text-green-600 dark:text-green-400"
-    : "text-red-600 dark:text-red-400";
+  return status === 'healthy'
+    ? 'text-green-600 dark:text-green-400'
+    : 'text-red-600 dark:text-red-400';
 };
 
 const getStatusBgColor = (status: string) => {
-  return status === "healthy" ? "bg-green-50 dark:bg-green-950" : "bg-red-50 dark:bg-red-950";
+  return status === 'healthy' ? 'bg-green-50 dark:bg-green-950' : 'bg-red-50 dark:bg-red-950';
 };
 
 const StatusIcon = ({ status }: { status: string }) => {
-  return status === "healthy" ? (
+  return status === 'healthy' ? (
     <CheckCircle2 className={`h-4 w-4 ${getStatusColor(status)}`} />
   ) : (
     <AlertCircle className={`h-4 w-4 ${getStatusColor(status)}`} />

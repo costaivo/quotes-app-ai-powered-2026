@@ -1,12 +1,12 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation } from '@tanstack/react-router';
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 
 interface NavLink {
   label: string;
@@ -14,8 +14,8 @@ interface NavLink {
 }
 
 const navLinks: NavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
 ];
 
 export function NavBar() {
@@ -34,7 +34,7 @@ export function NavBar() {
                   asChild
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    isActive(link.href) && "bg-accent text-accent-foreground",
+                    isActive(link.href) && 'bg-accent text-accent-foreground',
                   )}
                 >
                   <div>{link.label}</div>

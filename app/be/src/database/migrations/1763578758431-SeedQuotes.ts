@@ -1,4 +1,4 @@
-import type { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class SeedQuotes1763578758431 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

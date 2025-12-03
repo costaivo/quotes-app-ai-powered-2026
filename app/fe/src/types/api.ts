@@ -5,20 +5,20 @@ export interface VersionInfo {
 }
 
 export interface HealthStatus {
-  status: "healthy" | "unhealthy";
+  status: 'healthy' | 'unhealthy';
   timestamp: string;
   uptime: number;
   checks: {
     database: {
-      status: "healthy" | "unhealthy";
+      status: 'healthy' | 'unhealthy';
       message?: string;
     };
     application: {
-      status: "healthy" | "unhealthy";
+      status: 'healthy' | 'unhealthy';
       message?: string;
     };
     memory: {
-      status: "healthy" | "unhealthy";
+      status: 'healthy' | 'unhealthy';
       used: number;
       total: number;
       percentage: number;
