@@ -69,6 +69,31 @@ A robust REST API for managing quotes, built with NestJS, TypeORM, and PostgreSQ
 *   `createdAt` (timestamp)
 *   `updatedAt` (timestamp)
 
+## Logging
+
+The application uses **Winston** for structured JSON logging. Logs are automatically rotated and stored in the `logs/` directory by default.
+
+### Configuration
+The following environment variables control logging behavior:
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `LOG_LEVEL` | `info` | Log verbosity (debug, info, warn, error) |
+| `LOG_FILE_PATH` | `logs/app.log` | Path pattern for log files |
+| `LOG_MAX_SIZE` | `10m` | Max size of a single log file before rotation |
+| `LOG_MAX_FILES` | `5d` | Number of files or days to keep |
+
+### Log Format
+Logs are output in JSON format for easy parsing:
+```json
+{
+  "timestamp": "2025-12-03T10:15:30.123Z",
+  "level": "info",
+  "message": "Application started",
+  "context": "NestFactory"
+}
+```
+
 ## Testing
 
 Run unit tests:

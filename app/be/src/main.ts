@@ -56,8 +56,13 @@ if (process.env.NODE_ENV === "development") {
   console.log("");
 }
 
+import { WinstonModule } from "nest-winston";
+import { winstonConfig } from "./common/logger/winston.config";
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: WinstonModule.createLogger(winstonConfig),
+  });
 
   // Set global API prefix
   app.setGlobalPrefix("api");
