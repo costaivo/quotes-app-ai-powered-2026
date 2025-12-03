@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "clean": "rm -rf dist node_modules 2>/dev/null || true",
     "build": "tsc -b && vite build",
     "lint": "biome check ./src",
     "lint:fix": "biome check --write ./src",

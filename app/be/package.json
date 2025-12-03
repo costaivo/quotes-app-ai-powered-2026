@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "clean": "rm -rf dist coverage 2>/dev/null || true",
+    "clean": "rm -rf dist coverage node_modules 2>/dev/null || true",
     "build": "nest build",
     "lint": "biome check ./src ./test",
     "lint:fix": "biome check --write ./src ./test",
