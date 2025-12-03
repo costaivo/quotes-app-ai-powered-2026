@@ -39,7 +39,7 @@ if [ "$#" -gt 0 ]; then
     help|-h|--help)
       echo "${BOLD}Quotes App - Usage:${NC}"
       echo "  $0 [all|db|be|fe]"
-      echo "  all/1:        Start all services (backend + frontend + db + adminer + pgadmin)"
+      echo "  all/1:        Start all services (backend + frontend + db + adminer + pgadmin + dozzle)"
       echo "  ${GREEN}db/2:${NC}       Start only DB and DB Clients (db + adminer + pgadmin)"
       echo "  be/3:         Start BE + DB + DB clients (backend + db + adminer + pgadmin)"
       echo "  fe/4:         Start only FE (frontend)"
@@ -55,7 +55,7 @@ else
   echo "${BOLD}============================================${NC}"
   echo "${BOLD}        Quotes App - Service Options        ${NC}"
   echo "${BOLD}============================================${NC}"
-  echo "  ${BLUE}1) Start ALL (backend + frontend + db + adminer + pgadmin)${NC}"
+  echo "  ${BLUE}1) Start ALL (backend + frontend + db + adminer + pgadmin + dozzle)${NC}"
   echo "  ${GREEN}2) Start only DB and DB Clients (db + adminer + pgadmin)${NC}"
   echo "  3) Start BE + DB + DB clients (backend + db + adminer + pgadmin)"
   echo "  ${GREEN}4) Start only FE (frontend)${NC}"
@@ -81,6 +81,7 @@ if docker compose up -d --build $SERVICES; then
       echo "Frontend: http://localhost:5173"
       echo "Adminer:  http://localhost:8080"
       echo "pgAdmin:  http://localhost:5050"
+      echo "Dozzle:   http://localhost:8888"
       ;;
     "db adminer pgadmin")
       echo "Services: DB + Adminer + pgAdmin"
