@@ -241,7 +241,7 @@ describe('Quotes E2E', () => {
 
       // updatedAt should be different and newer
       expect(new Date(body.updatedAt).getTime()).toBeGreaterThan(
-        new Date(originalUpdatedAt).getTime()
+        new Date(originalUpdatedAt).getTime(),
       );
 
       // Cleanup
