@@ -99,6 +99,34 @@ We recommend using **Dozzle** for a better log viewing experience. It is include
 3.  **View Logs**:
     Click on any container name (e.g., `quotes-be`) to see its live log stream. Dozzle supports search, filtering, and split-screen viewing.
 
+### Advanced Log Analysis with Grafana & Loki
+
+For deep analysis of your local application logs (querying, filtering, graphs), we provide a **Grafana + Loki + Promtail** stack.
+
+1.  **Start the logging stack**:
+    ```bash
+    docker compose up -d loki promtail grafana
+    ```
+2.  **Open Grafana**:
+    Navigate to [http://localhost:3001](http://localhost:3001).
+    *   **User**: `admin`
+    *   **Password**: `admin`
+
+3.  **Configure Data Source**:
+    *   Go to **Connections** -> **Add new connection**.
+    *   Search for **Loki** and click **Add new data source**.
+    *   **URL**: `http://loki:3100`
+    *   Click **Save & Test**.
+
+4.  **Explore Logs**:
+    *   Go to **Explore** (compass icon on the left).
+    *   Select **Loki** as the source.
+    *   In the query builder, select label filters:
+        *   `job` = `quotes_app_be`
+    *   Click **Run query**.
+
+    You can now perform advanced queries like `{job="quotes_app_be"} |= "error"` to find all error logs, or graph log volume over time.
+
 Notes:
 - The compose file mounts local source into the containers (`./app/be:/usr/src/app`, `./app/fe:/app`), so changes to the code are picked up by the dev servers (Vite for FE, `npm run start:dev` for BE) without rebuilding the image.
 - Rebuild only when you change a Dockerfile, dependency install step, or when producing production images.
