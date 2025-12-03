@@ -1,4 +1,3 @@
-import { DataSource } from "typeorm";
 import { Quote } from "../../quotes/entities/quote.entity";
 import AppDataSource from "../../../ormconfig";
 

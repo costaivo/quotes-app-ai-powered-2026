@@ -17,7 +17,8 @@ import { QuoteService } from "../services/quote.service";
 import { CreateQuoteDto } from "../dto/create-quote.dto";
 import { UpdateQuoteDto } from "../dto/update-quote.dto";
 import { QuoteResponseDto } from "../dto/quote-response.dto";
-import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
+import type { PaginationQueryDto } from "../dto/pagination-query.dto";
+import { PaginatedResponseDto } from "../dto/paginated-response.dto";
 
 @ApiTags("Quotes")
 @Controller("v1/quotes")
@@ -30,9 +31,11 @@ export class QuoteController {
   @ApiResponse({
     status: 200,
     description: "Return all quotes.",
-    type: [QuoteResponseDto],
+    type: PaginatedResponseDto,
   })
-  async findAll(@Query() query: FindAllQuotesDto): Promise<QuoteResponseDto[]> {
+  async findAll(
+    @Query() query: PaginationQueryDto,
+  ): Promise<PaginatedResponseDto<QuoteResponseDto>> {
     return this.quoteService.findAll(query);
   }
 

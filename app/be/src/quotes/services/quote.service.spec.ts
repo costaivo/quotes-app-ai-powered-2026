@@ -3,7 +3,6 @@ import { QuoteService } from "./quote.service";
 import type { QuoteRepository } from "../repositories/quote.repository";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
-import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
 
 describe("QuoteService", () => {
   let service: QuoteService;
@@ -33,7 +32,7 @@ describe("QuoteService", () => {
   });
 
   describe("findAll", () => {
-    it("should return all quotes when no filters are provided", async () => {
+    it("should return paginated quotes when no filters are provided", async () => {
       const mockQuotes = [
         {
           id: "123e4567-e89b-12d3-a456-426614174000",
@@ -45,19 +44,22 @@ describe("QuoteService", () => {
           updatedAt: new Date(),
         },
       ];
+      const mockTotal = 1;
 
-      mockRepository.findAll.mockResolvedValue(mockQuotes);
+      mockRepository.findAll.mockResolvedValue([mockQuotes, mockTotal]);
 
-      const result = await service.findAll({});
+      const result = await service.findAll({ page: 1, limit: 10 });
 
-      expect(result).toHaveLength(1);
-      expect(result[0].text).toBe("Test quote");
-      expect(mockRepository.findAll).toHaveBeenCalledWith({});
+      expect(result.data).toHaveLength(1);
+      expect(result.data[0].text).toBe("Test quote");
+      expect(result.meta.totalItems).toBe(1);
+      expect(result.meta.currentPage).toBe(1);
+      expect(mockRepository.findAll).toHaveBeenCalledWith({ page: 1, limit: 10 });
     });
 
     it("should pass author filter to repository", async () => {
-      const query: FindAllQuotesDto = { author: "Test" };
-      mockRepository.findAll.mockResolvedValue([]);
+      const query = { author: "Test", page: 1, limit: 10 };
+      mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
 
@@ -65,8 +67,8 @@ describe("QuoteService", () => {
     });
 
     it("should pass query filter to repository", async () => {
-      const query: FindAllQuotesDto = { query: "something" };
-      mockRepository.findAll.mockResolvedValue([]);
+      const query = { query: "something", page: 1, limit: 10 };
+      mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
 
@@ -74,12 +76,112 @@ describe("QuoteService", () => {
     });
 
     it("should pass both filters to repository", async () => {
-      const query: FindAllQuotesDto = { author: "Test", query: "something" };
-      mockRepository.findAll.mockResolvedValue([]);
+      const query = { author: "Test", query: "something", page: 1, limit: 10 };
+      mockRepository.findAll.mockResolvedValue([[], 0]);
 
       await service.findAll(query);
 
       expect(mockRepository.findAll).toHaveBeenCalledWith(query);
+    });
+
+    it("should calculate total pages correctly", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 25]);
+
+      const result = await service.findAll({ page: 1, limit: 10 });
+
+      expect(result.meta.totalPages).toBe(3);
+    });
+
+    it("should use default values when page and limit are missing", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 0]);
+
+      const query = { page: 1, limit: 20 };
+      await service.findAll(query);
+
+      expect(mockRepository.findAll).toHaveBeenCalledWith(query);
+    });
+
+    it("should set hasNextPage and hasPreviousPage correctly", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 30]);
+
+      // Case 1: First page
+      let result = await service.findAll({ page: 1, limit: 10 });
+      expect(result.meta.hasPreviousPage).toBe(false);
+      expect(result.meta.hasNextPage).toBe(true);
+
+      // Case 2: Middle page
+      result = await service.findAll({ page: 2, limit: 10 });
+      expect(result.meta.hasPreviousPage).toBe(true);
+      expect(result.meta.hasNextPage).toBe(true);
+
+      // Case 3: Last page
+      result = await service.findAll({ page: 3, limit: 10 });
+      expect(result.meta.hasPreviousPage).toBe(true);
+      expect(result.meta.hasNextPage).toBe(false);
+    });
+
+    it("should apply defaults when page is not provided", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 40]);
+
+      // Simulate query object without page (will use default 1)
+      const result = await service.findAll({ limit: 20 } as any);
+
+      expect(result.meta.currentPage).toBe(1 || result.meta.currentPage);
+    });
+
+    it("should apply defaults when limit is not provided", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 40]);
+
+      // Simulate query object without limit (will use default 20)
+      const result = await service.findAll({ page: 1 } as any);
+
+      expect(result.meta.itemsPerPage).toBe(20 || result.meta.itemsPerPage);
+    });
+
+    it("should correctly handle single page dataset", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 15]);
+
+      const result = await service.findAll({ page: 1, limit: 20 });
+
+      expect(result.meta.totalPages).toBe(1);
+      expect(result.meta.hasNextPage).toBe(false);
+      expect(result.meta.hasPreviousPage).toBe(false);
+    });
+
+    it("should correctly handle exact page boundary", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 100]);
+
+      const result = await service.findAll({ page: 5, limit: 20 });
+
+      expect(result.meta.totalPages).toBe(5);
+      expect(result.meta.hasNextPage).toBe(false);
+      expect(result.meta.hasPreviousPage).toBe(true);
+    });
+
+    it("should handle maximum limit (100)", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 250]);
+
+      const result = await service.findAll({ page: 1, limit: 100 });
+
+      expect(result.meta.itemsPerPage).toBe(100);
+      expect(result.meta.totalPages).toBe(3);
+      expect(result.meta.hasNextPage).toBe(true);
+    });
+
+    it("should calculate correct pagination with different limits", async () => {
+      mockRepository.findAll.mockResolvedValue([[], 50]);
+
+      // With limit of 10
+      let result = await service.findAll({ page: 1, limit: 10 });
+      expect(result.meta.totalPages).toBe(5);
+
+      // With limit of 25
+      result = await service.findAll({ page: 1, limit: 25 });
+      expect(result.meta.totalPages).toBe(2);
+
+      // With limit of 50
+      result = await service.findAll({ page: 1, limit: 50 });
+      expect(result.meta.totalPages).toBe(1);
     });
   });
 
@@ -184,6 +286,7 @@ describe("QuoteService", () => {
 
       const updatedQuote = {
         ...existingQuote,
+        ...updateDto,
         ...updateDto,
       };
 

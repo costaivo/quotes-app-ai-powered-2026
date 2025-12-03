@@ -4,15 +4,24 @@ import type { QuoteRepository } from "../repositories/quote.repository";
 import type { CreateQuoteDto } from "../dto/create-quote.dto";
 import type { UpdateQuoteDto } from "../dto/update-quote.dto";
 import type { QuoteResponseDto } from "../dto/quote-response.dto";
-import type { FindAllQuotesDto } from "../dto/find-all-quotes.dto";
+import type { PaginationQueryDto } from "../dto/pagination-query.dto";
+import { PaginatedResponseDto } from "../dto/paginated-response.dto";
+import { PaginationMetaDto } from "../dto/pagination-meta.dto";
 
 @Injectable()
 export class QuoteService {
   constructor(private quoteRepository: QuoteRepository) {}
 
-  async findAll(query: FindAllQuotesDto): Promise<QuoteResponseDto[]> {
-    const quotes = await this.quoteRepository.findAll(query);
-    return quotes.map(this.mapToDto);
+  async findAll(query: PaginationQueryDto): Promise<PaginatedResponseDto<QuoteResponseDto>> {
+    const page = query.page || 1;
+    const limit = query.limit || 20;
+
+    const [quotes, total] = await this.quoteRepository.findAll(query);
+
+    const quoteDtos = quotes.map(this.mapToDto);
+    const meta = new PaginationMetaDto(page, limit, total);
+
+    return new PaginatedResponseDto(quoteDtos, meta);
   }
 
   async findById(id: string): Promise<QuoteResponseDto> {

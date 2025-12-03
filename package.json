@@ -7,7 +7,10 @@
     "@commitlint/config-conventional": "19.8.1",
     "@faker-js/faker": "10.0.0",
     "husky": "9.1.7",
-    "concurrently": "8.2.2"
+    "concurrently": "8.2.2",
+    "@biomejs/biome": "^2.3.6",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3"
   },
   "scripts": {
     "preinstall": "node -e \"const ua=process.env.npm_config_user_agent||''; if(!ua.includes('pnpm')){console.error('This repo requires pnpm. Install with: corepack enable && corepack prepare pnpm@latest --activate'); process.exit(1)}\"",

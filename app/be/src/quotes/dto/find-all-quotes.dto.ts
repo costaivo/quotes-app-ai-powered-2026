@@ -11,4 +11,11 @@ export class FindAllQuotesDto {
   @IsOptional()
   @IsString()
   query?: string;
+
+  // Added to support type compatibility in tests and service
+  @IsOptional()
+  page?: number;
+
+  @IsOptional()
+  limit?: number;
 }
