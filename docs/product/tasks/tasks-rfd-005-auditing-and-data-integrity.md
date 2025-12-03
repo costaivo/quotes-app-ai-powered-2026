@@ -6,6 +6,8 @@
 - `app/be/src/quotes/dto/quote-response.dto.ts` - (If exists) or the Controller return type needs to map the entity to the new JSON structure.
 - `app/be/src/database/migrations/` - New migration file for renaming columns and adding audit fields.
 - `app/be/src/quotes/quotes.service.ts` - Business logic updates for new field names.
+- `docs/postman-collection/quotes-api-collection.json` - Updated Postman collection with new field names and audit field tests.
+- `app/be/test/app.e2e-spec.ts` - Updated E2E tests with schema validation and audit field tests.
 
 ### Notes
 
@@ -14,7 +16,7 @@
 - `likes` -> `like_count` is a breaking change.
 
 **Approval:**
-- **Next Sub-task**: Awaiting approval for Task 3.0
+- **Next Sub-task**: Ready for git commit and PR workflow
 
 ## Tasks
 
@@ -44,20 +46,39 @@
     - Rename `text` to `quote`.
     - Rename `likes` to `likeCount`.
 
-- [ ] 3.0 Service & Controller Refactoring
+- [x] 3.0 Service & Controller Refactoring
   - [x] 3.1 Update `QuotesService` methods (`create`, `findAll`, `findOne`, `update`) to use the new property names (`quote`, `likeCount`).
   - [x] 3.2 Update `QuotesController` to handle the new DTO structure. (Also updated QuoteRepository for consistency)
-  - [ ] 3.3 Verify any filtering/sorting logic (from Part 2/3) uses the correct database column names (`quote` vs `text`).
+  - [x] 3.3 Verify any filtering/sorting logic (from Part 2/3) uses the correct database column names (`quote` vs `text`).
+    - Updated `quote.repository.ts` to use `quote.quote` instead of `quote.text` in the query builder for filtering.
+    - Updated test file `quote.service.spec.ts` to use new field names.
+    - Controller has no hardcoded column references and uses DTOs, so it's compatible.
 
-- [ ] 4.0 Verification
-  - [ ] 4.1 Start the application and verify it starts without TypeORM errors.
-  - [ ] 4.2 Test `POST /quotes` with the new payload structure (`quote` instead of `text`).
-  - [ ] 4.3 Test `GET /quotes` and ensure response contains `created_at`, `updated_at`, `created_by`, `updated_by` (or camelCase equivalents in JSON depending on serializer settings).
-  - [ ] 4.4 Test `PATCH /quotes/:id` updates `updated_at`.
+- [x] 4.0 Verification
+  - [x] 4.1 Start the application and verify it starts without TypeORM errors.
+  - [x] 4.2 Test `POST /quotes` with the new payload structure (`quote` instead of `text`).
+  - [x] 4.3 Test `GET /quotes` and ensure response contains `created_at`, `updated_at`, `created_by`, `updated_by` (or camelCase equivalents in JSON depending on serializer settings).
+  - [x] 4.4 Test `PATCH /quotes/:id` updates `updated_at`.
 
-- [ ] 5.0 Documentation & Tests
-  - [ ] 5.1 Update Postman collection to reflect new API contract (new field names `quote`, `likeCount` in requests/responses).
-  - [ ] 5.2 Add E2E test to validate the schema of the quotes response matches expected DTO with all new fields.
-  - [ ] 5.3 Add E2E test to validate that `createdAt` and `updatedAt` fields have valid date values set upon creation.
-  - [ ] 5.4 Add E2E test to validate that `updatedAt` changes when a quote is updated, but `createdAt` remains the same.
-  - [ ] 5.5 Add E2E test to validate that `createdBy` and `updatedBy` are present (even if null).
+- [x] 5.0 Documentation & Tests
+  - [x] 5.1 Update Postman collection to reflect new API contract (new field names `quote`, `likeCount` in requests/responses).
+    - Updated Create Quote request to use `quote` field.
+    - Updated Create Quote tests to validate new audit fields (`createdBy`, `updatedBy`, `createdAt`, `updatedAt`).
+    - Updated filter requests to search `quote.quote` instead of `quote.text`.
+    - Updated Update Quote test to use `likeCount` and verify `updatedAt` changes.
+    - Updated error test name to reflect new field name.
+    - Added `createdAt` collection variable to track creation timestamp.
+  - [x] 5.2 Add E2E test to validate the schema of the quotes response matches expected DTO with all new fields.
+    - Added test `should validate response schema contains all required fields including audit fields`.
+    - Validates all core fields and audit fields are present in responses.
+  - [x] 5.3 Add E2E test to validate that `createdAt` and `updatedAt` fields have valid date values set upon creation.
+    - Added test `should set valid timestamps on creation (createdAt and updatedAt)`.
+    - Validates timestamps are within reasonable range and initially equal.
+  - [x] 5.4 Add E2E test to validate that `updatedAt` changes when a quote is updated, but `createdAt` remains the same.
+    - Added test `should update updatedAt timestamp but keep createdAt immutable`.
+    - Validates `createdAt` doesn't change and `updatedAt` is newer after update.
+    - Added test `should update likeCount and reflect in timestamp`.
+  - [x] 5.5 Add E2E test to validate that `createdBy` and `updatedBy` are present (even if null).
+    - Added test `should have createdBy and updatedBy as null (placeholders)`.
+    - Validates both fields exist and are null (as expected until auth is implemented).
+    - Added test `should return quote with all audit fields` in GET endpoint.
