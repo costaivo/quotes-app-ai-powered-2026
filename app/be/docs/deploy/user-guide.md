@@ -22,8 +22,6 @@ cd quotes-app-deploy
 Create a file named `docker-compose.yml` with the following content:
 
 ```yaml
-version: '3.8'
-
 services:
   # Backend Application
   backend:
@@ -58,7 +56,14 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - quotes-network
-
+  dozzle:
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8888:8080"
+    networks:
+      - quotes-network
 networks:
   quotes-network:
     driver: bridge

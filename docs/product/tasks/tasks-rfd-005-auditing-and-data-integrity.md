@@ -13,18 +13,21 @@
 - `text` -> `quote` is a breaking change.
 - `likes` -> `like_count` is a breaking change.
 
+**Approval:**
+- **Next Sub-task**: Awaiting approval
+
 ## Tasks
 
-- [ ] 1.0 Database Migration & Schema Update
-  - [ ] 1.1 Generate a new migration file `RenameAndAuditQuotes` using TypeORM CLI.
-  - [ ] 1.2 Implement the `up` method to:
+- [x] 1.0 Database Migration & Schema Update
+  - [x] 1.1 Generate a new migration file `RenameAndAuditQuotes` using TypeORM CLI.
+  - [x] 1.2 Implement the `up` method to:
     - Rename column `text` to `quote`.
     - Rename column `likes` to `like_count`.
     - Add column `created_by` (UUID/varchar, nullable).
     - Add column `updated_by` (UUID/varchar, nullable).
     - Ensure `created_at` and `updated_at` are using snake_case naming (`created_at`, `updated_at`) if they aren't already (TypeORM default is usually camelCase property -> camelCase column unless naming strategy is used). *Self-correction: Standardize on snake_case for DB columns as per RFD.*
-  - [ ] 1.3 Implement the `down` method to revert changes.
-  - [ ] 1.4 Run the migration to verify it works against the local DB.
+  - [x] 1.3 Implement the `down` method to revert changes.
+  - [x] 1.4 Run the migration to verify it works against the local DB.
 
 - [ ] 2.0 Entity & DTO Updates
   - [ ] 2.1 Update `app/be/src/quotes/entities/quote.entity.ts`:
