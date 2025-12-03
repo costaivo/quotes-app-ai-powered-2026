@@ -44,7 +44,7 @@
     "formatter": {
       "trailingCommas": "all",
       "arrowParentheses": "always",
-      "quoteStyle": "double"
+      "quoteStyle": "single"
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true

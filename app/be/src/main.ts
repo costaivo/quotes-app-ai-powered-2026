@@ -1,18 +1,18 @@
-import * as fs from "node:fs";
-import * as path from "node:path";
-import { config } from "dotenv";
-import { NestFactory } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { LoggingInterceptor } from "./common/interceptors/logging.interceptor";
-import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
-import { AppModule } from "./app.module";
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { config } from 'dotenv';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { AppModule } from './app.module';
 
 // Load .env from root directory if running locally
 // Try multiple possible root paths
 const possibleRootPaths = [
-  path.join(process.cwd(), ".env"), // Current working directory
-  path.join(process.cwd(), "../../.env"), // From app/be/
-  path.join(process.cwd(), "../.env"), // From app/
+  path.join(process.cwd(), '.env'), // Current working directory
+  path.join(process.cwd(), '../../.env'), // From app/be/
+  path.join(process.cwd(), '../.env'), // From app/
 ];
 
 let envLoaded = false;
@@ -34,7 +34,7 @@ if (!envLoaded) {
 }
 
 // Log loaded environment variables in development mode
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === 'development') {
   console.log(`\n📋 Loaded Environment Variables:`);
   const envVars = {
     NODE_ENV: process.env.NODE_ENV,
@@ -43,9 +43,9 @@ if (process.env.NODE_ENV === "development") {
     POSTGRES_PORT: process.env.POSTGRES_PORT,
     POSTGRES_USER: process.env.POSTGRES_USER,
     POSTGRES_DB: process.env.POSTGRES_DB,
-    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ? "***" : undefined,
+    POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD ? '***' : undefined,
     DATABASE_URL: process.env.DATABASE_URL
-      ? `${process.env.DATABASE_URL.split("@")[0].split("://")[0]}://***@${process.env.DATABASE_URL.split("@")[1]}`
+      ? `${process.env.DATABASE_URL.split('@')[0].split('://')[0]}://***@${process.env.DATABASE_URL.split('@')[1]}`
       : undefined,
   };
   Object.entries(envVars).forEach(([key, value]) => {
@@ -53,14 +53,19 @@ if (process.env.NODE_ENV === "development") {
       console.log(`  ${key}: ${value}`);
     }
   });
-  console.log("");
+  console.log('');
 }
 
+import { WinstonModule } from 'nest-winston';
+import { winstonConfig } from './common/logger/winston.config';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: WinstonModule.createLogger(winstonConfig),
+  });
 
   // Set global API prefix
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix('api');
 
   // Register global interceptors
   app.useGlobalInterceptors(new LoggingInterceptor());
@@ -69,22 +74,22 @@ async function bootstrap() {
   app.useGlobalFilters(new GlobalExceptionFilter());
 
   // Swagger configuration (only in development)
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     // Read package.json for API metadata
-    const packageJsonPath = path.join(process.cwd(), "package.json");
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
+    const packageJsonPath = path.join(process.cwd(), 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
     const config = new DocumentBuilder()
-      .setTitle("Quotes Application API")
-      .setDescription(packageJson.description || "Backend API for the Quotes Application")
-      .setVersion(packageJson.version || "0.0.1")
-      .addTag("Version", "Application version information")
-      .addTag("Health", "Health check endpoints")
-      .addTag("App", "Application endpoints")
+      .setTitle('Quotes Application API')
+      .setDescription(packageJson.description || 'Backend API for the Quotes Application')
+      .setVersion(packageJson.version || '0.0.1')
+      .addTag('Version', 'Application version information')
+      .addTag('Health', 'Health check endpoints')
+      .addTag('App', 'Application endpoints')
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup("api/docs", app, document);
+    SwaggerModule.setup('api/docs', app, document);
   }
 
   // Enable CORS
@@ -93,7 +98,7 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}/api`);
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     console.log(`Swagger documentation: http://localhost:${port}/api/docs`);
   }
 }

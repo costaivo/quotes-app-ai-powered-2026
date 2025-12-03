@@ -69,6 +69,43 @@ A robust REST API for managing quotes, built with NestJS, TypeORM, and PostgreSQ
 *   `createdAt` (timestamp)
 *   `updatedAt` (timestamp)
 
+## Logging
+
+The application uses **Winston** for structured JSON logging. Logs are automatically rotated and stored in the `logs/` directory by default.
+
+### Viewing Logs with Dozzle
+
+We recommend using **Dozzle** for real-time log monitoring when running with Docker Compose.
+
+1.  Start the application stack:
+    ```bash
+    ./start.sh all
+    ```
+2.  Open Dozzle in your browser:
+    [http://localhost:8888](http://localhost:8888)
+3.  Select the `quotes-be` container to view backend logs in real-time.
+
+### Configuration
+The following environment variables control logging behavior:
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `LOG_LEVEL` | `info` | Log verbosity (debug, info, warn, error) |
+| `LOG_FILE_PATH` | `logs/app.log` | Path pattern for log files |
+| `LOG_MAX_SIZE` | `10m` | Max size of a single log file before rotation |
+| `LOG_MAX_FILES` | `5d` | Number of files or days to keep |
+
+### Log Format
+Logs are output in JSON format for easy parsing:
+```json
+{
+  "timestamp": "2025-12-03T10:15:30.123Z",
+  "level": "info",
+  "message": "Application started",
+  "context": "NestFactory"
+}
+```
+
 ## Testing
 
 Run unit tests:

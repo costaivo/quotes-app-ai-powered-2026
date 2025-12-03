@@ -1,15 +1,26 @@
+
 #!/usr/bin/env sh
 set -eu
 
-# Start Docker Compose for the repository root.
-# This mirrors the behavior of `start.bat` and runs in detached mode,
-# rebuilding images. It prints errors and exits with the compose status.
+# ============================================================
+#  Quotes App - Start Script
+#  Description: Starts Docker Compose services in detached mode
+#  Options: all | db | be | fe
+# ============================================================
 
+# Color definitions
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+# Navigate to repository root
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT_DIR"
 
-# If an argument is provided, accept options for different service combinations.
-# If no argument is provided, prompt interactively.
+# Determine services based on argument or interactive choice
 SERVICES=""
 if [ "$#" -gt 0 ]; then
   case "$1" in
@@ -26,103 +37,70 @@ if [ "$#" -gt 0 ]; then
       SERVICES="fe"
       ;;
     help|-h|--help)
-      echo "Usage: $0 [all|db|be|fe]"
-      echo "  all/1: Start all services (backend + frontend + db + adminer + pgadmin)"
-      echo "  db/2:  Start only DB and DB Clients (db + adminer + pgadmin)"
-      echo "  be/3:  Start only BE and DB and DB clients (backend + db + adminer + pgadmin)"
-      echo "  fe/4:  Start only FE (frontend)"
+      echo "${BOLD}Quotes App - Usage:${NC}"
+      echo "  $0 [all|db|be|fe]"
+      echo "  all/1:        Start all services (backend + frontend + db + adminer + pgadmin + dozzle)"
+      echo "  ${GREEN}db/2:${NC}       Start only DB and DB Clients (db + adminer + pgadmin)"
+      echo "  be/3:         Start BE + DB + DB clients (backend + db + adminer + pgadmin)"
+      echo "  fe/4:         Start only FE (frontend)"
       exit 0
       ;;
     *)
-      echo "Unknown option: $1"
+      echo "${RED}Unknown option: $1${NC}"
       echo "Usage: $0 [all|db|be|fe]"
       exit 2
       ;;
   esac
 else
-  echo "Choose which services to start:"
-  echo "  1) Start ALL (backend + frontend + db + adminer + pgadmin)"
-  echo "  2) Start only DB and DB Clients (db + adminer + pgadmin)"
-  echo "  3) Start only BE and DB and DB clients (backend + db + adminer + pgadmin)"
-  echo "  4) Start only FE (frontend)"
+  echo "${BOLD}============================================${NC}"
+  echo "${BOLD}        Quotes App - Service Options        ${NC}"
+  echo "${BOLD}============================================${NC}"
+  echo "  ${BLUE}1) Start ALL (backend + frontend + db + adminer + pgadmin + dozzle)${NC}"
+  echo "  ${GREEN}2) Start only DB and DB Clients (db + adminer + pgadmin)${NC}"
+  echo "  3) Start BE + DB + DB clients (backend + db + adminer + pgadmin)"
+  echo "  ${GREEN}4) Start only FE (frontend)${NC}"
   printf "Enter 1, 2, 3, or 4 [default: 1]: "
-  if ! read choice; then
-    choice="1"
-  fi
+  read choice || choice="1"
   case "$choice" in
-    2)
-      SERVICES="db adminer pgadmin"
-      ;;
-    3)
-      SERVICES="be db adminer pgadmin"
-      ;;
-    4)
-      SERVICES="fe"
-      ;;
-    *)
-      SERVICES=""
-      ;;
+    2) SERVICES="db adminer pgadmin" ;;
+    3) SERVICES="be db adminer pgadmin" ;;
+    4) SERVICES="fe" ;;
+    *) SERVICES="" ;;
   esac
 fi
 
-echo "Starting docker compose (detached, with build)..."
-if [ -z "$SERVICES" ]; then
-  if docker compose up -d --build; then
-    echo "Docker compose started successfully (all services)."
-    # Print where the backend and frontend will be available
-    # Backend URL: use PORT env var if set, default to 3000
-    BE_PORT="${PORT:-3000}"
-    echo "Backend running at http://localhost:${BE_PORT}"
-    # Frontend URL: Vite default port 5173 (mapped in docker-compose.yml)
-    echo "Frontend running at http://localhost:5173"
-    # Adminer (Database UI)
-    echo "Adminer (DB UI) running at http://localhost:8080"
-    # pgAdmin (PostgreSQL Admin)
-    echo "pgAdmin (DB UI) running at http://localhost:5050"
-    exit 0
-  else
-    echo "Docker compose failed." >&2
-    exit 1
-  fi
-elif [ "$SERVICES" = "db adminer pgadmin" ]; then
-  if docker compose up -d --build $SERVICES; then
-    echo "Docker compose started successfully (db + adminer + pgadmin)."
-    # Adminer (Database UI)
-    echo "Adminer (DB UI) running at http://localhost:8080"
-    # pgAdmin (PostgreSQL Admin)
-    echo "pgAdmin (DB UI) running at http://localhost:5050"
-    echo "Database service started."
-    exit 0
-  else
-    echo "Docker compose failed." >&2
-    exit 1
-  fi
-elif [ "$SERVICES" = "be db adminer pgadmin" ]; then
-  if docker compose up -d --build $SERVICES; then
-    echo "Docker compose started successfully (backend + db + adminer + pgadmin)."
-    # Backend URL: use PORT env var if set, default to 3000
-    BE_PORT="${PORT:-3000}"
-    echo "Backend running at http://localhost:${BE_PORT}"
-    # Adminer (Database UI)
-    echo "Adminer (DB UI) running at http://localhost:8080"
-    # pgAdmin (PostgreSQL Admin)
-    echo "pgAdmin (DB UI) running at http://localhost:5050"
-    echo "Database service started."
-    exit 0
-  else
-    echo "Docker compose failed." >&2
-    exit 1
-  fi
-elif [ "$SERVICES" = "fe" ]; then
-  if docker compose up -d --build $SERVICES; then
-    echo "Docker compose started successfully (frontend only)."
-    # Frontend URL: Vite default port 5173 (mapped in docker-compose.yml)
-    echo "Frontend running at http://localhost:5173"
-    exit 0
-  else
-    echo "Docker compose failed." >&2
-    exit 1
-  fi
+echo "${YELLOW}Starting Docker Compose (detached, with build)...${NC}"
+
+# Run docker compose
+if docker compose up -d --build $SERVICES; then
+  echo "${GREEN}Docker Compose started successfully.${NC}"
+  case "$SERVICES" in
+    "")
+      echo "Services: ALL"
+      echo "Backend:  http://localhost:${PORT:-3000}"
+      echo "Frontend: http://localhost:5173"
+      echo "Adminer:  http://localhost:8080"
+      echo "pgAdmin:  http://localhost:5050"
+      echo "Dozzle:   http://localhost:8888"
+      ;;
+    "db adminer pgadmin")
+      echo "Services: DB + Adminer + pgAdmin"
+      echo "Adminer:  http://localhost:8080"
+      echo "pgAdmin:  http://localhost:5050"
+      ;;
+    "be db adminer pgadmin")
+      echo "Services: Backend + DB + Adminer + pgAdmin"
+      echo "Backend:  http://localhost:${PORT:-3000}"
+      echo "Adminer:  http://localhost:8080"
+      echo "pgAdmin:  http://localhost:5050"
+      ;;
+    "fe")
+      echo "Services: Frontend only"
+      echo "Frontend: http://localhost:5173"
+      ;;
+  esac
+  exit 0
+else
+  echo "${RED}Docker Compose failed.${NC}" >&2
+  exit 1
 fi
-
-

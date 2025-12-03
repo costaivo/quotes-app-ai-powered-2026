@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import type { VersionInfo, HealthStatus } from "../types/api";
+import { useState, useEffect } from 'react';
+import type { VersionInfo, HealthStatus } from '../types/api';
 
 export function useAppData() {
   const [versionInfo, setVersionInfo] = useState<VersionInfo | null>(null);
@@ -14,7 +14,7 @@ export function useAppData() {
         setError(null);
 
         // Fetch version and health data in parallel
-        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
         const [versionResponse, healthResponse] = await Promise.all([
           fetch(`${apiBaseUrl}/api/version`),
           fetch(`${apiBaseUrl}/api/health`),
@@ -33,7 +33,7 @@ export function useAppData() {
         setVersionInfo(versionData);
         setHealthStatus(healthData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch data");
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
       } finally {
         setLoading(false);
       }

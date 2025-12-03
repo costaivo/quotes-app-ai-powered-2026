@@ -1,6 +1,6 @@
-import type { VersionInfo } from "../types/api";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Package } from "lucide-react";
+import type { VersionInfo } from '../types/api';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Package } from 'lucide-react';
 
 interface VersionCardProps {
   versionInfo: VersionInfo;

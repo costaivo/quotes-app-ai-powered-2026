@@ -1,4 +1,4 @@
-import type { MigrationInterface, QueryRunner } from "typeorm";
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreateQuoteTable1763578758430 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

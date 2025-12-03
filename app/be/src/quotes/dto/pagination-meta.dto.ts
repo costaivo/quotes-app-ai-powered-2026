@@ -1,22 +1,22 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class PaginationMetaDto {
-  @ApiProperty({ description: "Current page number" })
+  @ApiProperty({ description: 'Current page number' })
   currentPage: number;
 
-  @ApiProperty({ description: "Number of items per page" })
+  @ApiProperty({ description: 'Number of items per page' })
   itemsPerPage: number;
 
-  @ApiProperty({ description: "Total number of items" })
+  @ApiProperty({ description: 'Total number of items' })
   totalItems: number;
 
-  @ApiProperty({ description: "Total number of pages" })
+  @ApiProperty({ description: 'Total number of pages' })
   totalPages: number;
 
-  @ApiProperty({ description: "Whether there is a next page" })
+  @ApiProperty({ description: 'Whether there is a next page' })
   hasNextPage: boolean;
 
-  @ApiProperty({ description: "Whether there is a previous page" })
+  @ApiProperty({ description: 'Whether there is a previous page' })
   hasPreviousPage: boolean;
 
   constructor(currentPage: number, itemsPerPage: number, totalItems: number) {

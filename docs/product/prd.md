@@ -465,6 +465,132 @@ The response structure changes from a simple array to an object containing `data
 - [ ] Requesting a page out of range returns empty data and correct metadata.
 - [ ] Invalid parameters (e.g., `page=-1`) return `400 Bad Request`.
 
+## 🎯 Feature: Simple File Logging (Part 4)
+
+### Metadata
+- **Version**: 1.1
+- **Date**: 2025-12-03
+- **Status**: Approved
+- **Part**: 4 of N
+
+---
+
+## 📝 Introduction & Overview
+
+The Quotes Application currently lacks a logging system, making it difficult to debug issues and monitor application behavior. This feature implements a simple file-based logging system with automatic log rotation to capture application events and errors in a structured format.
+
+---
+
+## 🎯 Goals
+
+1. **Enable Multi-level Logging**: Support DEBUG, INFO, WARN, and ERROR levels.
+2. **Structured Output**: produce logs in JSON format with timestamps for easy parsing.
+3. **File Management**: Implement file-based logging with automatic rotation to manage disk usage.
+4. **Configuration**: Allow log behavior to be configured via environment variables.
+
+---
+
+## 👥 User Stories
+
+- As a **developer**, I want to **see detailed debug logs** so that I can **troubleshoot issues during development**.
+- As a **system administrator**, I want **structured JSON logs** so that I can **easily parse and ingest logs into monitoring tools**.
+- As a **DevOps engineer**, I want **automatic log rotation** so that **disk space is not consumed indefinitely**.
+- As an **application maintainer**, I want to **configure log levels via environment variables** so that I can **change verbosity without code changes**.
+
+---
+
+## 📋 Functional Requirements
+
+### 1. Log Levels
+Support standard log levels, ordered by verbosity:
+1. `DEBUG`: Detailed information for debugging.
+2. `INFO`: General operational events (startup, shutdown, requests).
+3. `WARN`: Warning conditions that don't stop the app.
+4. `ERROR`: Error conditions that affect functionality.
+
+### 2. Log Format
+Logs must be structured JSON with the following standard fields:
+- `timestamp`: ISO 8601 format (UTC).
+- `level`: The log level (string).
+- `message`: The log message string.
+- `context`: (Optional) Additional data object.
+
+**Example:**
+```json
+{
+  "timestamp": "2025-12-03T10:15:30.123Z",
+  "level": "INFO",
+  "message": "Application started",
+  "context": { "port": 3000, "env": "production" }
+}
+```
+
+### 3. File Structure & Rotation
+- Logs are written to a configurable file path (default: `logs/app.log`).
+- **Rotation Policy**:
+  - Rotate when file size exceeds limit (default: 10MB).
+  - Keep a configurable number of backups (default: 5).
+  - Compressed backups are optional but recommended.
+
+### 4. Configuration
+Behavior is controlled via environment variables:
+- `LOG_LEVEL`: (default: `INFO`)
+- `LOG_FILE_PATH`: (default: `./logs/app.log`)
+- `LOG_MAX_SIZE`: (default: `10m`)
+- `LOG_MAX_FILES`: (default: `5`)
+
+---
+
+## 🚫 Non-Goals (Out of Scope)
+
+- **Centralized Logging**: Direct integration with external logging services (ELK, Splunk, etc.) is out of scope.
+- **Database Logging**: Logs will not be stored in the database.
+- **Complex Alerting**: No built-in alerting on log patterns.
+- **UI Viewer**: No web interface for viewing logs in the app.
+
+---
+
+## 🎨 Design Considerations
+
+- **Performance**: Logging should be asynchronous or buffered to minimize impact on request latency.
+- **Standard Libraries**: Use established logging libraries for the target language (e.g., Winston/Pino for Node.js, Logback for Java) rather than implementing from scratch.
+- **Environment**: Ensure the logs directory exists or is created on startup.
+
+---
+
+## ⚙️ Technical Considerations
+
+- **Timestamps**: Must be UTC to avoid timezone confusion.
+- **Security**: Avoid logging sensitive information (passwords, API keys, PII).
+- **Concurrency**: The logging solution must handle concurrent writes safely.
+
+---
+
+## ✅ Success Metrics
+
+- **Debuggability**: Developers can trace a request flow using the logs.
+- **Reliability**: Logs are consistently written without data loss during rotation.
+- **Parsability**: 100% of logs are valid JSON.
+
+---
+
+## ❓ Open Questions
+
+- Should logs also be printed to STDOUT/STDERR for container environments? (Recommendation: Yes, dual output if possible).
+
+---
+
+## ✔️ Acceptance Criteria
+
+- [ ] Application writes logs to the file specified in `LOG_FILE_PATH`.
+- [ ] Log output is valid JSON with `timestamp`, `level`, and `message`.
+- [ ] Setting `LOG_LEVEL` filters out lower-priority logs.
+- [ ] Log rotation occurs when the file size limit is reached.
+- [ ] Old log files are retained up to the configured limit.
+- [ ] No sensitive data is logged by default.
+
+---
+
 ## 📋 RFD Register
 
 | RFD # | Title | Filename | Status | Date | Short summary |
@@ -472,6 +598,7 @@ The response structure changes from a simple array to an object containing `data
 | 001 | Quote Management System - Part 1 Implementation Roadmap | rfd-001-quote-management-part1-implementation.md | draft | 2025-11-19 | Master implementation roadmap for delivering all MVP features. |
 | 002 | Search and Filtering of Quotes | rfd-002-search-and-filtering-of-quotes.md | draft | 2025-11-20 | Defines the technical approach for adding search and filtering to the quotes API. |
 | 003 | Pagination Implementation | rfd-003-pagination.md | draft | 2025-12-01 | Implement offset-based pagination for the quotes API. |
+| 004 | Logging for backend | rfd-004-logging-for-backend.md | draft | 2025-12-03 | Select and design file-based logging using Winston. |
 
 ---
 
@@ -483,4 +610,4 @@ The response structure changes from a simple array to an object containing `data
 ---
 
 **Document Status**: Draft → Ready for Development  
-**Last Updated**: 2025-11-19
+**Last Updated**: 2025-12-03

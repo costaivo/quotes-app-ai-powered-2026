@@ -32,7 +32,7 @@ This repository provides Docker Compose configuration for local development. Use
 - **Start (rebuilds images, detached)** — recommended for first run or after Dockerfile/dependency changes:
 
 ```sh
-./start.sh    # runs: docker compose up -d --build and prints BE/FE/Adminer URLs
+./start.sh    # runs: docker compose up -d --build and prints BE/FE/Adminer/Dozzle URLs
 ```
 
 - **Make the helper script executable** (only required once):
@@ -85,6 +85,19 @@ docker compose up -d --no-deps --build be
 docker compose logs -f be
 docker compose logs -f fe
 ```
+
+### Analyzing Logs with Dozzle
+
+We recommend using **Dozzle** for a better log viewing experience. It is included in the default `docker-compose.yml` stack when using the `./start.sh all` command.
+
+1.  **Start the stack**:
+    ```bash
+    ./start.sh all
+    ```
+2.  **Open Dozzle**:
+    Navigate to [http://localhost:8888](http://localhost:8888).
+3.  **View Logs**:
+    Click on any container name (e.g., `quotes-be`) to see its live log stream. Dozzle supports search, filtering, and split-screen viewing.
 
 Notes:
 - The compose file mounts local source into the containers (`./app/be:/usr/src/app`, `./app/fe:/app`), so changes to the code are picked up by the dev servers (Vite for FE, `npm run start:dev` for BE) without rebuilding the image.
