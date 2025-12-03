@@ -14,9 +14,10 @@ export class Quote {
 
   @Index()
   @Column('text', {
+    name: 'quote',
     nullable: false,
   })
-  text!: string;
+  quote!: string;
 
   @Index()
   @Column('varchar', {
@@ -26,10 +27,11 @@ export class Quote {
   author!: string;
 
   @Column('integer', {
+    name: 'like_count',
     default: 0,
     nullable: false,
   })
-  likes!: number;
+  likeCount!: number;
 
   @Column('varchar', {
     length: 500,
@@ -39,14 +41,30 @@ export class Quote {
 
   @CreateDateColumn({
     type: 'timestamp',
+    name: 'created_at',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createdAt!: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
+    name: 'updated_at',
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt!: Date;
+
+  @Column('varchar', {
+    name: 'created_by',
+    length: 255,
+    nullable: true,
+  })
+  createdBy!: string | null;
+
+  @Column('varchar', {
+    name: 'updated_by',
+    length: 255,
+    nullable: true,
+  })
+  updatedBy!: string | null;
 }

@@ -11,7 +11,7 @@ export class QuoteResponseDto {
     description: 'The text content of the quote',
     example: 'To be or not to be, that is the question.',
   })
-  text!: string;
+  quote!: string;
 
   @ApiProperty({
     description: 'The author of the quote',
@@ -23,11 +23,11 @@ export class QuoteResponseDto {
     description: 'Number of likes for the quote',
     example: 10,
   })
-  likes!: number;
+  likeCount!: number;
 
   @ApiProperty({
-    description: 'Comma-separated tags for the quote',
-    example: 'classic,drama',
+    description: 'Semicolon-separated tags for the quote',
+    example: 'classic;drama',
     nullable: true,
   })
   tags!: string | null;
@@ -43,4 +43,18 @@ export class QuoteResponseDto {
     example: '2023-01-02T00:00:00.000Z',
   })
   updatedAt!: Date;
+
+  @ApiProperty({
+    description: 'User ID who created the quote',
+    example: 'user-123',
+    nullable: true,
+  })
+  createdBy!: string | null;
+
+  @ApiProperty({
+    description: 'User ID who last updated the quote',
+    example: 'user-456',
+    nullable: true,
+  })
+  updatedBy!: string | null;
 }

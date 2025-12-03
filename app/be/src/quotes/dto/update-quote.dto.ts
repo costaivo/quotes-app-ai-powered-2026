@@ -11,7 +11,7 @@ export class UpdateQuoteDto {
   @IsOptional()
   @IsString()
   @MaxLength(1000)
-  text?: string;
+  quote?: string;
 
   @ApiProperty({
     description: 'The author of the quote',
@@ -33,10 +33,10 @@ export class UpdateQuoteDto {
   @IsOptional()
   @IsNumber()
   @Min(0)
-  likes?: number;
+  likeCount?: number;
 
   @ApiProperty({
-    description: 'Comma-separated tags for the quote',
+    description: 'Semicolon-separated tags for the quote',
     example: 'classic;drama',
     required: false,
   })

@@ -14,7 +14,7 @@
 - `likes` -> `like_count` is a breaking change.
 
 **Approval:**
-- **Next Sub-task**: Awaiting approval
+- **Next Sub-task**: Awaiting approval for Task 3.0
 
 ## Tasks
 
@@ -29,8 +29,8 @@
   - [x] 1.3 Implement the `down` method to revert changes.
   - [x] 1.4 Run the migration to verify it works against the local DB.
 
-- [ ] 2.0 Entity & DTO Updates
-  - [ ] 2.1 Update `app/be/src/quotes/entities/quote.entity.ts`:
+- [x] 2.0 Entity & DTO Updates
+  - [x] 2.1 Update `app/be/src/quotes/entities/quote.entity.ts`:
     - Rename `text` property to `quote`.
     - Rename `likes` property to `likeCount`.
     - Explicitly map `@Column({ name: 'like_count' })` to `likeCount`.
@@ -38,15 +38,15 @@
     - Update `updatedAt` to map to `@UpdateDateColumn({ name: 'updated_at' })`.
     - Add `createdBy` property mapped to `@Column({ name: 'created_by', nullable: true })`.
     - Add `updatedBy` property mapped to `@Column({ name: 'updated_by', nullable: true })`.
-  - [ ] 2.2 Update `CreateQuoteDto`:
+  - [x] 2.2 Update `CreateQuoteDto`:
     - Rename `text` to `quote`.
-  - [ ] 2.3 Update `UpdateQuoteDto`:
+  - [x] 2.3 Update `UpdateQuoteDto`:
     - Rename `text` to `quote`.
     - Rename `likes` to `likeCount`.
 
 - [ ] 3.0 Service & Controller Refactoring
-  - [ ] 3.1 Update `QuotesService` methods (`create`, `findAll`, `findOne`, `update`) to use the new property names (`quote`, `likeCount`).
-  - [ ] 3.2 Update `QuotesController` to handle the new DTO structure.
+  - [x] 3.1 Update `QuotesService` methods (`create`, `findAll`, `findOne`, `update`) to use the new property names (`quote`, `likeCount`).
+  - [x] 3.2 Update `QuotesController` to handle the new DTO structure. (Also updated QuoteRepository for consistency)
   - [ ] 3.3 Verify any filtering/sorting logic (from Part 2/3) uses the correct database column names (`quote` vs `text`).
 
 - [ ] 4.0 Verification
