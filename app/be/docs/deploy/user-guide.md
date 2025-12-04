@@ -22,8 +22,6 @@ cd quotes-app-deploy
 Create a file named `docker-compose.yml` with the following content:
 
 ```yaml
-version: '3.8'
-
 services:
   # Backend Application
   backend:
@@ -58,7 +56,6 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - quotes-network
-
 networks:
   quotes-network:
     driver: bridge
@@ -78,6 +75,7 @@ POSTGRES_PASSWORD=mypassword
 POSTGRES_DB=quotes_prod
 ```
 
+docker-compose up -d
 ### 4. Start the Application
 
 Run the following command to start the services:
@@ -87,6 +85,22 @@ docker-compose up -d
 ```
 
 The application will be available at `http://localhost:3000`.
+
+### 5. Run Database Migrations
+
+After the containers are running, apply database migrations to set up the schema:
+
+```bash
+docker-compose exec backend pnpm run migration:run
+```
+
+If the backend container is not running, use:
+
+```bash
+docker-compose run --rm backend pnpm run migration:run
+```
+
+This ensures your database is ready for use with the latest schema.
 
 ---
 

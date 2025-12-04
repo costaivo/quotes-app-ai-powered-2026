@@ -19,7 +19,7 @@ export class QuoteRepository extends Repository<Quote> {
     }
 
     if (query.query) {
-      qb.andWhere('quote.text ILIKE :text', { text: `%${query.query}%` });
+      qb.andWhere('quote.quote ILIKE :text', { text: `%${query.query}%` });
     }
 
     if (skip !== undefined) {
@@ -42,10 +42,10 @@ export class QuoteRepository extends Repository<Quote> {
       .insert()
       .into(Quote)
       .values({
-        text: dto.text,
+        quote: dto.quote,
         author: dto.author,
         tags: dto.tags || null,
-        likes: 0,
+        likeCount: 0,
       })
       .returning('*')
       .execute();

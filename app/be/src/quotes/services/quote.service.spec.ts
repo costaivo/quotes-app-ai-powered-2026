@@ -36,12 +36,14 @@ describe('QuoteService', () => {
       const mockQuotes = [
         {
           id: '123e4567-e89b-12d3-a456-426614174000',
-          text: 'Test quote',
+          quote: 'Test quote',
           author: 'Test author',
-          likes: 0,
+          likeCount: 0,
           tags: null,
           createdAt: new Date(),
           updatedAt: new Date(),
+          createdBy: null,
+          updatedBy: null,
         },
       ];
       const mockTotal = 1;
@@ -51,7 +53,7 @@ describe('QuoteService', () => {
       const result = await service.findAll({ page: 1, limit: 10 });
 
       expect(result.data).toHaveLength(1);
-      expect(result.data[0].text).toBe('Test quote');
+      expect(result.data[0].quote).toBe('Test quote');
       expect(result.meta.totalItems).toBe(1);
       expect(result.meta.currentPage).toBe(1);
       expect(mockRepository.findAll).toHaveBeenCalledWith({ page: 1, limit: 10 });
@@ -190,12 +192,14 @@ describe('QuoteService', () => {
       const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const mockQuote = {
         id: quoteId,
-        text: 'Test quote',
+        quote: 'Test quote',
         author: 'Test author',
-        likes: 0,
+        likeCount: 0,
         tags: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: null,
+        updatedBy: null,
       };
 
       mockRepository.findById.mockResolvedValue(mockQuote);
@@ -203,7 +207,7 @@ describe('QuoteService', () => {
       const result = await service.findById(quoteId);
 
       expect(result.id).toBe(quoteId);
-      expect(result.text).toBe('Test quote');
+      expect(result.quote).toBe('Test quote');
       expect(mockRepository.findById).toHaveBeenCalledWith(quoteId);
     });
 
@@ -224,7 +228,7 @@ describe('QuoteService', () => {
   describe('create', () => {
     it('should create a new quote', async () => {
       const createDto: CreateQuoteDto = {
-        text: 'New quote',
+        quote: 'New quote',
         author: 'New author',
         tags: 'tag1;tag2',
       };
@@ -232,24 +236,26 @@ describe('QuoteService', () => {
       const mockCreatedQuote = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         ...createDto,
-        likes: 0,
+        likeCount: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: null,
+        updatedBy: null,
       };
 
       mockRepository.createQuote.mockResolvedValue(mockCreatedQuote);
 
       const result = await service.create(createDto);
 
-      expect(result.text).toBe(createDto.text);
+      expect(result.quote).toBe(createDto.quote);
       expect(result.author).toBe(createDto.author);
-      expect(result.likes).toBe(0);
+      expect(result.likeCount).toBe(0);
       expect(mockRepository.createQuote).toHaveBeenCalledWith(createDto);
     });
 
-    it('should throw BadRequestException for missing text', async () => {
+    it('should throw BadRequestException for missing quote', async () => {
       const createDto: CreateQuoteDto = {
-        text: '',
+        quote: '',
         author: 'Author',
         tags: 'tag1',
       };
@@ -257,9 +263,9 @@ describe('QuoteService', () => {
       await expect(service.create(createDto)).rejects.toThrow(BadRequestException);
     });
 
-    it('should throw BadRequestException for text exceeding 1000 characters', async () => {
+    it('should throw BadRequestException for quote exceeding 1000 characters', async () => {
       const createDto: CreateQuoteDto = {
-        text: 'a'.repeat(1001),
+        quote: 'a'.repeat(1001),
         author: 'Author',
       };
 
@@ -271,22 +277,23 @@ describe('QuoteService', () => {
     it('should update a quote', async () => {
       const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const updateDto: UpdateQuoteDto = {
-        text: 'Updated quote',
+        quote: 'Updated quote',
       };
 
       const existingQuote = {
         id: quoteId,
-        text: 'Old quote',
+        quote: 'Old quote',
         author: 'Author',
-        likes: 0,
+        likeCount: 0,
         tags: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: null,
+        updatedBy: null,
       };
 
       const updatedQuote = {
         ...existingQuote,
-        ...updateDto,
         ...updateDto,
       };
 
@@ -295,33 +302,35 @@ describe('QuoteService', () => {
 
       const result = await service.update(quoteId, updateDto);
 
-      expect(result.text).toBe(updateDto.text);
+      expect(result.quote).toBe(updateDto.quote);
       expect(mockRepository.updateQuote).toHaveBeenCalledWith(quoteId, updateDto);
     });
 
     it('should throw NotFoundException when quote not found', async () => {
       const quoteId = '123e4567-e89b-12d3-a456-426614174000';
-      const updateDto: UpdateQuoteDto = { text: 'Updated' };
+      const updateDto: UpdateQuoteDto = { quote: 'Updated' };
 
       mockRepository.findById.mockResolvedValue(null);
 
       await expect(service.update(quoteId, updateDto)).rejects.toThrow(NotFoundException);
     });
 
-    it('should throw BadRequestException for negative likes', async () => {
+    it('should throw BadRequestException for negative like count', async () => {
       const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const updateDto: UpdateQuoteDto = {
-        likes: -1,
+        likeCount: -1,
       };
 
       const existingQuote = {
         id: quoteId,
-        text: 'Quote',
+        quote: 'Quote',
         author: 'Author',
-        likes: 0,
+        likeCount: 0,
         tags: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: null,
+        updatedBy: null,
       };
 
       mockRepository.findById.mockResolvedValue(existingQuote);
@@ -335,12 +344,14 @@ describe('QuoteService', () => {
       const quoteId = '123e4567-e89b-12d3-a456-426614174000';
       const mockQuote = {
         id: quoteId,
-        text: 'Quote to delete',
+        quote: 'Quote to delete',
         author: 'Author',
-        likes: 0,
+        likeCount: 0,
         tags: null,
         createdAt: new Date(),
         updatedAt: new Date(),
+        createdBy: null,
+        updatedBy: null,
       };
 
       mockRepository.findById.mockResolvedValue(mockQuote);

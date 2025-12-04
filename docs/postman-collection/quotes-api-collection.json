@@ -37,18 +37,28 @@
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
-									"pm.test(\"Response has required fields\", function () {",
+									"pm.test(\"Response has required fields (with audit)\", function () {",
 									"    pm.expect(jsonData).to.have.property('id');",
-									"    pm.expect(jsonData).to.have.property('text');",
+									"    pm.expect(jsonData).to.have.property('quote');",
 									"    pm.expect(jsonData).to.have.property('author');",
-									"    pm.expect(jsonData).to.have.property('likes');",
+									"    pm.expect(jsonData).to.have.property('likeCount');",
 									"    pm.expect(jsonData).to.have.property('tags');",
 									"    pm.expect(jsonData).to.have.property('createdAt');",
 									"    pm.expect(jsonData).to.have.property('updatedAt');",
+									"    pm.expect(jsonData).to.have.property('createdBy');",
+									"    pm.expect(jsonData).to.have.property('updatedBy');",
+									"});",
+									"",
+									"pm.test(\"Audit timestamps are valid dates\", function () {",
+									"    const createdAt = new Date(jsonData.createdAt);",
+									"    const updatedAt = new Date(jsonData.updatedAt);",
+									"    pm.expect(createdAt).to.be.an.instanceof(Date);",
+									"    pm.expect(updatedAt).to.be.an.instanceof(Date);",
 									"});",
 									"",
 									"if (jsonData.id) {",
 									"    pm.collectionVariables.set(\"quoteId\", jsonData.id);",
+									"    pm.collectionVariables.set(\"createdAt\", jsonData.createdAt);",
 									"}"
 								],
 								"type": "text/javascript"
@@ -60,7 +70,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"text\": \"{{randomText}}\",\n  \"author\": \"{{randomAuthor}}\",\n  \"tags\": \"{{randomTags}}\"\n}",
+							"raw": "{\n  \"quote\": \"{{randomText}}\",\n  \"author\": \"{{randomAuthor}}\",\n  \"tags\": \"{{randomTags}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -179,9 +189,9 @@
 									"});",
 									"",
 									"const queryFilter = pm.request.url.query.find(q => q.key === 'query').value.toLowerCase();",
-									"pm.test(\"All quotes match text filter\", function () {",
+									"pm.test(\"All quotes match content filter\", function () {",
 									"    jsonData.forEach(quote => {",
-									"        pm.expect(quote.text.toLowerCase()).to.include(queryFilter);",
+									"        pm.expect(quote.quote.toLowerCase()).to.include(queryFilter);",
 									"    });",
 									"});"
 								],
@@ -232,7 +242,7 @@
 									"pm.test(\"All quotes match both filters\", function () {",
 									"    jsonData.forEach(quote => {",
 									"        pm.expect(quote.author.toLowerCase()).to.include(authorFilter);",
-									"        pm.expect(quote.text.toLowerCase()).to.include(queryFilter);",
+									"        pm.expect(quote.quote.toLowerCase()).to.include(queryFilter);",
 									"    });",
 									"});"
 								],
@@ -355,8 +365,14 @@
 									"});",
 									"",
 									"const jsonData = pm.response.json();",
-									"pm.test(\"Likes updated\", function () {",
-									"    pm.expect(jsonData.likes).to.eql(42);",
+									"pm.test(\"Like count updated\", function () {",
+									"    pm.expect(jsonData.likeCount).to.eql(42);",
+									"});",
+									"",
+									"pm.test(\"Updated timestamp changed\", function () {",
+									"    const createdAt = pm.collectionVariables.get('createdAt');",
+									"    const updatedAt = jsonData.updatedAt;",
+									"    pm.expect(new Date(updatedAt)).to.be.at.least(new Date(createdAt));",
 									"});"
 								],
 								"type": "text/javascript"
@@ -368,7 +384,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"likes\": 42\n}",
+							"raw": "{\n    \"likeCount\": 42\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -687,7 +703,7 @@
 			"name": "Error Scenarios",
 			"item": [
 				{
-					"name": "Create Invalid Quote (Missing Text)",
+					"name": "Create Invalid Quote (Missing Quote Field)",
 					"event": [
 						{
 							"listen": "test",
@@ -767,6 +783,11 @@
 		},
 		{
 			"key": "quoteId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "createdAt",
 			"value": "",
 			"type": "string"
 		},

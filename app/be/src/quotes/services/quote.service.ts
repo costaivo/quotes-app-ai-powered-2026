@@ -80,12 +80,12 @@ export class QuoteService {
   }
 
   private validateCreateDto(dto: CreateQuoteDto): void {
-    if (!dto.text || dto.text.trim().length === 0) {
-      throw new BadRequestException('Text is required');
+    if (!dto.quote || dto.quote.trim().length === 0) {
+      throw new BadRequestException('Quote is required');
     }
 
-    if (dto.text.length > 1000) {
-      throw new BadRequestException('Text cannot exceed 1000 characters');
+    if (dto.quote.length > 1000) {
+      throw new BadRequestException('Quote cannot exceed 1000 characters');
     }
 
     if (!dto.author || dto.author.trim().length === 0) {
@@ -98,13 +98,13 @@ export class QuoteService {
   }
 
   private validateUpdateDto(dto: UpdateQuoteDto): void {
-    if (dto.text !== undefined) {
-      if (dto.text.trim().length === 0) {
-        throw new BadRequestException('Text cannot be empty');
+    if (dto.quote !== undefined) {
+      if (dto.quote.trim().length === 0) {
+        throw new BadRequestException('Quote cannot be empty');
       }
 
-      if (dto.text.length > 1000) {
-        throw new BadRequestException('Text cannot exceed 1000 characters');
+      if (dto.quote.length > 1000) {
+        throw new BadRequestException('Quote cannot exceed 1000 characters');
       }
     }
 
@@ -118,9 +118,9 @@ export class QuoteService {
       }
     }
 
-    if (dto.likes !== undefined) {
-      if (typeof dto.likes !== 'number' || dto.likes < 0) {
-        throw new BadRequestException('Likes must be a non-negative number');
+    if (dto.likeCount !== undefined) {
+      if (typeof dto.likeCount !== 'number' || dto.likeCount < 0) {
+        throw new BadRequestException('Like count must be a non-negative number');
       }
     }
   }
@@ -135,12 +135,14 @@ export class QuoteService {
   private mapToDto(quote: Quote): QuoteResponseDto {
     return {
       id: quote.id,
-      text: quote.text,
+      quote: quote.quote,
       author: quote.author,
-      likes: quote.likes,
+      likeCount: quote.likeCount,
       tags: quote.tags,
       createdAt: quote.createdAt,
       updatedAt: quote.updatedAt,
+      createdBy: quote.createdBy,
+      updatedBy: quote.updatedBy,
     };
   }
 }

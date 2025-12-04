@@ -10,7 +10,7 @@ export class CreateQuoteDto {
   @IsNotEmpty()
   @IsString()
   @MaxLength(1000)
-  text!: string;
+  quote!: string;
 
   @ApiProperty({
     description: 'The author of the quote',
@@ -23,7 +23,7 @@ export class CreateQuoteDto {
   author!: string;
 
   @ApiProperty({
-    description: 'Comma-separated tags for the quote',
+    description: 'Semicolon-separated tags for the quote',
     example: 'classic;drama;philosophy',
     required: false,
   })
