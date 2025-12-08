@@ -11,9 +11,11 @@ export const getDatabaseConfig = (): TypeOrmModuleOptions => {
     entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
     migrations: [`${__dirname}/migrations/*{.ts,.js}`],
 
-    synchronize: process.env.NODE_ENV === 'development',
+    // Disable synchronize when using migrations to avoid conflicts
+    // Let migrations handle schema updates instead
+    synchronize: false,
     logging: process.env.NODE_ENV === 'development',
-    migrationsRun: false,
+    migrationsRun: true,
   };
 
   // Log database connection details (redact password for security)
