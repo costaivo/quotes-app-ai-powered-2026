@@ -26,6 +26,60 @@ docker compose logs -f backend
 
 The application will be available at: **http://localhost:8001/api**
 
+### 3. Run Migrations and Seed Data
+
+After the containers are running, set up the database schema and populate it with initial data:
+
+**Option A: Automatic (Recommended)**
+
+Migrations run automatically on app startup due to `migrationsRun: true` in the database configuration. Just wait for the backend to start:
+
+```bash
+# Watch logs until you see: "Nest application successfully started"
+docker compose logs -f backend
+```
+
+**Option B: Manual Migrations**
+
+If you need to run migrations manually:
+
+```bash
+# Run pending migrations
+docker compose exec backend pnpm run migration:run
+```
+
+If the backend container is not running:
+
+```bash
+docker compose run --rm backend pnpm run migration:run
+```
+
+**Seed the Database**
+
+After migrations, populate the database with initial data:
+
+```bash
+# Run seed script
+docker compose exec backend pnpm run seed
+```
+
+This will insert sample quotes, authors, and tags into the database.
+
+**Troubleshooting Migrations**
+
+If you get `error: relation "quotes" already exists`:
+
+```bash
+# Remove all volumes and start fresh
+docker compose down -v
+
+# Start again
+docker compose up -d
+
+# Wait for migrations to run automatically
+docker compose logs -f backend
+```
+
 ### 4. Access Database Administration UI (pgAdmin)
 
 pgAdmin is automatically started and available at: **http://localhost:9000**
@@ -110,14 +164,26 @@ docker compose down
 # Stop services and remove data (DESTRUCTIVE)
 docker compose down -v
 
+# Database Operations
+# ──────────────────
+
 # Run migrations manually (if needed)
 docker compose exec backend pnpm run migration:run
 
-# Seed the database
+# Seed the database with initial data
 docker compose exec backend pnpm run seed
 
-# Access the database directly
+# Show migration status
+docker compose exec backend pnpm run migration:show
+
+# Revert last migration
+docker compose exec backend pnpm run migration:revert
+
+# Access the database directly via psql
 docker compose exec db psql -U postgres -d quotes_db
+
+# Run queries in psql
+docker compose exec db psql -U postgres -d quotes_db -c "SELECT COUNT(*) FROM quotes;"
 ```
 
 ---
