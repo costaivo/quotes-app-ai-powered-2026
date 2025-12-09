@@ -43,7 +43,7 @@ EXPOSE 3000
 # Start the application in development mode
 CMD ["pnpm", "exec", "nest", "start", "--watch"]
 
-# Stage 3: Production environment
+# Stage 3: Production environment WITH migration/seed support
 FROM node:20.9.0-alpine AS production
 
 WORKDIR /usr/src/app
@@ -52,12 +52,18 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY pnpm-lock.yaml ./
 
-# Enable pnpm and install only production dependencies
+# Enable pnpm and install all dependencies (including dev dependencies for migrations)
+# This is needed to support migration:run and seed commands
 RUN corepack enable && corepack prepare pnpm@9.15.0 --activate && \
-    pnpm install --prod
+    pnpm install
 
 # Copy the built application from the builder stage
 COPY --from=builder /usr/src/app/dist ./dist
+
+# Copy source code for seed and migration scripts
+COPY --from=builder /usr/src/app/src ./src
+COPY --from=builder /usr/src/app/ormconfig.ts ./ormconfig.ts
+COPY --from=builder /usr/src/app/tsconfig.json ./tsconfig.json
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
@@ -70,5 +76,8 @@ USER nestjs
 # Expose the application port
 EXPOSE 3000
 
-# Start the application
+# Default command: start the application
+# Override with docker run -it myimage pnpm run migration:run to run migrations
+# or docker run -it myimage pnpm run seed to seed data
 CMD ["pnpm", "start"]
+
