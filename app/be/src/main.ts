@@ -89,7 +89,9 @@ async function bootstrap() {
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
+    // Setup Swagger at multiple URLs for convenience
     SwaggerModule.setup('api/docs', app, document);
+    SwaggerModule.setup('docs', app, document);
   }
 
   // Enable CORS
@@ -97,9 +99,12 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
   console.log(`Application is running on: http://localhost:${port}/api`);
   if (process.env.NODE_ENV === 'development') {
-    console.log(`Swagger documentation: http://localhost:${port}/api/docs`);
+    console.log(`Swagger documentation:`);
+    console.log(`  - http://localhost:${port}/api/docs`);
+    console.log(`  - http://localhost:${port}/docs`);
   }
 }
 bootstrap();

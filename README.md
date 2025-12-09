@@ -160,6 +160,12 @@ ln -s ../.env app/fe/.env
 ls -la app/be/.env app/fe/.env
 ```
 
+**Result:**
+```
+lrwxrwxrwx 1 ivo ivo 10 Dec  9 10:51 app/be/.env -> ../../.env
+lrwxrwxrwx 1 ivo ivo 10 Dec  9 10:51 app/fe/.env -> ../../.env
+```
+
 ### Environment Variables
 
 The root `.env` file contains all shared configuration:

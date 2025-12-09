@@ -35,7 +35,7 @@ A robust REST API for managing quotes, built with NestJS, TypeORM, and PostgreSQ
     ```
 
 4.  **Access Swagger UI:**
-    Open [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
+    Open [http://localhost:3000/api/docs](http://localhost:3000/api/docs) or [http://localhost:3000/docs](http://localhost:3000/docs)
 
 ## API Endpoints
 
